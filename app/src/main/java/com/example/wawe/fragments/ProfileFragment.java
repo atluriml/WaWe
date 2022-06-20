@@ -1,5 +1,6 @@
 package com.example.wawe.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,11 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.wawe.FavoritesActivity;
 import com.example.wawe.LoginActivity;
 import com.example.wawe.R;
 import com.example.wawe.User;
+import com.example.wawe.VisitedRestaurantsActivity;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,14 +77,16 @@ public class ProfileFragment extends Fragment {
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "successfully clicked on favorites", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), FavoritesActivity.class);
+                getContext().startActivity(intent);
             }
         });
 
         btnVisited.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "successfully clicked on visited", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), VisitedRestaurantsActivity.class);
+                getContext().startActivity(intent);
             }
         });
 
