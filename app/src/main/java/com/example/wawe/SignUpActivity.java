@@ -18,6 +18,7 @@ public class SignUpActivity extends AppCompatActivity {
     public static final String TAG = "SignUpActivity";
     private EditText etUsername;
     private EditText etPassword;
+    private EditText etLocation;
     private Button btnSignUp;
 
     @Override
@@ -29,6 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
+        etLocation = findViewById(R.id.etLocation);
         btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
                 user.setUsername(etUsername.getText().toString());
                 Log.i(TAG, "the user wants their username to be " + etUsername.getText().toString());
                 user.setPassword(etPassword.getText().toString());
+                user.put("location", etLocation.getText().toString());
                 user.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(ParseException e) {

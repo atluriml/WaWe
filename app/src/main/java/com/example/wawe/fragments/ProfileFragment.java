@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.wawe.LoginActivity;
 import com.example.wawe.R;
+import com.example.wawe.User;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
@@ -24,8 +27,9 @@ import com.parse.ParseUser;
  */
 public class ProfileFragment extends Fragment {
 
+    public static final String TAG = "ProfileFragment";
 
-
+    User user;
     private TextView tvProfileUsername;
     private ImageView ivProfileImage;
     private TextView tvProfileLocation;
@@ -45,6 +49,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         tvProfileLocation = view.findViewById(R.id.tvLocation);
         tvProfileUsername = view.findViewById(R.id.tvUsername);
@@ -62,8 +67,6 @@ public class ProfileFragment extends Fragment {
         }
 
         tvProfileUsername.setText(ParseUser.getCurrentUser().getUsername());
-
-        //TODO create user class for this
         tvProfileLocation.setText(ParseUser.getCurrentUser().getString("location"));
 
         btnFavorites.setOnClickListener(new View.OnClickListener() {
