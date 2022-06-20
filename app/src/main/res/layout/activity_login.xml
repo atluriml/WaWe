@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_weight="1"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="WaWe"
+        android:textColor="#000000"
+        android:textSize="70dp" />
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/Title"
+        android:hint="@string/username"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etUsername"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPassword"
+        android:layout_weight="1"
+        android:text="LogIn"
+        app:backgroundTint="#5BBCFB"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/tvSignUpNeeded"
+        android:layout_width="180dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/btnLogin"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="103dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Don't have an account?"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginLeft="-14dp"
+        android:layout_marginTop="94dp"
+        android:layout_toRightOf="@id/tvSignUpNeeded"
+        android:layout_weight="1"
+        android:outlineProvider="none"
+        android:text="SignUp"
+        android:textAllCaps="false"
+        android:textColor="#5BBCFB"
+        app:backgroundTint="#00FFFFFF" />
+
+</RelativeLayout>
