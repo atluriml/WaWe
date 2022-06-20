@@ -46,16 +46,16 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // when a new user wants to sign up
-//        btnSignUp = findViewById(R.id.btnSignUp);
-//        btnSignUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.i(TAG, "new user is signing up for an account");
-//                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        });
+        btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "new user is signing up for an account");
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
     }
 
