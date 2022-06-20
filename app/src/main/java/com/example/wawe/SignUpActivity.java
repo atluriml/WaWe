@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -18,6 +19,7 @@ public class SignUpActivity extends AppCompatActivity {
     public static final String TAG = "SignUpActivity";
     private EditText etUsername;
     private EditText etPassword;
+    private EditText etRetypePassword;
     private EditText etLocation;
     private Button btnSignUp;
 
@@ -30,28 +32,32 @@ public class SignUpActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
+        etRetypePassword = findViewById(R.id.etRetypePassword);
         etLocation = findViewById(R.id.etLocation);
         btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "user is attempting to create account");
-                ParseUser user = new ParseUser();
-                user.setUsername(etUsername.getText().toString());
-                Log.i(TAG, "the user wants their username to be " + etUsername.getText().toString());
-                user.setPassword(etPassword.getText().toString());
-                user.put("location", etLocation.getText().toString());
-                user.signUpInBackground(new SignUpCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.e(TAG, "Issue with signup", e);
-                            return;
-                        }
-                        goLoginActivity();
-                    }
-                });
 
+                if (!etPassword.getText().toString().equals(etRetypePassword.getText().toString())){
+                    Toast.makeText(SignUpActivity.this, "Please make sure your passwords match", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    ParseUser user = new ParseUser();
+                    user.setUsername(etUsername.getText().toString());
+                    user.setPassword(etPassword.getText().toString());
+                    user.put("location", etLocation.getText().toString());
+                    user.signUpInBackground(new SignUpCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "Issue with signup", e);
+                                return;
+                            }
+                            goLoginActivity();
+                        }
+                    });
+                }
             }
         });
 

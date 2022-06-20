@@ -28,6 +28,15 @@
         android:inputType="textPassword" />
 
     <EditText
+        android:id="@+id/etRetypePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/RetypePassword"
+        android:inputType="textPassword" />
+
+    <EditText
         android:id="@+id/etLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
