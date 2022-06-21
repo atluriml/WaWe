@@ -11,7 +11,7 @@ Original App Design Project - README
 
 ## Overview
 ### Description
-WaWe is an app that pulls up a restuant in the area for the user to try. Users can filter by indicating the cusine type, price range, and distance. The app will keep track of whether or not the user has visited a restaurant to help ensure that it does not reccomend the user the same restaurant over and over again. When the user is given a recomendation, the location of the resaurant will be given, and the app will give the user directions on how to get there.
+WaWe is an app that pulls up a restaurant in the area for the user to try. Users can filter by indicating the cusine type, price range, and distance. The app will keep track of whether or not the user has visited a restaurant to help ensure that it does not reccomend the user the same restaurant over and over again. When the user is given a recomendation, the location of the resaurant will be given, and the app will give the user directions on how to get there.
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]

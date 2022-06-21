@@ -1,14 +1,16 @@
-package com.example.wawe;
+package com.example.wawe.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class FavoritesActivity extends AppCompatActivity {
+import com.example.wawe.R;
+
+public class VisitedRestaurantsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
+        setContentView(R.layout.activity_visited_restaurants);
     }
 }

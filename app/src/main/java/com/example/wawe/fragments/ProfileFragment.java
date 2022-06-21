@@ -7,25 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.wawe.FavoritesActivity;
-import com.example.wawe.LoginActivity;
+import com.example.wawe.Activities.FavoritesActivity;
 import com.example.wawe.R;
 import com.example.wawe.User;
-import com.example.wawe.VisitedRestaurantsActivity;
+import com.example.wawe.Activities.VisitedRestaurantsActivity;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
-
-import org.parceler.Parcels;
 
 /**
  * A simple {@link Fragment} subclass.

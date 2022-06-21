@@ -1,4 +1,4 @@
-package com.example.wawe;
+package com.example.wawe.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.wawe.R;
 import com.example.wawe.fragments.ProfileFragment;
 import com.example.wawe.fragments.RouletteFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
