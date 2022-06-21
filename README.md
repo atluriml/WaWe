@@ -97,6 +97,7 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 ### Models
 
+USER Object - Parse Database 
 | Property|Type  |Description |
 | --------|--------| -------- |
 | username|String|the user's username credentials|
@@ -105,17 +106,37 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 | favorited| Boolean|whether or not the user added a restaurant to their favorites|
 | visited| Boolean|whether or not the user has visited a restaurant|
 | lastVisited| DateTime|the last time the user visited a restaurant|
-| cusine| String|type of cusine|
+| userLocation| String|user's current location|
+
+
+| Property|Type  |Description |
+| --------|--------| -------- |
+| cuisine| String|type of cuisine|
 | restaurantName| String|name of the restaurant|
 | restaurantImage| File|image of the restaurant|
 | address| String|restaurant's address|
 | price-range| String|how expensive the restaurant is|
 | location| String|how far away the restaurant is from the user|
-| userLocation| String|user's current location|
+
 
 ### Networking
-- [Add list of network requests by screen ]
+* Splash Screen
+  * no network calls 
+* Login Screen
+  * (Read/GET) Get user information based on login information
+* Sign Up Screen
+  * (Create/POST) Create a new user object
+* Main Screen
+  * (Read/GET) restaurant based on the filters the user chose 
+* Detail Screen
+  * (Read/GET) location and direction of the restaurant using Google Maps 
+* Profile Screen
+  * (Read/GET) Query logged in user object
+* Favorites Screen
+  * (Read/GET) Query list of logged in user's favorite restaurants
+* Visited Screen
+  * (Read/GET) Query list of logged in user's visited restaurants
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 - Existing API Endpoints 
-    - Yelp: 
+    - Yelp
