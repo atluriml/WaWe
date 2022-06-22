@@ -1,17 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.RouletteFragment">
 
-    <Button
-        android:id="@+id/btnTestRest"
+    <TextView
+        android:id="@+id/tvCuisine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="What kind of cuisine are we feeling today"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <EditText
+        android:id="@+id/etCuisine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivProfileImage"
-        android:layout_marginTop="179dp"
-        android:text="testing"
+        android:layout_below="@id/tvCuisine"
+        android:layout_marginTop="13dp"
+        android:hint="cuisine"/>
+
+    <TextView
+        android:id="@+id/tvVeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etCuisine"
+        android:layout_marginTop="10dp"
+        android:text="Select if you have a dietary restriction"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <Spinner
+        android:id="@+id/spDietaryRestriction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvVeg"
+        android:layout_marginTop="10dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spDietaryRestriction"
+        android:layout_marginTop="10dp"
+        android:text="What is your price range?"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <Spinner
+        android:id="@+id/spPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPrice"
+        android:layout_marginTop="10dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/tvRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spPrice"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:text="Max distance (miles) from your location"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <Spinner
+        android:id="@+id/spRadius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvRadius"
+        android:layout_marginTop="10dp"
+        android:background="@android:drawable/btn_dropdown"
+
+        android:hint="distance"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:id="@+id/btnGenerateRestaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spRadius"
+        android:layout_marginTop="22dp"
+        android:text="Generate Restaurant"
         android:textAllCaps="false" />
 
-</FrameLayout>
+</RelativeLayout>
