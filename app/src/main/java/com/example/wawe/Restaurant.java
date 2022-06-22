@@ -1,45 +1,50 @@
 package com.example.wawe;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.parceler.Parcel;
+import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
 
 public class Restaurant {
 
-    String price;
-    String location;
-    int radius;
-    String category;
-    String term;
+    @SerializedName("name")
+    private String name;
 
-    public Restaurant () {}
+    @SerializedName("price")
+    private String price;
 
-    public Restaurant (JSONObject jsonObject) throws JSONException{
-        price = jsonObject.getString("price");
-        location = jsonObject.getString("location");
-        radius = jsonObject.getInt("radius");
-        category = jsonObject.getString("categories");
-        term = jsonObject.getString("term"); //TODO make sure term is always restaurants
+//    @SerializedName("location")
+//    private String location;
+
+//    @SerializedName("radius")
+//    private int radius;
+
+    @SerializedName("categories")
+    private List<RestaurantCategories> category;
+
+
+    public Restaurant (String name, String price, List<RestaurantCategories> category) {
+        this.name = name;
+        this.price = price;
+//        this.location = location;
+//        this.radius = radius;
+        this.category = category;
     }
 
-    public int getRadius() {
-        return radius;
-    }
+//    public int getRadius() {
+//        return radius;
+//    }
 
-    public String getCategory() {
+    public List<RestaurantCategories> getCategory() {
         return category;
     }
 
-    public String getLocation() {
-        return location;
-    }
+//    public String getLocation() {
+//        return location;
+//    }
 
     public String getPrice() {
         return price;
     }
 
-    public String getTerm() {
-        return term;
-    }
+
 }
