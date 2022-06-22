@@ -1,5 +1,6 @@
 package com.example.wawe.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.wawe.Activities.RestaurantActivity;
+import com.example.wawe.Activities.VisitedRestaurantsActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
 import com.example.wawe.Restaurant;
@@ -108,6 +111,8 @@ public class RouletteFragment extends Fragment {
                 String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
                 Toast.makeText(getContext(), "the selected price is " + price + " the are this type of DR " + dietaryRestriction + "max rad " + maxDistance, Toast.LENGTH_SHORT).show();
                 testing(cuisine, dietaryRestriction, maxDistance, String.valueOf(price.length()));
+                Intent intent = new Intent(getContext(), RestaurantActivity.class);
+                getContext().startActivity(intent);
             }
         });
 
@@ -124,7 +129,7 @@ public class RouletteFragment extends Fragment {
                 if (body == null){
                     return;
                 }
-                restaurants.addAll(body.restaurants);
+                restaurants.addAll(body.getRestaurants());
             }
 
             @Override

@@ -7,6 +7,9 @@ import java.util.List;
 public class RestaurantSearch {
 
     @SerializedName("businesses")
-    public List<Restaurant> restaurants;
+    private List<Restaurant> restaurants;
 
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
 }

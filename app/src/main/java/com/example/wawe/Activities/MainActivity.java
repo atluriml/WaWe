@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
                 switch (item.getItemId()) {
-                    case R.id.action_home:c:
+                    case R.id.action_restaurant_details:c:
                     fragment = new RouletteFragment();
                         Toast.makeText(MainActivity.this, "clicked on home", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.action_profile:
+                    case R.id.action_map:
                     default:
                         fragment = new ProfileFragment();
                         Toast.makeText(MainActivity.this, "clicked on profile", Toast.LENGTH_SHORT).show();
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // default
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+        bottomNavigationView.setSelectedItemId(R.id.action_restaurant_details);
     }
 
     @Override

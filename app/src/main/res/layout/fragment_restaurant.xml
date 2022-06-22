@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RestaurantFragment">
+
+    <TextView
+        android:id="@+id/tvRestName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        tools:text="Lulu's Local Eatery" />
+
+    <ImageView
+        android:id="@+id/ivRestImage"
+        android:layout_width="201dp"
+        android:layout_height="210dp"
+        android:layout_below="@+id/tvRestName"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvChosenRestaurant"
+        android:layout_width="330dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/ivRestImage"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="103dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Here you will see the map functionality"
+        android:textColor="#000000" />
+
+</RelativeLayout>
