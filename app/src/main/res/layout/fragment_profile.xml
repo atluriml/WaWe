@@ -20,6 +20,14 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="megana" />
 
+    <Button
+        android:id="@+id/btnProfileImage"
+        android:layout_width="157dp"
+        android:layout_height="71dp"
+        android:layout_marginLeft="43dp"
+        android:layout_toRightOf="@id/tvUsername"
+        android:text="Take New Profile Picture" />
+
     <TextView
         android:id="@+id/tvLocation"
         android:layout_width="wrap_content"

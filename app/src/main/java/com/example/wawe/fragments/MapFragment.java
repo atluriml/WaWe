@@ -46,7 +46,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class MapFragment extends Fragment {
 
     private SupportMapFragment mapFragment;
-    private GoogleMap map;
+    GoogleMap map;
     LocationRequest mLocationRequest;
     Location mCurrentLocation;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
