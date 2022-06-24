@@ -25,16 +25,14 @@ import android.widget.Toast;
 import com.example.wawe.Activities.RestaurantActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
-import com.example.wawe.Restaurant;
+import com.example.wawe.restaurantClasses.Restaurant;
 import com.example.wawe.RestaurantClient;
-import com.example.wawe.RestaurantSearch;
+import com.example.wawe.restaurantClasses.RestaurantSearch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,7 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RouletteFragment extends Fragment implements LocationListener {
 
     public static final String TAG = "RouletteFragment";
-    public static final int MAX_RADIUS = 40000;
+    public static final int MAX_RADIUS = 40000; // default 4000 meters or ~25 miles
 
     public static final String BASE_URL = "https://api.yelp.com/v3/";
     public static final String REST_APPLICATION_ID = BuildConfig.YELP_APPLICATION_ID;
@@ -117,7 +115,7 @@ public class RouletteFragment extends Fragment implements LocationListener {
             public void onClick(View view) {
                 String cuisine = etCuisine.getText().toString();
                 String rad = spRadius.getSelectedItem().toString();
-                int maxDistance = MAX_RADIUS; // default 4000 meters or ~25 miles
+                int maxDistance = MAX_RADIUS;
                 if (!rad.equals("")){
                     maxDistance = Integer.parseInt(rad) * 1609;
                     if (maxDistance > MAX_RADIUS){
@@ -126,10 +124,7 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 }
                 String price = spPrice.getSelectedItem().toString();
                 String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
-                Toast.makeText(getContext(), "the selected price is " + price + " the are this type of DR " + dietaryRestriction + "max rad " + maxDistance, Toast.LENGTH_SHORT).show();
                 testing(cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()));
-//                Intent intent = new Intent(getContext(), RestaurantActivity.class);
-//                getContext().startActivity(intent);
             }
         });
 
@@ -177,9 +172,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
         Random random = new Random();
         Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
         Log.i(TAG, "the random restaurant was " + randomRestaurant.getName());
-        /* TODO send the restaurant in the intent
-            - and how do i unwrap this in the fragment
-         */
         Intent intent = new Intent(getContext(), RestaurantActivity.class);
         intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
         getContext().startActivity(intent);

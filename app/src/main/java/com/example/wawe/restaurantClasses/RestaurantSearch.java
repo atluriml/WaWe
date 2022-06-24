@@ -1,5 +1,6 @@
-package com.example.wawe;
+package com.example.wawe.restaurantClasses;
 
+import com.example.wawe.restaurantClasses.Restaurant;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;

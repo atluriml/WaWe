@@ -1,4 +1,4 @@
-package com.example.wawe;
+package com.example.wawe.restaurantClasses;
 
 import android.annotation.SuppressLint;
 
