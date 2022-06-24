@@ -15,7 +15,7 @@ public interface RestaurantClient  {
 
     // if the user only uses one term and one location
     @GET("businesses/search")
-    Call<RestaurantSearch> searchRestaurants(@Header("Authorization") String authToken, @Query("categories") String cuisine, @Query("categories") String dietaryRestriction, @Query("location") String location, @Query("price") String price);
+    Call<RestaurantSearch> searchRestaurants(@Header("Authorization") String authToken, @Query("categories") String cuisine, @Query("categories") String dietaryRestriction, @Query("latitude") double latitude, @Query("longitude") double longitude, @Query("radius") int radius, @Query("price") String price, @Query("limit") int numRestaurants);
 
     // if the user uses all of the filters
     @GET("businesses/search")

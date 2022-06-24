@@ -1,56 +1,75 @@
 package com.example.wawe.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.wawe.R;
-import com.example.wawe.fragments.MapFragment;
-import com.example.wawe.fragments.ProfileFragment;
-import com.example.wawe.fragments.RestaurantFragment;
-import com.example.wawe.fragments.RouletteFragment;
+import com.example.wawe.Restaurant;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.parceler.Parcels;
 
 public class RestaurantActivity extends AppCompatActivity {
 
 
     public static final String TAG = "RestaurantActivity";
 
-    final FragmentManager fragmentManager = getSupportFragmentManager();
-    private BottomNavigationView bottomNavigationViewRestaurant;
+    Restaurant restaurant;
+    TextView tvName;
+    TextView tvPrice;
+    TextView tvMilesAway;
+    RatingBar ratingBar;
+    TextView tvAddress;
+    TextView tvCategory; //TODO display all the categories
+    ImageView ivRestaurantImage;
+    Button btnGetDirections;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        bottomNavigationViewRestaurant = findViewById(R.id.bottom_navigation_restaurant);
-        bottomNavigationViewRestaurant.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
+        tvName = findViewById(R.id.tvRestName);
+        tvMilesAway = findViewById(R.id.tvMilesAway);
+        tvAddress = findViewById(R.id.tvAddress);
+        tvCategory = findViewById(R.id.tvCategories);
+        tvPrice = findViewById(R.id.tvPrice);
+        ratingBar = findViewById(R.id.rbVoteAverage);
+        ivRestaurantImage = findViewById(R.id.ivRestImage);
+        btnGetDirections = findViewById(R.id.btnGetDirections);
+
+
+        restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
+        tvName.setText(restaurant.getName());
+        tvMilesAway.setText(restaurant.displayDistance());
+        tvAddress.setText(restaurant.getLocation().getAddress());
+        tvCategory.setText(restaurant.getCategory().get(0).getTitle());
+        tvPrice.setText(restaurant.getPrice());
+        ratingBar.setRating((float) restaurant.getRating());
+
+        Glide.with(this)
+                .load(restaurant.getRestaurantImage()).into(ivRestaurantImage);
+
+
+        btnGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                switch (item.getItemId()) {
-                    case R.id.action_restaurant_details:c:
-                    fragment = new RestaurantFragment();
-                        Toast.makeText(RestaurantActivity.this, "clicked on restaurant details", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action_map:
-                    default:
-                        fragment = new MapFragment();
-                        Toast.makeText(RestaurantActivity.this, "clicked on map", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                fragmentManager.beginTransaction().replace(R.id.flContainerRest, fragment).commit();
-                return true;
+            public void onClick(View view) {
+                Intent mapIntent = new Intent(RestaurantActivity.this, MapActivity.class);
+                startActivity(mapIntent);
+
             }
         });
 
-        // default
-        bottomNavigationViewRestaurant.setSelectedItemId(R.id.action_restaurant_details);
     }
 }

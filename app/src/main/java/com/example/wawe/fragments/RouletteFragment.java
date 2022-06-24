@@ -1,10 +1,15 @@
 package com.example.wawe.fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.wawe.Activities.RestaurantActivity;
-import com.example.wawe.Activities.VisitedRestaurantsActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
 import com.example.wawe.Restaurant;
@@ -27,12 +31,14 @@ import com.example.wawe.RestaurantSearch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.parceler.Parcel;
+import org.parceler.Parcels;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,9 +49,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class RouletteFragment extends Fragment {
+public class RouletteFragment extends Fragment implements LocationListener {
 
     public static final String TAG = "RouletteFragment";
+    public static final int MAX_RADIUS = 40000;
 
     public static final String BASE_URL = "https://api.yelp.com/v3/";
     public static final String REST_APPLICATION_ID = BuildConfig.YELP_APPLICATION_ID;
@@ -53,6 +60,8 @@ public class RouletteFragment extends Fragment {
     Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
     RestaurantClient restaurantClient = retrofit.create(RestaurantClient.class);
 
+    LocationManager locationManager;
+    double longitude, latitude;
     ArrayList<Restaurant> restaurants = new ArrayList<>();
     private Spinner spPrice;
     private Spinner spDietaryRestriction;
@@ -73,9 +82,14 @@ public class RouletteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // gets user's current longitude and latitude
+        locationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[] {android.Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
-        //TODO cuisine
-        //TODO try with json array and see if you can somehow obtain from Yelp
+        // cuisine filter
         etCuisine = view.findViewById(R.id.etCuisine);
 
         // dietary restriction filter
@@ -86,7 +100,7 @@ public class RouletteFragment extends Fragment {
 
         // radius filter
         spRadius = view.findViewById(R.id.spRadius);
-        String[] possibleRadius = new String[]{"", "5", "10", "15", "25", "35", "50", "50+"};
+        String[] possibleRadius = new String[]{"", "5", "10", "15", "25"};
         ArrayAdapter<String> adapterRadius = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, possibleRadius);
         spRadius.setAdapter(adapterRadius);
 
@@ -103,33 +117,41 @@ public class RouletteFragment extends Fragment {
             public void onClick(View view) {
                 String cuisine = etCuisine.getText().toString();
                 String rad = spRadius.getSelectedItem().toString();
-                int maxDistance = 0;
+                int maxDistance = MAX_RADIUS; // default 4000 meters or ~25 miles
                 if (!rad.equals("")){
-                    maxDistance = Integer.parseInt(rad);
+                    maxDistance = Integer.parseInt(rad) * 1609;
+                    if (maxDistance > MAX_RADIUS){
+                        maxDistance = MAX_RADIUS;
+                    }
                 }
                 String price = spPrice.getSelectedItem().toString();
                 String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
                 Toast.makeText(getContext(), "the selected price is " + price + " the are this type of DR " + dietaryRestriction + "max rad " + maxDistance, Toast.LENGTH_SHORT).show();
-                testing(cuisine, dietaryRestriction, maxDistance, String.valueOf(price.length()));
-                Intent intent = new Intent(getContext(), RestaurantActivity.class);
-                getContext().startActivity(intent);
+                testing(cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()));
+//                Intent intent = new Intent(getContext(), RestaurantActivity.class);
+//                getContext().startActivity(intent);
             }
         });
 
     }
 
-    public void testing(String cuisine, String dietaryRestriction, int radius, String price) {
-        Call<RestaurantSearch> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction, "St. Louis", price);
+    /*TODO
+            - right now when i say thai and vegetarian i get thai restaurants and vegetarian
+            restaurants but i want thai restaurants that are vegetarian friendly
+     */
+    public void testing(String cuisine, String dietaryRestriction, double latitude, double longitude, int radius, String price) {
+        Call<RestaurantSearch> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction, latitude, longitude, radius, price, 50);
         call.enqueue(new Callback<RestaurantSearch>() {
             @Override
             public void onResponse(Call<RestaurantSearch> call, Response<RestaurantSearch> response) {
                 Log.i(TAG, "OnResponse: " + response);
-                Log.i(TAG, "cuisine: " + cuisine);
+                Log.i(TAG, "latitude " + latitude + " longitude " + longitude);
                 RestaurantSearch body = response.body();
                 if (body == null){
                     return;
                 }
                 restaurants.addAll(body.getRestaurants());
+                obtainRandomRestaurant();
             }
 
             @Override
@@ -151,6 +173,39 @@ public class RouletteFragment extends Fragment {
         return restaurants;
     }
 
+    public Restaurant obtainRandomRestaurant () {
+        Random random = new Random();
+        Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
+        Log.i(TAG, "the random restaurant was " + randomRestaurant.getName());
+        /* TODO send the restaurant in the intent
+            - and how do i unwrap this in the fragment
+         */
+        Intent intent = new Intent(getContext(), RestaurantActivity.class);
+        intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
+        getContext().startActivity(intent);
+        return randomRestaurant;
+    }
 
-    //TODO select random
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
+        locationManager.removeUpdates(this);
+    }
+
+    //TODO do i even need this
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        LocationListener.super.onStatusChanged(provider, status, extras);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
+    }
 }

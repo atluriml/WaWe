@@ -29,6 +29,9 @@
         android:theme="@style/Theme.WaWe"
         tools:targetApi="21">
         <activity
+            android:name=".Activities.MapActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.RestaurantActivity"
             android:exported="false" />
         <activity
