@@ -2,9 +2,13 @@ package com.example.wawe;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
 public class Restaurant {
+
+    Restaurant () {}
 
     @SerializedName("name")
     private String name;
@@ -46,5 +50,7 @@ public class Restaurant {
         return price;
     }
 
-
+    public String getName() {
+        return name;
+    }
 }

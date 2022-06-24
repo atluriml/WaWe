@@ -3,17 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.wawe">
 
-    <permission android:name="android.permission.ACCESS_FINE_LOCATION" android:protectionLevel="dangerous"/>
-    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:protectionLevel="dangerous"/>
+    <permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:protectionLevel="dangerous" />
+    <permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:protectionLevel="dangerous" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".ParseApplication"
@@ -25,7 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WaWe"
-        tools:targetApi="31">
+        tools:targetApi="21">
         <activity
             android:name=".Activities.RestaurantActivity"
             android:exported="false" />
@@ -40,6 +42,9 @@
             android:exported="false" />
         <activity
             android:name=".Activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +56,9 @@
             android:name=".Activities.MainActivity"
             android:exported="false" />
 
-        <uses-library android:required="true" android:name="com.google.android.maps" />
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -66,7 +73,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
-
     </application>
 
 </manifest>
