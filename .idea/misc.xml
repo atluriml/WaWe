@@ -9,7 +9,8 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2767210144927536" />
-        <entry key="app/src/main/res/layout/activity_restaurant.xml" value="0.4329501915708812" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/layout/activity_restaurant.xml" value="0.2540496826171875" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.5856220031052494" />
         <entry key="app/src/main/res/layout/activity_visited_restaurants.xml" value="0.24094202898550723" />
