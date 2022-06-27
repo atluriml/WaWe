@@ -58,34 +58,6 @@ public class FavoritesActivity extends AppCompatActivity {
         // set the layout manager on the recycler view
         rvFavorites.setLayoutManager(new LinearLayoutManager(this));
 
-//        User currentUser = new User(ParseUser.getCurrentUser());
-//        for (int i = 0; i < currentUser.getFavorites().length(); i++) {
-//            String id = null;
-//            try {
-//                id = currentUser.getFavorites().get(i).toString();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
-//            Log.i(TAG, "the id is " + id);
-//            call.enqueue(new Callback<Restaurant>() {
-//                @Override
-//                public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
-//                    Log.i(TAG, "" + response);
-//                    Restaurant body = response.body();
-//                    if (body == null) {
-//                        return;
-//                    }
-//                    allFavoriteRestaurants.add(body);
-//                    adapter.notifyDataSetChanged();
-//                }
-//                @Override
-//                public void onFailure(Call<Restaurant> call, Throwable t) {
-//                    Log.i(TAG, "Fail: ", t);
-//                }
-//            });
-//        }
-
         callYelp();
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
