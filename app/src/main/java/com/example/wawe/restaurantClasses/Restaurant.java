@@ -34,8 +34,10 @@ public class Restaurant {
     @SerializedName("location")
     private RestaurantLocation location;
 
+    @SerializedName("id")
+    private String id;
 
-    public Restaurant (String name, String price, double rating, double distanceMeters, String restaurantImage, List<RestaurantCategories> category, RestaurantLocation location) {
+    public Restaurant (String name, String price, double rating, double distanceMeters, String restaurantImage, List<RestaurantCategories> category, RestaurantLocation location, String id) {
         this.name = name;
         this.price = price;
         this.rating = rating;
@@ -43,6 +45,7 @@ public class Restaurant {
         this.restaurantImage = restaurantImage;
         this.category = category;
         this.location = location;
+        this.id = id;
     }
 
     public String getName() {
@@ -63,6 +66,10 @@ public class Restaurant {
 
     public double getRating() {
         return rating;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public RestaurantLocation getLocation() {

@@ -170,12 +170,16 @@ public class RouletteFragment extends Fragment implements LocationListener {
 
     public Restaurant obtainRandomRestaurant () {
         Random random = new Random();
-        Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
-        Log.i(TAG, "the random restaurant was " + randomRestaurant.getName());
-        Intent intent = new Intent(getContext(), RestaurantActivity.class);
-        intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
-        getContext().startActivity(intent);
-        return randomRestaurant;
+        if(!restaurants.isEmpty()) {
+            Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
+
+            Log.i(TAG, "the random restaurant was " + randomRestaurant.getName());
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
+            getContext().startActivity(intent);
+            return randomRestaurant;
+        }
+        return null; //TODO fix the if empty
     }
 
     @Override
@@ -183,21 +187,7 @@ public class RouletteFragment extends Fragment implements LocationListener {
         longitude = location.getLongitude();
         latitude = location.getLatitude();
         locationManager.removeUpdates(this);
+        Log.i(TAG, "the location works ");
     }
 
-    //TODO do i even need this
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        LocationListener.super.onStatusChanged(provider, status, extras);
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-        LocationListener.super.onProviderEnabled(provider);
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-        LocationListener.super.onProviderDisabled(provider);
-    }
 }

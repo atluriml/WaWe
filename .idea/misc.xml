@@ -5,12 +5,14 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1215" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1215" />
-        <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/drawable/ic_vector_heart.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_vector_heart_stroke.xml" value="0.1415" />
+        <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2767210144927536" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.15729166666666666" />
-        <entry key="app/src/main/res/layout/activity_restaurant.xml" value="0.2540496826171875" />
+        <entry key="app/src/main/res/layout/activity_restaurant.xml" value="0.43450164794921864" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.5856220031052494" />
         <entry key="app/src/main/res/layout/activity_visited_restaurants.xml" value="0.24094202898550723" />
@@ -18,6 +20,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3934127807617188" />
         <entry key="app/src/main/res/layout/fragment_restaurant.xml" value="0.31580047607421846" />
         <entry key="app/src/main/res/layout/fragment_roulette.xml" value="0.23731884057971014" />
+        <entry key="app/src/main/res/layout/item_favorite.xml" value="0.30932971014492755" />
         <entry key="app/src/main/res/menu/bottom_navigation.xml" value="0.33541666666666664" />
         <entry key="app/src/main/res/menu/main.xml" value="0.30416666666666664" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.31574074074074077" />

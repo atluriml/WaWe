@@ -1,19 +1,26 @@
 package com.example.wawe.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wawe.R;
+import com.example.wawe.User;
 import com.example.wawe.restaurantClasses.Restaurant;
+import com.parse.ParseUser;
 
+import org.json.JSONException;
 import org.parceler.Parcels;
 
 public class RestaurantActivity extends AppCompatActivity {
@@ -30,6 +37,8 @@ public class RestaurantActivity extends AppCompatActivity {
     TextView tvCategory; //TODO display all the categories
     ImageView ivRestaurantImage;
     Button btnGetDirections;
+    ImageButton btnLike;
+    CheckBox btnClickIfVisited;
 
 
     @Override
@@ -45,7 +54,8 @@ public class RestaurantActivity extends AppCompatActivity {
         ratingBar = findViewById(R.id.rbVoteAverage);
         ivRestaurantImage = findViewById(R.id.ivRestImage);
         btnGetDirections = findViewById(R.id.btnGetDirections);
-
+        btnLike = findViewById(R.id.btnLike);
+        btnClickIfVisited = findViewById(R.id.btnClickIfVisited);
 
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         tvName.setText(restaurant.getName());
@@ -54,6 +64,19 @@ public class RestaurantActivity extends AppCompatActivity {
         tvCategory.setText(restaurant.getCategory().get(0).getTitle());
         tvPrice.setText(restaurant.getPrice());
         ratingBar.setRating((float) restaurant.getRating());
+        try {
+            User currentUser = new User(ParseUser.getCurrentUser());
+            if (currentUser.getIsFavorited(currentUser.getFavorites(), restaurant)){
+                btnLike.setImageResource(R.drawable.ic_vector_heart);
+                btnLike.setColorFilter(Color.parseColor("#ffe0245e"));
+            }
+            else{
+                btnLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+                btnLike.setColorFilter(Color.parseColor("#000000"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Glide.with(this)
                 .load(restaurant.getRestaurantImage()).into(ivRestaurantImage);
@@ -64,6 +87,37 @@ public class RestaurantActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent mapIntent = new Intent(RestaurantActivity.this, MapActivity.class);
                 startActivity(mapIntent);
+
+            }
+        });
+
+        // adding to favorites
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User currentUser = new User(ParseUser.getCurrentUser());
+                // user is liking tweet
+                try {
+                    if (!currentUser.getIsFavorited(currentUser.getFavorites(), restaurant)) {
+                        btnLike.setImageResource(R.drawable.ic_vector_heart);
+                        btnLike.setColorFilter(Color.parseColor("#ffe0245e"));
+                        currentUser.likeRestaurant(restaurant);
+                        currentUser.getUser().saveInBackground();
+                    }
+                    // user is unliking tweet
+                    else {
+                        btnLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+                        btnLike.setColorFilter(Color.parseColor("#000000"));
+                        try {
+                            currentUser.unLikeRestaurant(restaurant, currentUser.getFavorites());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        currentUser.getUser().saveInBackground();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
             }
         });

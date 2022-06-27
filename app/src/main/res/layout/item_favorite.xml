@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/ivRestItemImage"
+        android:layout_width="150dp"
+        android:layout_height="116dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvItemName"
+        android:layout_toRightOf="@+id/ivRestItemImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Bob's kitchen" />
+
+    <RatingBar
+        android:id="@+id/rbVoteAverageItem"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvItemName"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/ivRestItemImage"
+        android:numStars="5"
+        android:stepSize="0.5" />
+
+    <TextView
+        android:id="@+id/tvPriceItem"
+        android:layout_width="27dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvItemName"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="244dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@id/rbVoteAverageItem"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:text="$$" />
+
+    <TextView
+        android:id="@+id/tvAddressItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPriceItem"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="153dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@id/ivRestItemImage"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        tools:text="first street" />
+
+</RelativeLayout>
