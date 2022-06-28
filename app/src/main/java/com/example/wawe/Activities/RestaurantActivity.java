@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wawe.R;
@@ -23,7 +25,7 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.parceler.Parcels;
 
-public class RestaurantActivity extends AppCompatActivity {
+public class RestaurantActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     public static final String TAG = "RestaurantActivity";
@@ -39,7 +41,7 @@ public class RestaurantActivity extends AppCompatActivity {
     Button btnGetDirections;
     ImageButton btnLike;
     CheckBox btnClickIfVisited;
-
+    int numClicks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,14 @@ public class RestaurantActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(restaurant.getRestaurantImage()).into(ivRestaurantImage);
 
+        // checks to see if the user is double clicking to like
+        ivRestaurantImage.setOnClickListener(this);
+        tvAddress.setOnClickListener(this);
+        tvPrice.setOnClickListener(this);
+        tvCategory.setOnClickListener(this);
+        ratingBar.setOnClickListener(this);
+        tvName.setOnClickListener(this);
+        tvMilesAway.setOnClickListener(this);
 
         btnGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,30 +116,7 @@ public class RestaurantActivity extends AppCompatActivity {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User currentUser = new User(ParseUser.getCurrentUser());
-                // user is liking restaurant
-                try {
-                    if (!currentUser.getIsFavorited(currentUser.getFavorites(), restaurant)) {
-                        btnLike.setImageResource(R.drawable.ic_vector_heart);
-                        btnLike.setColorFilter(Color.parseColor("#ffe0245e"));
-                        currentUser.likeRestaurant(restaurant);
-                        currentUser.getUser().saveInBackground();
-                    }
-                    // user is unliking restaurant
-                    else {
-                        btnLike.setImageResource(R.drawable.ic_vector_heart_stroke);
-                        btnLike.setColorFilter(Color.parseColor("#000000"));
-                        try {
-                            currentUser.unLikeRestaurant(restaurant, currentUser.getFavorites());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        currentUser.getUser().saveInBackground();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                favoriteOrUnfavorite();
             }
         });
 
@@ -153,5 +140,51 @@ public class RestaurantActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void favoriteOrUnfavorite(){
+        User currentUser = new User(ParseUser.getCurrentUser());
+        // user is liking restaurant
+        try {
+            if (!currentUser.getIsFavorited(currentUser.getFavorites(), restaurant)) {
+                btnLike.setImageResource(R.drawable.ic_vector_heart);
+                btnLike.setColorFilter(Color.parseColor("#ffe0245e"));
+                currentUser.likeRestaurant(restaurant);
+                currentUser.getUser().saveInBackground();
+            }
+            // user is unliking restaurant
+            else {
+                btnLike.setImageResource(R.drawable.ic_vector_heart_stroke);
+                btnLike.setColorFilter(Color.parseColor("#000000"));
+                try {
+                    currentUser.unLikeRestaurant(restaurant, currentUser.getFavorites());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                currentUser.getUser().saveInBackground();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        numClicks++;
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (numClicks == 1){
+                    Toast.makeText(RestaurantActivity.this, "Single click!", Toast.LENGTH_SHORT).show();
+                }
+                else if (numClicks == 2){
+                    favoriteOrUnfavorite();
+                    Toast.makeText(RestaurantActivity.this, "Double click!", Toast.LENGTH_SHORT).show();
+                }
+                numClicks = 0;
+            }
+        }, 500);
     }
 }
