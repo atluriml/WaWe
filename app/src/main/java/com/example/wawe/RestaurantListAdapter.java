@@ -2,7 +2,6 @@ package com.example.wawe;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,35 +12,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.wawe.Activities.RestaurantActivity;
 import com.example.wawe.restaurantClasses.Restaurant;
-import com.example.wawe.restaurantClasses.RestaurantSearch;
-import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.parceler.Parcels;
 
-import java.text.ParseException;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder>{
+public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ViewHolder>{
 
 
     Context context;
-    List<Restaurant> favoriteRestaurants;
+    List<Restaurant> restaurantList;
 
-    public FavoritesAdapter (Context context, List<Restaurant> favoriteRestaurants){
+    public RestaurantListAdapter(Context context, List<Restaurant> restaurantList){
         this.context = context;
-        this.favoriteRestaurants = favoriteRestaurants;
+        this.restaurantList = restaurantList;
     }
 
     @NonNull
@@ -53,13 +40,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Restaurant restaurant = favoriteRestaurants.get(position);
+        Restaurant restaurant = restaurantList.get(position);
         holder.bind(restaurant);
     }
 
     @Override
     public int getItemCount() {
-        return favoriteRestaurants.size();
+        return restaurantList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,7 +70,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Restaurant restaurant = favoriteRestaurants.get(position);
+                Restaurant restaurant = restaurantList.get(position);
                 Intent intent = new Intent(context, RestaurantActivity.class);
                 intent.putExtra("restaurant", Parcels.wrap(restaurant));
                 context.startActivity(intent);
@@ -101,7 +88,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     }
 
     public void clear() {
-        favoriteRestaurants.clear();
+        restaurantList.clear();
         notifyDataSetChanged();
     }
 

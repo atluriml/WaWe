@@ -55,13 +55,40 @@ public class User {
     }
 
     public void unLikeRestaurant(Restaurant restaurant, JSONArray array) throws JSONException {
-        //String id = restaurant.getObjectId();
         int position = returnPosition(array, restaurant);
         array.remove(position);
         setFavorites(array);
     }
 
     public Boolean getIsFavorited(JSONArray jsonArray, Restaurant restaurant) throws JSONException {
+        String id = restaurant.getId();
+        for (int i = 0; i < jsonArray.length(); ++i){
+            if (jsonArray.getString(i).equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public JSONArray getVisited(){
+        return user.getJSONArray(KEY_VISITED);
+    }
+
+    public void setVisited(JSONArray jsonArray){
+        user.put(KEY_VISITED, jsonArray);
+    }
+
+    public void visitedRestaurant(Restaurant restaurant){
+        user.add(KEY_VISITED, restaurant.getId());
+    }
+
+    public void unVisitRestaurant(Restaurant restaurant, JSONArray array) throws JSONException {
+        int position = returnPosition(array, restaurant);
+        array.remove(position);
+        setVisited(array);
+    }
+
+    public Boolean getHaveVisited(JSONArray jsonArray, Restaurant restaurant) throws JSONException {
         String id = restaurant.getId();
         for (int i = 0; i < jsonArray.length(); ++i){
             if (jsonArray.getString(i).equals(id)){

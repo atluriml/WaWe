@@ -25,10 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.wawe.Activities.FavoritesActivity;
+import com.example.wawe.Activities.RestaurantListsActivity;
 import com.example.wawe.R;
-import com.example.wawe.User;
-import com.example.wawe.Activities.VisitedRestaurantsActivity;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -36,7 +34,6 @@ import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,8 +90,7 @@ public class ProfileFragment extends Fragment {
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), FavoritesActivity.class);
-                photoFile = getPhotoFileUri(photoFileName);
+                Intent intent = new Intent(getContext(), RestaurantListsActivity.class);
                 getContext().startActivity(intent);
             }
         });
@@ -102,7 +98,8 @@ public class ProfileFragment extends Fragment {
         btnVisited.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), VisitedRestaurantsActivity.class);
+                Intent intent = new Intent(getContext(), RestaurantListsActivity.class);
+                intent.putExtra("visited", "visited_list");
                 getContext().startActivity(intent);
             }
         });
@@ -110,6 +107,7 @@ public class ProfileFragment extends Fragment {
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                photoFile = getPhotoFileUri(photoFileName);
                 launchCamera();
             }
         });

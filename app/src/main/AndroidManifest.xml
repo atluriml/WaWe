@@ -35,10 +35,7 @@
             android:name=".Activities.RestaurantActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.VisitedRestaurantsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.FavoritesActivity"
+            android:name=".Activities.RestaurantListsActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.SignUpActivity"

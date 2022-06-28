@@ -3,21 +3,21 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".Activities.FavoritesActivity"
+tools:context=".Activities.RestaurantListsActivity"
 android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tvFavoritesTitle"
-        android:layout_width="284dp"
-        android:layout_height="41dp"
-        android:text="Your Favorite Restaurants"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:id="@+id/tvListTitle"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Your Favorite Restaurants" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tvFavoritesTitle">
+        android:layout_below="@+id/tvListTitle">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFavorites"

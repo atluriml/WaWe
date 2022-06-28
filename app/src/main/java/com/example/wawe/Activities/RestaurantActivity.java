@@ -55,7 +55,7 @@ public class RestaurantActivity extends AppCompatActivity {
         ivRestaurantImage = findViewById(R.id.ivRestImage);
         btnGetDirections = findViewById(R.id.btnGetDirections);
         btnLike = findViewById(R.id.btnLike);
-        btnClickIfVisited = findViewById(R.id.btnClickIfVisited);
+        btnClickIfVisited = (CheckBox) findViewById(R.id.btnClickIfVisited);
 
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         tvName.setText(restaurant.getName());
@@ -73,6 +73,17 @@ public class RestaurantActivity extends AppCompatActivity {
             else{
                 btnLike.setImageResource(R.drawable.ic_vector_heart_stroke);
                 btnLike.setColorFilter(Color.parseColor("#000000"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            User currentUser = new User(ParseUser.getCurrentUser());
+            if (currentUser.getHaveVisited(currentUser.getVisited(), restaurant)){
+                btnClickIfVisited.setChecked(true);
+            }
+            else{
+                btnClickIfVisited.setChecked(false);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -96,7 +107,7 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 User currentUser = new User(ParseUser.getCurrentUser());
-                // user is liking tweet
+                // user is liking restaurant
                 try {
                     if (!currentUser.getIsFavorited(currentUser.getFavorites(), restaurant)) {
                         btnLike.setImageResource(R.drawable.ic_vector_heart);
@@ -104,7 +115,7 @@ public class RestaurantActivity extends AppCompatActivity {
                         currentUser.likeRestaurant(restaurant);
                         currentUser.getUser().saveInBackground();
                     }
-                    // user is unliking tweet
+                    // user is unliking restaurant
                     else {
                         btnLike.setImageResource(R.drawable.ic_vector_heart_stroke);
                         btnLike.setColorFilter(Color.parseColor("#000000"));
@@ -119,6 +130,26 @@ public class RestaurantActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+            }
+        });
+
+        btnClickIfVisited.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User currentUser = new User(ParseUser.getCurrentUser());
+                // user is marking restaurant as visited
+                if (btnClickIfVisited.isChecked()){
+                    currentUser.visitedRestaurant(restaurant);
+                    currentUser.getUser().saveInBackground();
+                }
+                else{
+                    try {
+                        currentUser.unVisitRestaurant(restaurant, currentUser.getVisited());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    currentUser.getUser().saveInBackground();
+                }
             }
         });
 

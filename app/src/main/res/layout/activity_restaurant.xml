@@ -123,9 +123,9 @@
         android:id="@+id/btnLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivRestImage"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="17dp"
+        android:layout_below="@id/tvFavorite"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="1dp"
         android:layout_toRightOf="@id/btnClickIfVisited"
         android:background="@android:color/transparent"
         android:minWidth="48dp"
@@ -135,12 +135,23 @@
 
     <TextView
         android:id="@+id/tvVisited"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivRestImage"
         android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
         android:text="Been here before?"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvFavorite"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivRestImage"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@id/tvVisited"
+        android:text="Did you love it?"
         android:textSize="10sp" />
 
 </RelativeLayout>
