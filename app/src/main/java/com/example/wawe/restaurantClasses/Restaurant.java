@@ -82,7 +82,7 @@ public class Restaurant {
 
     public String displayDistance () {
         double milesPerMeter = 0.000621371;
-        @SuppressLint("DefaultLocale") String distanceInMiles = String.format("%.02f", distanceMeters * milesPerMeter);
+        @SuppressLint("DefaultLocale") String distanceInMiles = String.format("%.01f", distanceMeters * milesPerMeter);
         return distanceInMiles + "mi";
     }
 }

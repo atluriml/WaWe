@@ -63,7 +63,11 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         tvName.setText(restaurant.getName());
         tvMilesAway.setText(restaurant.displayDistance());
         tvAddress.setText(restaurant.getLocation().getAddress());
-        tvCategory.setText(restaurant.getCategory().get(0).getTitle());
+        String categories = restaurant.getCategory().get(0).getTitle();
+        for (int i = 1; i < restaurant.getCategory().size(); i++){
+            categories = categories + ", " +   restaurant.getCategory().get(i).getTitle();
+        }
+        tvCategory.setText(categories);
         tvPrice.setText(restaurant.getPrice());
         ratingBar.setRating((float) restaurant.getRating());
         try {
