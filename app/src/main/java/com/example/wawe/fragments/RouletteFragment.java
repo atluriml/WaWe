@@ -28,6 +28,7 @@ import com.example.wawe.R;
 import com.example.wawe.restaurantClasses.Restaurant;
 import com.example.wawe.RestaurantClient;
 import com.example.wawe.restaurantClasses.RestaurantSearch;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,29 +114,70 @@ public class RouletteFragment extends Fragment implements LocationListener {
         btnGenerateRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String cuisine = etCuisine.getText().toString();
-                String rad = spRadius.getSelectedItem().toString();
-                int maxDistance = MAX_RADIUS;
-                if (!rad.equals("")){
-                    maxDistance = Integer.parseInt(rad) * 1609;
-                    if (maxDistance > MAX_RADIUS){
-                        maxDistance = MAX_RADIUS;
-                    }
-                }
-                String price = spPrice.getSelectedItem().toString();
-                String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
-                testing(cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()));
+                generateRestaurant();
+//                String cuisine = etCuisine.getText().toString();
+//                String rad = spRadius.getSelectedItem().toString();
+//                int maxDistance = MAX_RADIUS;
+//                if (!rad.equals("")){
+//                    maxDistance = Integer.parseInt(rad) * 1609;
+//                    if (maxDistance > MAX_RADIUS){
+//                        maxDistance = MAX_RADIUS;
+//                    }
+//                }
+//                String price = spPrice.getSelectedItem().toString();
+//                String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
+//                testing(cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()));
             }
         });
 
+    }
+
+    public void generateRestaurant () {
+        String cuisine = etCuisine.getText().toString();
+        String rad = spRadius.getSelectedItem().toString();
+        Call<RestaurantSearch> call = null;
+        int maxDistance = MAX_RADIUS;
+        if (!rad.equals("")){
+            maxDistance = Integer.parseInt(rad) * 1609;
+            if (maxDistance > MAX_RADIUS){
+                maxDistance = MAX_RADIUS;
+            }
+        }
+        String price = spPrice.getSelectedItem().toString();
+        String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
+        Log.i(TAG, "size of restaurants should be zero: " + restaurants.size());
+        if (dietaryRestriction.equals("") && price.equals("") && cuisine.equals("")){ // just radius or none
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , latitude, longitude, maxDistance, 50);
+        }
+        else if (!dietaryRestriction.equals("") && price.equals("") && cuisine.equals("")){ // radius & dr or just dr
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , dietaryRestriction, latitude, longitude, maxDistance, 50);
+        }
+        else if (dietaryRestriction.equals("") && price.equals("") && !cuisine.equals("")){ // radius & cuisine or just cuisine
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, latitude, longitude, maxDistance, 50);
+        }
+        else if (dietaryRestriction.equals("") && !price.equals("") && cuisine.equals("")){ // radius & price or just price
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
+        }
+        else if (!dietaryRestriction.equals("") && !price.equals("") && cuisine.equals("")){ // radius, price, dr or just price & dr
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
+        }
+        else if (dietaryRestriction.equals("") && !price.equals("") && !cuisine.equals("")){ // radius, price, cuisine or just price & cuisine
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
+        }
+        else if (!dietaryRestriction.equals("") && price.equals("") && !cuisine.equals("")){ // radius, dr, cuisine or just dr & cuisine
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction , latitude, longitude, maxDistance, 50);
+        }
+        else if (!dietaryRestriction.equals("") && !price.equals("") && !cuisine.equals("")){ // price, dr, cuisine or all filters
+            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
+        }
+        obtainRestaurant(call);
     }
 
     /*TODO
             - right now when i say thai and vegetarian i get thai restaurants and vegetarian
             restaurants but i want thai restaurants that are vegetarian friendly
      */
-    public void testing(String cuisine, String dietaryRestriction, double latitude, double longitude, int radius, String price) {
-        Call<RestaurantSearch> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction, latitude, longitude, radius, price, 50);
+    public void obtainRestaurant(Call<RestaurantSearch> call) {
         call.enqueue(new Callback<RestaurantSearch>() {
             @Override
             public void onResponse(Call<RestaurantSearch> call, Response<RestaurantSearch> response) {
@@ -148,7 +190,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 restaurants.addAll(body.getRestaurants());
                 obtainRandomRestaurant();
             }
-
             @Override
             public void onFailure(Call<RestaurantSearch> call, Throwable t) {
                 Log.i(TAG, "Fail: ", t);
@@ -163,7 +204,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 Object object = jsonArray.get(i);
                 restaurants.remove(object);
             }
-
         }
         return restaurants;
     }
@@ -172,10 +212,10 @@ public class RouletteFragment extends Fragment implements LocationListener {
         Random random = new Random();
         if(!restaurants.isEmpty()) {
             Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
-
             Log.i(TAG, "the random restaurant was " + randomRestaurant.getName());
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
+            restaurants.clear();
             getContext().startActivity(intent);
             return randomRestaurant;
         }
