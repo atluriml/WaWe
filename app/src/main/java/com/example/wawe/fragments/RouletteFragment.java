@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.wawe.Activities.RestaurantActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
+import com.example.wawe.User;
 import com.example.wawe.restaurantClasses.Restaurant;
 import com.example.wawe.RestaurantClient;
 import com.example.wawe.restaurantClasses.RestaurantSearch;
@@ -34,9 +36,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.parceler.Parcels;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,8 +67,8 @@ public class RouletteFragment extends Fragment implements LocationListener {
     LocationManager locationManager;
     double longitude, latitude;
     ArrayList<Restaurant> restaurants = new ArrayList<>();
+    Set<String> set = new HashSet<>();
     private Spinner spPrice;
-    private Spinner spDietaryRestriction;
     private Spinner spRadius;
     private Button btnGenerateRestaurant;
     private EditText etCuisine;
@@ -91,12 +96,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
         // cuisine filter
         etCuisine = view.findViewById(R.id.etCuisine);
 
-        // dietary restriction filter
-        spDietaryRestriction = view.findViewById(R.id.spDietaryRestriction);
-        String[] vegOption = new String[]{"", "vegetarian", "vegan", "gluten-free"};
-        ArrayAdapter<String> adapterVeg = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, vegOption);
-        spDietaryRestriction.setAdapter(adapterVeg);
-
         // radius filter
         spRadius = view.findViewById(R.id.spRadius);
         String[] possibleRadius = new String[]{"", "5", "10", "15", "25"};
@@ -115,18 +114,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
             @Override
             public void onClick(View view) {
                 generateRestaurant();
-//                String cuisine = etCuisine.getText().toString();
-//                String rad = spRadius.getSelectedItem().toString();
-//                int maxDistance = MAX_RADIUS;
-//                if (!rad.equals("")){
-//                    maxDistance = Integer.parseInt(rad) * 1609;
-//                    if (maxDistance > MAX_RADIUS){
-//                        maxDistance = MAX_RADIUS;
-//                    }
-//                }
-//                String price = spPrice.getSelectedItem().toString();
-//                String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
-//                testing(cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()));
             }
         });
 
@@ -144,8 +131,10 @@ public class RouletteFragment extends Fragment implements LocationListener {
             }
         }
         String price = spPrice.getSelectedItem().toString();
-        String dietaryRestriction = spDietaryRestriction.getSelectedItem().toString();
-        Log.i(TAG, "size of restaurants should be zero: " + restaurants.size());
+        String dietaryRestriction = ParseUser.getCurrentUser().getString("dietaryRestriction");
+        if (!dietaryRestriction.equals("")) {
+            dietaryRestriction = dietaryRestriction.trim();
+        }
         if (dietaryRestriction.equals("") && price.equals("") && cuisine.equals("")){ // just radius or none
             call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , latitude, longitude, maxDistance, 50);
         }
@@ -173,22 +162,16 @@ public class RouletteFragment extends Fragment implements LocationListener {
         obtainRestaurant(call);
     }
 
-    /*TODO
-            - right now when i say thai and vegetarian i get thai restaurants and vegetarian
-            restaurants but i want thai restaurants that are vegetarian friendly
-     */
     public void obtainRestaurant(Call<RestaurantSearch> call) {
         call.enqueue(new Callback<RestaurantSearch>() {
             @Override
             public void onResponse(Call<RestaurantSearch> call, Response<RestaurantSearch> response) {
-                Log.i(TAG, "OnResponse: " + response);
-                Log.i(TAG, "latitude " + latitude + " longitude " + longitude);
                 RestaurantSearch body = response.body();
                 if (body == null){
                     return;
                 }
                 restaurants.addAll(body.getRestaurants());
-                obtainRandomRestaurant();
+                checkIfVisited();
             }
             @Override
             public void onFailure(Call<RestaurantSearch> call, Throwable t) {
@@ -197,29 +180,39 @@ public class RouletteFragment extends Fragment implements LocationListener {
         });
     }
 
-    //TODO Check if visited --- use array that is in parse data base
-    public List<Restaurant> checkIfVisited (JSONArray jsonArray) throws JSONException {
-        for (int i = 0; i < jsonArray.length(); i++){
-            if (restaurants.contains(jsonArray.get(i))){
-                Object object = jsonArray.get(i);
-                restaurants.remove(object);
+    public void checkIfVisited () {
+        User currentUser = new User(ParseUser.getCurrentUser());
+        JSONArray visitedIds = currentUser.getVisited();
+        for (int i = 0; i < restaurants.size(); i++){
+            set.add(restaurants.get(i).getId());
+        }
+        for (int i = 0; i < visitedIds.length(); i++){
+            try {
+                if (set.contains(visitedIds.get(i).toString())){
+                    set.remove(visitedIds.get(i).toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
-        return restaurants;
+        restaurants.clear();
+        new Task().execute();
     }
 
     public Restaurant obtainRandomRestaurant () {
         Random random = new Random();
         if(!restaurants.isEmpty()) {
             Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
-            Log.i(TAG, "the random restaurant was " + randomRestaurant.getName());
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
             restaurants.clear();
             getContext().startActivity(intent);
             return randomRestaurant;
         }
-        return null; //TODO fix the if empty
+        else {
+            Toast.makeText(getContext(), "Could not find restaurants. Please select a different filter", Toast.LENGTH_SHORT).show();
+            return null;
+        }
     }
 
     @Override
@@ -227,7 +220,34 @@ public class RouletteFragment extends Fragment implements LocationListener {
         longitude = location.getLongitude();
         latitude = location.getLatitude();
         locationManager.removeUpdates(this);
-        Log.i(TAG, "the location works ");
+    }
+
+    private class Task extends AsyncTask<URL, Integer, Long>{
+
+        @Override
+        protected Long doInBackground(URL... urls) {
+            for (String id: set) {
+                Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
+                try {
+                    Response<Restaurant> response = call.execute();
+                    Restaurant body = response.body();
+                    restaurants.add(body);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            obtainRandomRestaurant();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
     }
 
 }
