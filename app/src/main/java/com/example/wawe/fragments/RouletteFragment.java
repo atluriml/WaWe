@@ -162,6 +162,10 @@ public class RouletteFragment extends Fragment implements LocationListener {
         obtainRestaurant(call);
     }
 
+    /*TODO
+            - right now when i say thai and vegetarian i get thai restaurants and vegetarian
+            restaurants but i want thai restaurants that are vegetarian friendly
+     */
     public void obtainRestaurant(Call<RestaurantSearch> call) {
         call.enqueue(new Callback<RestaurantSearch>() {
             @Override
@@ -175,7 +179,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
             }
             @Override
             public void onFailure(Call<RestaurantSearch> call, Throwable t) {
-                Log.i(TAG, "Fail: ", t);
             }
         });
     }

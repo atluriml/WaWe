@@ -20,12 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.wawe.Activities.RestaurantListsActivity;
+import com.example.wawe.Activities.SettingsActivity;
 import com.example.wawe.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -42,16 +44,12 @@ public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
 
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
-    private Button btnCaptureImage;
-    private String photoFileName = "photo.jpg";
-    private File photoFile;
-
     private TextView tvProfileUsername;
-    private ImageView ivProfileImage;
+    public static ImageView ivProfileImage;
     private TextView tvProfileLocation;
     private Button btnFavorites;
     private Button btnVisited;
+    private ImageButton btnSettings;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -73,7 +71,7 @@ public class ProfileFragment extends Fragment {
         ivProfileImage = view.findViewById(R.id.ivProfileImage);
         btnFavorites = view.findViewById(R.id.btnFavorites);
         btnVisited = view.findViewById(R.id.btnVisitedRestaurants);
-        btnCaptureImage = view.findViewById(R.id.btnProfileImage);
+        btnSettings = view.findViewById(R.id.btnSettings);
 
         ParseFile profileImage = ParseUser.getCurrentUser().getParseFile("profileImage");
 
@@ -104,73 +102,17 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btnCaptureImage.setOnClickListener(new View.OnClickListener() {
+        btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                photoFile = getPhotoFileUri(photoFileName);
-                launchCamera();
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                getContext().startActivity(intent);
             }
         });
 
     }
 
-    private void launchCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri(photoFileName);
-
-        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.example.wawe", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-        }
-
+    public static ImageView getIvProfileImage() {
+        return ivProfileImage;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                saveProfilePicture(takenImage);
-                ivProfileImage.setImageBitmap(takenImage);
-            } else { // Result was a failure
-                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    // returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-        if(!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
-        }
-        return new File(mediaStorageDir.getPath() + File.separator + fileName);
-    }
-
-    // updates user's profile image to parse
-    private void saveProfilePicture(Bitmap photoFile) {
-        Log.d(TAG, String.valueOf(photoFile));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        photoFile.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-
-        ParseFile newProfileImage = new ParseFile(byteArrayOutputStream.toByteArray());
-        ParseUser parseUser = ParseUser.getCurrentUser();
-        parseUser.put("profileImage", newProfileImage);
-
-        parseUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null){
-                    Log.e(TAG, "Error while saving post!", e);
-                    Toast.makeText(getContext(), "Error while saving!", Toast.LENGTH_SHORT).show();
-                }
-                Log.i(TAG, "Post save was successful!");
-                ivProfileImage.setImageBitmap(photoFile);
-            }
-        });
-    }
-
 }

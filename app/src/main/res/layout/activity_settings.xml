@@ -3,74 +3,85 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
-    tools:context=".Activities.SignUpActivity">
+    tools:context=".Activities.SettingsActivity">
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings: Update Aspects of Your Profile"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnProfileImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="-1dp"
+        android:text="Take New Profile Picture" />
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etUsernameSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_marginTop="200dp"
-        android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:hint="@string/username"
         android:inputType="textMultiLine" />
 
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/etPasswordSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/etRetypePassword"
+        android:id="@+id/etRetypePasswordSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:ems="10"
         android:hint="@string/RetypePassword"
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/etLocation"
+        android:id="@+id/etLocationSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:ems="10"
         android:hint="@string/location"
         android:inputType="textMultiLine" />
 
     <TextView
-        android:id="@+id/tvVeg"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvVegSettings"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etCuisine"
-        android:layout_marginTop="10dp"
-        android:text="Select if you have a dietary restriction"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:text="Select or change your dietary restriction"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Spinner
-        android:id="@+id/spDietaryRestriction"
+        android:id="@+id/spDietaryRestrictionSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
         android:layout_below="@id/tvVeg"
         android:layout_marginTop="10dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
     <Button
-        android:id="@+id/btnSignUp"
+        android:id="@+id/btnUpdateProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
         app:backgroundTint="#5BBCFB"
         android:textColor="#FFFFFF"
-        android:layout_weight="1"
-        android:text="Complete SignUp" />
+        android:text="Update Profile" />
 
 </LinearLayout>

@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:text="What kind of cuisine are we feeling today"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -22,30 +23,11 @@
         android:hint="cuisine"/>
 
     <TextView
-        android:id="@+id/tvVeg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etCuisine"
-        android:layout_marginTop="10dp"
-        android:text="Select if you have a dietary restriction"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <Spinner
-        android:id="@+id/spDietaryRestriction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvVeg"
-        android:layout_marginTop="10dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
-
-    <TextView
         android:id="@+id/tvPrice"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spDietaryRestriction"
+        android:layout_below="@id/etCuisine"
         android:layout_marginTop="10dp"
         android:text="What is your price range?"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
