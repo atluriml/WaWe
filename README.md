@@ -36,7 +36,7 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 **Optional Nice-to-have Stories**
 
-* [] social media aspect where users can recommend restaurants to their friends and can share their meals with their friends 
+* [] restaurants will be reccomended based on the user's favorites 
 * [] user can shake their phone/mobile device for the roulette to start
 * [] user can make reservations (if applicable) 
 
