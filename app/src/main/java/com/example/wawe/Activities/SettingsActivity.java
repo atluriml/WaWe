@@ -80,19 +80,19 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else {
                     ParseUser user = ParseUser.getCurrentUser();
-                    if (!etUsername.getText().toString().equals("")){
+                    if (!checkStringEmpty(etUsername.getText().toString())){
                         user.setUsername(etUsername.getText().toString());
                     }
-                    if (!etPassword.getText().toString().equals("")){
+                    if (!checkStringEmpty(etPassword.getText().toString())){
                         user.setPassword(etPassword.getText().toString());
                     }
-                    if (!etLocation.getText().toString().equals("")){
+                    if (!checkStringEmpty(etLocation.getText().toString())){
                         user.put("location", etLocation.getText().toString());
                     }
-                    if (spDietaryRestriction.getSelectedItem().toString().equals("none")) {
+                    if (!checkStringEmpty(spDietaryRestriction.getSelectedItem().toString())) {
                         user.put("dietaryRestriction", " ");
                     }
-                    else if (!spDietaryRestriction.getSelectedItem().toString().equals("")) {
+                    else if (!checkStringEmpty(spDietaryRestriction.getSelectedItem().toString())) {
                         user.put("dietaryRestriction", spDietaryRestriction.getSelectedItem().toString());
                     }
                     else {
@@ -166,5 +166,12 @@ public class SettingsActivity extends AppCompatActivity {
                 ProfileFragment.getIvProfileImage().setImageBitmap(photoFile);
             }
         });
+    }
+
+    public boolean checkStringEmpty (String input) {
+        if (input.isEmpty() || input.equals("none")) {
+            return true;
+        }
+        return false;
     }
 }
