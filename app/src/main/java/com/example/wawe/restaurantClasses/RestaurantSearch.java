@@ -1,6 +1,6 @@
 package com.example.wawe.restaurantClasses;
 
-import com.example.wawe.restaurantClasses.Restaurant;
+import com.example.wawe.restaurantClasses.YelpRestaurant;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -13,9 +13,16 @@ public class RestaurantSearch {
     RestaurantSearch () {}
 
     @SerializedName("businesses")
-    private List<Restaurant> restaurants;
+    private List<YelpRestaurant> restaurants;
 
-    public List<Restaurant> getRestaurants() {
+    public List<YelpRestaurant> getRestaurants() {
         return restaurants;
+    }
+
+    @Override
+    public String toString() {
+        return "RestaurantSearch{" +
+                "restaurants=" + restaurants +
+                '}';
     }
 }

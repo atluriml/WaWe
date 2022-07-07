@@ -1,7 +1,7 @@
 package com.example.wawe;
 
 
-import com.example.wawe.restaurantClasses.Restaurant;
+import com.example.wawe.restaurantClasses.YelpRestaurant;
 import com.example.wawe.restaurantClasses.RestaurantSearch;
 
 import retrofit2.Call;
@@ -35,6 +35,6 @@ public interface RestaurantClient  {
 
     // used for restaurant list activity
     @GET("businesses/{id}")
-    Call<Restaurant> searchRestaurants(@Header("Authorization") String authToken, @Path("id") String id);
+    Call<YelpRestaurant> searchRestaurants(@Header("Authorization") String authToken, @Path("id") String id);
 
 }

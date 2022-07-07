@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -21,25 +22,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wawe.Activities.RestaurantActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
-import com.example.wawe.User;
-import com.example.wawe.restaurantClasses.Restaurant;
+import com.example.wawe.restaurantClasses.YelpRestaurant;
 import com.example.wawe.RestaurantClient;
+import com.example.wawe.restaurantClasses.RestaurantCategories;
 import com.example.wawe.restaurantClasses.RestaurantSearch;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.parceler.Parcels;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -66,12 +66,16 @@ public class RouletteFragment extends Fragment implements LocationListener {
 
     LocationManager locationManager;
     double longitude, latitude;
-    ArrayList<Restaurant> restaurants = new ArrayList<>();
-    Set<String> set = new HashSet<>();
+    ArrayList<YelpRestaurant> restaurants = new ArrayList<>();
+    Set<YelpRestaurant> set = new HashSet<>();
     private Spinner spPrice;
     private Spinner spRadius;
     private Button btnGenerateRestaurant;
     private EditText etCuisine;
+    private View aRouletteSplash;
+    private TextView tvCuisineSelection;
+    private TextView tvRadiusSelection;
+    private TextView tvPriceSelection;
 
     public RouletteFragment() {
     }
@@ -85,6 +89,11 @@ public class RouletteFragment extends Fragment implements LocationListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        aRouletteSplash = view.findViewById(R.id.rouletteAnimation);
+        tvCuisineSelection = view.findViewById(R.id.tvCuisine);
+        tvPriceSelection = view.findViewById(R.id.tvPrice);
+        tvRadiusSelection = view.findViewById(R.id.tvRadius);
 
         // gets user's current longitude and latitude
         locationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
@@ -108,15 +117,44 @@ public class RouletteFragment extends Fragment implements LocationListener {
         ArrayAdapter<String> adapterPrice = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, priceOptions);
         spPrice.setAdapter(adapterPrice);
 
-        // when user is ready to see recommended restaurant
         btnGenerateRestaurant = view.findViewById(R.id.btnGenerateRestaurant);
+
+        // TODO why do i need to press this twice right now
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                defaultVisibilities();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+
+        // when user is ready to generate recommended restaurant
         btnGenerateRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                aRouletteSplash.setVisibility(View.VISIBLE);
+                spRadius.setVisibility(View.GONE);
+                spPrice.setVisibility(View.GONE);
+                etCuisine.setVisibility(View.GONE);
+                btnGenerateRestaurant.setVisibility(View.GONE);
+                tvCuisineSelection.setVisibility(View.GONE);
+                tvPriceSelection.setVisibility(View.GONE);
+                tvRadiusSelection.setVisibility(View.GONE);
                 generateRestaurant();
             }
         });
 
+    }
+
+    private void defaultVisibilities() {
+        aRouletteSplash.setVisibility(View.GONE);
+        spRadius.setVisibility(View.VISIBLE);
+        spPrice.setVisibility(View.VISIBLE);
+        etCuisine.setVisibility(View.VISIBLE);
+        btnGenerateRestaurant.setVisibility(View.VISIBLE);
+        tvCuisineSelection.setVisibility(View.VISIBLE);
+        tvPriceSelection.setVisibility(View.VISIBLE);
+        tvRadiusSelection.setVisibility(View.VISIBLE);
     }
 
     public void generateRestaurant () {
@@ -162,10 +200,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
         obtainRestaurant(call);
     }
 
-    /*TODO
-            - right now when i say thai and vegetarian i get thai restaurants and vegetarian
-            restaurants but i want thai restaurants that are vegetarian friendly
-     */
     public void obtainRestaurant(Call<RestaurantSearch> call) {
         call.enqueue(new Callback<RestaurantSearch>() {
             @Override
@@ -174,40 +208,75 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 if (body == null){
                     return;
                 }
+                Log.i(TAG, "" + response);
                 restaurants.addAll(body.getRestaurants());
-                checkIfVisited();
+                if (!etCuisine.getText().toString().equals("")){
+                    validateCorrectCategories();
+                }
+              //  checkIfVisited();
+                obtainRandomRestaurant();
             }
             @Override
             public void onFailure(Call<RestaurantSearch> call, Throwable t) {
+                Log.e(TAG, "error " + t );
             }
         });
     }
 
-    public void checkIfVisited () {
-        User currentUser = new User(ParseUser.getCurrentUser());
-        JSONArray visitedIds = currentUser.getVisited();
+    private void validateCorrectCategories() {
+        String cuisine = etCuisine.getText().toString();
+        cuisine = cuisine.trim().toLowerCase();
         for (int i = 0; i < restaurants.size(); i++){
-            set.add(restaurants.get(i).getId());
-        }
-        for (int i = 0; i < visitedIds.length(); i++){
-            try {
-                if (set.contains(visitedIds.get(i).toString())){
-                    set.remove(visitedIds.get(i).toString());
+            boolean correctCategories = false;
+            List<RestaurantCategories> categoriesList = restaurants.get(i).getCategory();
+            for (int j = 0; j < categoriesList.size(); j++){
+                if (categoriesList.get(j).getTitle().toLowerCase().equals(cuisine) || categoriesList.get(j).getTitle().toLowerCase().contains(cuisine)){
+                    correctCategories = true;
+                    break;
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }
+            if (!correctCategories){
+                restaurants.remove(i);
+                i--;
             }
         }
-        restaurants.clear();
-        new Task().execute();
     }
 
-    public Restaurant obtainRandomRestaurant () {
+//    public void checkIfVisited () {
+//        User currentUser = new User(ParseUser.getCurrentUser());
+//        JSONArray visitedIds = new JSONArray();
+//        for (int i = 0; i < currentUser.getVisited().length(); i++){
+//            String str = null;
+//            try {
+//                str = currentUser.getVisited().getString(i);
+//                String id = str.substring(str.indexOf("*") + 1, str.indexOf("*"));
+//                visitedIds.put(id);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        set.addAll(restaurants);
+//        for (int i = 0; i < visitedIds.length(); i++){
+//            try {
+//                if (set.contains(visitedIds.get(i))){
+//                    set.remove(visitedIds.get(i));
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        //restaurants.clear();
+//        new Task().execute();
+//    }
+
+    public YelpRestaurant obtainRandomRestaurant () {
         Random random = new Random();
         if(!restaurants.isEmpty()) {
-            Restaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
+            YelpRestaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
+            intent.putExtra("userLatitude", Parcels.wrap(latitude));
+            intent.putExtra("userLongitude", Parcels.wrap(longitude));
             restaurants.clear();
             getContext().startActivity(intent);
             return randomRestaurant;
@@ -229,15 +298,16 @@ public class RouletteFragment extends Fragment implements LocationListener {
 
         @Override
         protected Long doInBackground(URL... urls) {
-            for (String id: set) {
-                Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
-                try {
-                    Response<Restaurant> response = call.execute();
-                    Restaurant body = response.body();
-                    restaurants.add(body);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            for (YelpRestaurant id: set) {
+//                Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
+//                try {
+//                    Response<Restaurant> response = call.execute();
+//                    Log.i(TAG, "" + response);
+//                    Restaurant body = response.body();
+//                    restaurants.add(body);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
             return null;
         }

@@ -6,41 +6,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.example.wawe.BuildConfig;
+import com.example.wawe.Restaurant;
 import com.example.wawe.RestaurantListAdapter;
 import com.example.wawe.R;
-import com.example.wawe.RestaurantClient;
-import com.example.wawe.User;
-import com.example.wawe.restaurantClasses.Restaurant;
+import com.example.wawe.UserFavorites;
+import com.example.wawe.UserVisited;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class RestaurantListsActivity extends AppCompatActivity {
-
-    public static final String TAG = "RestaurantListsActivity";
-    private static final String REST_APPLICATION_ID = BuildConfig.YELP_APPLICATION_ID;
-    public static final String BASE_URL = "https://api.yelp.com/v3/";
 
     private SwipeRefreshLayout swipeContainer;
     private RecyclerView rvFavorites;
     private RestaurantListAdapter adapter;
     private List<Restaurant> allFavoriteRestaurants;
     private TextView tvListTitle;
-    Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-    RestaurantClient restaurantClient = retrofit.create(RestaurantClient.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +37,9 @@ public class RestaurantListsActivity extends AppCompatActivity {
 
         rvFavorites = findViewById(R.id.rvFavorites);
         tvListTitle = findViewById(R.id.tvListTitle);
-
-        // initialize the array that will hold posts and create a PostsAdapter
         allFavoriteRestaurants = new ArrayList<>();
         adapter = new RestaurantListAdapter(this, allFavoriteRestaurants);
-
-        // set the adapter on the recycler view
         rvFavorites.setAdapter(adapter);
-        // set the layout manager on the recycler view
         rvFavorites.setLayoutManager(new LinearLayoutManager(this));
 
         if (getIntent().hasExtra("visited")) {
@@ -69,7 +52,6 @@ public class RestaurantListsActivity extends AppCompatActivity {
         }
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -83,7 +65,6 @@ public class RestaurantListsActivity extends AppCompatActivity {
                 swipeContainer.setRefreshing(false);
             }
         });
-        // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
@@ -91,51 +72,56 @@ public class RestaurantListsActivity extends AppCompatActivity {
     }
 
     public void callVisitedRestaurants() {
-        User currentUser = new User(ParseUser.getCurrentUser());
-        for (int i = 0; i < currentUser.getVisited().length(); i++) {
-            String id = null;
-            try {
-                id = currentUser.getVisited().get(i).toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
+        ParseQuery<Restaurant> queryRestaurants = ParseQuery.getQuery(Restaurant.class).include(Restaurant.KEY_OBJECT_ID);
+        queryRestaurants.findInBackground(new FindCallback<Restaurant>() {
+            @Override
+            public void done(List<Restaurant> objects, ParseException e) { // list of the restaurant objects
+                if (e == null)
+                {
+                    for (Restaurant object : objects) { //all the restaurants in the parseDatabase
+                        Restaurant parseRestaurant = object;
+                        ParseQuery<UserVisited> queryVisitedRestaurants = ParseQuery.getQuery(UserVisited.class);
+                        queryVisitedRestaurants.whereEqualTo(UserVisited.KEY_VISITED_RESTAURANT, parseRestaurant).whereEqualTo(UserVisited.KEY_USER_VISITED, ParseUser.getCurrentUser());
+                        queryVisitedRestaurants.getFirstInBackground(new GetCallback<UserVisited>() {
+                            @Override
+                            public void done(UserVisited object, ParseException e) {
+                                if(e == null) {
+                                    allFavoriteRestaurants.add(parseRestaurant);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+                }
             }
-            callYelp(id);
-        }
+        });
     }
 
     public void callFavorites () {
-        User currentUser = new User(ParseUser.getCurrentUser());
-        for (int i = 0; i < currentUser.getFavorites().length(); i++) {
-            String id = null;
-            try {
-                id = currentUser.getFavorites().get(i).toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            callYelp(id);
-        }
-    }
-
-    public void callYelp(String id) {
-
-        Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
-        Log.i(TAG, "the id is " + id);
-        call.enqueue(new Callback<Restaurant>() {
+        ParseQuery<Restaurant> queryRestaurants = ParseQuery.getQuery(Restaurant.class).include(Restaurant.KEY_OBJECT_ID);
+        queryRestaurants.findInBackground(new FindCallback<Restaurant>() {
             @Override
-            public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
-                Log.i(TAG, "" + response);
-                Restaurant body = response.body();
-                if (body == null) {
-                    return;
+            public void done(List<Restaurant> objects, ParseException e) { // list of the restaurant objects
+                if (e == null)
+                {
+                    for (Restaurant object : objects) { //all the restaurants in the parseDatabase
+                        Restaurant parseRestaurant = object;
+                        ParseQuery<UserFavorites> queryFavoritedRestaurants = ParseQuery.getQuery(UserFavorites.class);
+                        queryFavoritedRestaurants.whereEqualTo(UserFavorites.KEY_FAVORITED_RESTAURANT, parseRestaurant).whereEqualTo(UserFavorites.KEY_USER, ParseUser.getCurrentUser());
+                        queryFavoritedRestaurants.getFirstInBackground(new GetCallback<UserFavorites>() {
+                            @Override
+                            public void done(UserFavorites object, ParseException e) {
+                                if(e == null) {
+                                    allFavoriteRestaurants.add(parseRestaurant);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+
                 }
-                allFavoriteRestaurants.add(body);
-                adapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onFailure(Call<Restaurant> call, Throwable t) {
-                Log.i(TAG, "Fail: ", t);
             }
         });
-
     }
+
 }

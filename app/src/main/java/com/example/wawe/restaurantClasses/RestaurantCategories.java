@@ -15,4 +15,11 @@ public class RestaurantCategories {
     public String getTitle() {
         return title;
     }
+
+    @Override
+    public String toString() {
+        return "RestaurantCategories{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }

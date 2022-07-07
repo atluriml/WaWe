@@ -130,6 +130,7 @@
         android:background="@android:color/transparent"
         android:minWidth="48dp"
         android:minHeight="48dp"
+        android:visibility="visible"
         app:srcCompat="@drawable/ic_vector_heart_stroke"
         tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
 

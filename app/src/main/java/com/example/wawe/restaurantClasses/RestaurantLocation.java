@@ -17,4 +17,11 @@ public class RestaurantLocation {
     public String getAddress() {
         return address;
     }
+
+    @Override
+    public String toString() {
+        return "RestaurantLocation{" +
+                "address='" + address + '\'' +
+                '}';
+    }
 }
