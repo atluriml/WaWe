@@ -48,9 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:layout_weight="1"
-        android:text="LogIn"
-        app:backgroundTint="#5BBCFB"
-        android:textColor="#FFFFFF" />
+        android:text="LogIn" />
 
     <TextView
         android:id="@+id/tvSignUpNeeded"
@@ -77,7 +75,7 @@
         android:outlineProvider="none"
         android:text="SignUp"
         android:textAllCaps="false"
-        android:textColor="#5BBCFB"
+        android:textColor="@color/wawe_blue"
         app:backgroundTint="#00FFFFFF" />
 
 </RelativeLayout>

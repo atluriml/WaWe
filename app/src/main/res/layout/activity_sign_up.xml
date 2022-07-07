@@ -68,8 +68,6 @@
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="#5BBCFB"
-        android:textColor="#FFFFFF"
         android:layout_weight="1"
         android:text="Complete SignUp" />
 
