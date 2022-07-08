@@ -119,14 +119,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
 
         btnGenerateRestaurant = view.findViewById(R.id.btnGenerateRestaurant);
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                defaultVisibilities();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
-
         // when user is ready to generate recommended restaurant
         btnGenerateRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +134,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 generateRestaurant();
             }
         });
-
     }
 
     private void defaultVisibilities() {
@@ -159,7 +150,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
     public void generateRestaurant () {
         String cuisine = etCuisine.getText().toString();
         String rad = spRadius.getSelectedItem().toString();
-        Call<RestaurantSearch> call = null;
         int maxDistance = MAX_RADIUS;
         if (!rad.equals("")){
             maxDistance = Integer.parseInt(rad) * 1609;
@@ -172,30 +162,7 @@ public class RouletteFragment extends Fragment implements LocationListener {
         if (!dietaryRestriction.equals("")) {
             dietaryRestriction = dietaryRestriction.trim();
         }
-        if (dietaryRestriction.equals("") && price.equals("") && cuisine.equals("")){ // just radius or none
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , latitude, longitude, maxDistance, 50);
-        }
-        else if (!dietaryRestriction.equals("") && price.equals("") && cuisine.equals("")){ // radius & dr or just dr
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , dietaryRestriction, latitude, longitude, maxDistance, 50);
-        }
-        else if (dietaryRestriction.equals("") && price.equals("") && !cuisine.equals("")){ // radius & cuisine or just cuisine
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, latitude, longitude, maxDistance, 50);
-        }
-        else if (dietaryRestriction.equals("") && !price.equals("") && cuisine.equals("")){ // radius & price or just price
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
-        }
-        else if (!dietaryRestriction.equals("") && !price.equals("") && cuisine.equals("")){ // radius, price, dr or just price & dr
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
-        }
-        else if (dietaryRestriction.equals("") && !price.equals("") && !cuisine.equals("")){ // radius, price, cuisine or just price & cuisine
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
-        }
-        else if (!dietaryRestriction.equals("") && price.equals("") && !cuisine.equals("")){ // radius, dr, cuisine or just dr & cuisine
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction , latitude, longitude, maxDistance, 50);
-        }
-        else if (!dietaryRestriction.equals("") && !price.equals("") && !cuisine.equals("")){ // price, dr, cuisine or all filters
-            call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
-        }
+        Call<RestaurantSearch> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID , cuisine, dietaryRestriction, latitude, longitude, maxDistance, String.valueOf(price.length()), 50);
         obtainRestaurant(call);
     }
 
@@ -240,7 +207,7 @@ public class RouletteFragment extends Fragment implements LocationListener {
         }
     }
 
-    public YelpRestaurant obtainRandomRestaurant () {
+    public void obtainRandomRestaurant () {
         Random random = new Random();
         if(!restaurants.isEmpty()) {
             YelpRestaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
@@ -250,11 +217,10 @@ public class RouletteFragment extends Fragment implements LocationListener {
             intent.putExtra("userLongitude", Parcels.wrap(longitude));
             restaurants.clear();
             getContext().startActivity(intent);
-            return randomRestaurant;
+            defaultVisibilities();
         }
         else {
             Toast.makeText(getContext(), "Could not find restaurants. Please select a different filter", Toast.LENGTH_SHORT).show();
-            return null;
         }
     }
 
@@ -264,4 +230,5 @@ public class RouletteFragment extends Fragment implements LocationListener {
         latitude = location.getLatitude();
         locationManager.removeUpdates(this);
     }
+
 }
