@@ -1,5 +1,6 @@
 package com.example.wawe.Activities;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,16 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.wawe.DatabaseHelper;
 import com.example.wawe.R;
 import com.example.wawe.Restaurant;
 import com.example.wawe.UserFavorites;
 import com.example.wawe.UserVisited;
+import com.example.wawe.fragments.RouletteFragment;
 import com.example.wawe.restaurantClasses.YelpRestaurant;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
 import org.parceler.Parcels;
 
 public class RestaurantActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,6 +49,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     Restaurant parseRestaurant;
     CheckBox btnClickIfVisited;
     boolean liked;
+  //  DatabaseHelper databaseHelper = new DatabaseHelper (this);
     int numClicks = 0;
 
     @Override
@@ -65,6 +70,15 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
         if (getIntent().hasExtra("restaurantListActivity")){
             tvMilesAway.setVisibility(View.INVISIBLE);
+        }
+        else {
+            restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
+            double userLatitude = Parcels.unwrap(getIntent().getParcelableExtra("userLatitude"));
+            double userLongitude = Parcels.unwrap(getIntent().getParcelableExtra("userLongitude"));
+            double restaurantLatitude = restaurant.getCoordinates().getLatitude();
+            double restaurantLongitude = restaurant.getCoordinates().getLongitude();
+            String distance = getDistance(userLatitude, userLongitude, restaurantLatitude, restaurantLongitude);
+            tvMilesAway.setText(distance);
         }
 
         ParseQuery<Restaurant> queryRestaurant = ParseQuery.getQuery(Restaurant.class);
@@ -209,6 +223,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             btnLiked.setImageResource(R.drawable.ic_vector_heart);
             btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
             Restaurant.likeRestaurant(parseRestaurant);
+          //  databaseHelper.addFavorite(parseRestaurant);
             liked = true;
         }
     }
