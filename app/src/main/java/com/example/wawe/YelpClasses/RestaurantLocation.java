@@ -1,10 +1,8 @@
-package com.example.wawe.restaurantClasses;
+package com.example.wawe.YelpClasses;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
-
-import java.util.List;
 
 @Parcel
 public class RestaurantLocation {

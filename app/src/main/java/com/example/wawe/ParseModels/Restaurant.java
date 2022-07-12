@@ -1,23 +1,21 @@
-package com.example.wawe;
+package com.example.wawe.ParseModels;
 
 import android.util.Log;
 
-import com.example.wawe.restaurantClasses.YelpRestaurant;
+import com.example.wawe.YelpClasses.YelpRestaurant;
+import com.example.wawe.roomClasses.RestaurantRoom;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
+import org.json.JSONArray;
 import java.util.List;
 
 @ParseClassName("Restaurant")
 public class Restaurant extends ParseObject {
-
-    private static final String TAG = "Restaurant Class";
 
     public static final String KEY_NAME = "name";
     public static final String KEY_PRICE = "price";
@@ -25,6 +23,7 @@ public class Restaurant extends ParseObject {
     public static final String KEY_ID = "restID";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_RATING = "rating";
+    public static final String KEY_CATEGORIES = "categories";
 
     public Restaurant () {}
 
@@ -35,6 +34,18 @@ public class Restaurant extends ParseObject {
         setKeyPrice(yelpRestaurant.getPrice());
         setKeyAddress(yelpRestaurant.getLocation().getAddress());
         setKeyRating(yelpRestaurant.getRating());
+        for (int i = 0; i < yelpRestaurant.getCategory().size(); i++){
+            add(yelpRestaurant.getCategory().get(i).getTitle());
+        }
+    }
+
+    public Restaurant(RestaurantRoom restaurantRoom) {
+        setKeyName(restaurantRoom.name);
+        setKeyId(restaurantRoom.yelpId);
+        setKeyImage(restaurantRoom.image);
+        setKeyPrice(restaurantRoom.price);
+        setKeyAddress(restaurantRoom.address);
+        setKeyRating(restaurantRoom.rating);
     }
 
     public String getKeyName() {
@@ -61,6 +72,13 @@ public class Restaurant extends ParseObject {
         return getDouble(KEY_RATING);
     }
 
+    public void add(String category) {
+        add(KEY_CATEGORIES, category);
+    }
+
+    public JSONArray getKeyCategories () { return getJSONArray(KEY_CATEGORIES);
+    }
+
     public void setKeyName (String name) {
         put(KEY_NAME, name);
     }
@@ -85,6 +103,10 @@ public class Restaurant extends ParseObject {
         put(KEY_RATING, rating);
     }
 
+    public void setKeyCategories (JSONArray jsonArray){
+        put(KEY_CATEGORIES, jsonArray);
+    }
+
     public static void likeRestaurant (Restaurant restaurant){
         UserFavorites userFavorites = new UserFavorites();
         userFavorites.setUser(ParseUser.getCurrentUser());
@@ -93,6 +115,7 @@ public class Restaurant extends ParseObject {
             @Override
             public void done(ParseException e) {
                 if (e != null){
+                    Log.e("hellp", (e) + ParseUser.getCurrentUser().getUsername());
                     return;
                 }
             }
@@ -123,6 +146,7 @@ public class Restaurant extends ParseObject {
             @Override
             public void done(ParseException e) {
                 if (e != null){
+                    Log.e("hellp", (e) + ParseUser.getCurrentUser().getUsername());
                     return;
                 }
             }

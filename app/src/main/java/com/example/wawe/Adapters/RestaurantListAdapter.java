@@ -1,4 +1,4 @@
-package com.example.wawe;
+package com.example.wawe.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.wawe.Activities.RestaurantActivity;
-import com.example.wawe.restaurantClasses.YelpRestaurant;
+import com.example.wawe.BuildConfig;
+import com.example.wawe.R;
+import com.example.wawe.ParseModels.Restaurant;
+import com.example.wawe.RestaurantClient;
+import com.example.wawe.fragments.RouletteFragment;
+import com.example.wawe.YelpClasses.YelpRestaurant;
 import org.parceler.Parcels;
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ViewHolder>{
+public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ViewHolder> {
 
     private static final String REST_APPLICATION_ID = BuildConfig.YELP_APPLICATION_ID;
     public static final String BASE_URL = "https://api.yelp.com/v3/";
@@ -120,7 +125,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         protected void onPostExecute(Long aLong) {
             Intent intent = new Intent(context, RestaurantActivity.class);
             intent.putExtra("restaurant", Parcels.wrap(yelpRestaurant));
-            intent.putExtra("restaurantListActivity", yelpRestaurant.getDistanceMeters());
             context.startActivity(intent);
         }
     }

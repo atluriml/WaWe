@@ -5,14 +5,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
-import com.example.wawe.Restaurant;
-import com.example.wawe.RestaurantListAdapter;
+import com.example.wawe.ParseAndDatabaseApplication;
+import com.example.wawe.ParseModels.Restaurant;
+import com.example.wawe.Adapters.RestaurantListAdapter;
 import com.example.wawe.R;
-import com.example.wawe.UserFavorites;
-import com.example.wawe.UserVisited;
+import com.example.wawe.roomClasses.RestaurantListsDao;
+import com.example.wawe.ParseModels.UserFavorites;
+import com.example.wawe.roomClasses.RestaurantRoom;
+import com.example.wawe.roomClasses.UserFavoritesRoom;
+import com.example.wawe.roomClasses.UserRestaurantsList;
+import com.example.wawe.ParseModels.UserVisited;
+import com.example.wawe.roomClasses.UserRoom;
+import com.example.wawe.roomClasses.UserVisitedRoom;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -27,27 +39,39 @@ public class RestaurantListsActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
     private RecyclerView rvFavorites;
     private RestaurantListAdapter adapter;
-    private List<Restaurant> allFavoriteRestaurants;
+    private List<Restaurant> usersSavedRestaurants;
     private TextView tvListTitle;
+    RestaurantListsDao restaurantListsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_lists);
 
+        restaurantListsDao = ( (ParseAndDatabaseApplication) getApplicationContext()).getDatabase().restaurantListsDao();
         rvFavorites = findViewById(R.id.rvFavorites);
         tvListTitle = findViewById(R.id.tvListTitle);
-        allFavoriteRestaurants = new ArrayList<>();
-        adapter = new RestaurantListAdapter(this, allFavoriteRestaurants);
+        usersSavedRestaurants = new ArrayList<>();
+        adapter = new RestaurantListAdapter(this, usersSavedRestaurants);
         rvFavorites.setAdapter(adapter);
         rvFavorites.setLayoutManager(new LinearLayoutManager(this));
 
         if (getIntent().hasExtra("visited")) {
-            callVisitedRestaurants();
+            if (isNetworkAvailable()){
+                callVisitedRestaurants();
+            }
+            else {
+                callAsyncVisited();
+            }
             tvListTitle.setText("Restaurants You Have Visited");
         }
         else {
-            callFavorites();
+            if (!isNetworkAvailable()) {
+                callAsyncFavorites();
+            }
+            else {
+                callFavorites();
+            }
             tvListTitle.setText("Your Favorite Restaurants");
         }
 
@@ -57,10 +81,20 @@ public class RestaurantListsActivity extends AppCompatActivity {
             public void onRefresh() {
                 adapter.clear();
                 if (getIntent().hasExtra("visited")) {
-                    callVisitedRestaurants();
+                    if (isNetworkAvailable()){
+                        callVisitedRestaurants();
+                    }
+                    else {
+                        callAsyncVisited();
+                    }
                 }
                 else {
-                    callFavorites();
+                    if (!isNetworkAvailable()) {
+                        callAsyncFavorites();
+                    }
+                    else {
+                        callFavorites();
+                    }
                 }
                 swipeContainer.setRefreshing(false);
             }
@@ -69,6 +103,50 @@ public class RestaurantListsActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
+
+    public void callAsyncFavorites() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<UserRestaurantsList> userFavoritesRestaurants = restaurantListsDao.userFavoriteItems(ParseUser.getCurrentUser().getObjectId());
+                List<UserFavoritesRoom> favoriteRestaurantsFromDB = UserRestaurantsList.getRestaurantFavoritesList(userFavoritesRestaurants);
+                adapter.clear();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < favoriteRestaurantsFromDB.size(); i++){
+                            Restaurant roomToParse = new Restaurant(favoriteRestaurantsFromDB.get(i).restaurant);
+                            usersSavedRestaurants.add(roomToParse);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void callAsyncVisited() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<UserRestaurantsList> userVisitedRestaurants = restaurantListsDao.userVisitedItems(ParseUser.getCurrentUser().getObjectId());
+                List<UserVisitedRoom> visitedRestaurantsFromDB = UserRestaurantsList.getRestaurantVisitedList(userVisitedRestaurants);
+                adapter.clear();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < visitedRestaurantsFromDB.size(); i++){
+                            Restaurant roomToParse = new Restaurant(visitedRestaurantsFromDB.get(i).restaurant);
+                            usersSavedRestaurants.add(roomToParse);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    }
+                });
+            }
+        });
     }
 
     public void callVisitedRestaurants() {
@@ -86,7 +164,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                             @Override
                             public void done(UserVisited object, ParseException e) {
                                 if(e == null) {
-                                    allFavoriteRestaurants.add(parseRestaurant);
+                                    usersSavedRestaurants.add(parseRestaurant);
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -112,7 +190,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                             @Override
                             public void done(UserFavorites object, ParseException e) {
                                 if(e == null) {
-                                    allFavoriteRestaurants.add(parseRestaurant);
+                                    usersSavedRestaurants.add(parseRestaurant);
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -123,5 +201,14 @@ public class RestaurantListsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
 
 }

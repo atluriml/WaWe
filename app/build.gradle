@@ -21,6 +21,12 @@ android {
         buildConfigField("String", "PARSE_CLIENT_ID", apikeyProperties['PARSE_CLIENT_ID'])
         buildConfigField("String", "YELP_APPLICATION_ID", apikeyProperties['YELP_APPLICATION_ID'])
         buildConfigField("String", "YELP_CLIENT_ID", apikeyProperties['YELP_CLIENT_ID'])
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -33,12 +39,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+
 }
 
 ext {
     permissionDispatcherVersion = "4.7.0"
     supportLibVersion = "1.0.0"
     googlePlayVersion = "17.0.0"
+    roomVersion = "2.1.0"
 }
 
 dependencies {
@@ -75,6 +84,12 @@ dependencies {
     implementation "com.android.volley:volley:1.2.1"
 
     implementation 'com.airbnb.android:lottie:3.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+    implementation "com.squareup.okhttp3:logging-interceptor:3.4.1"
+
+    implementation 'androidx.preference:preference:1.1.1'
+
+    annotationProcessor "androidx.room:room-compiler:2.4.2"
+    implementation 'androidx.room:room-runtime:2.4.2'
 
 }

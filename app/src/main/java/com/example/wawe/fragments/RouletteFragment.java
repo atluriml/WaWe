@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -28,10 +27,10 @@ import android.widget.Toast;
 import com.example.wawe.Activities.RestaurantActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
-import com.example.wawe.restaurantClasses.YelpRestaurant;
+import com.example.wawe.YelpClasses.YelpRestaurant;
 import com.example.wawe.RestaurantClient;
-import com.example.wawe.restaurantClasses.RestaurantCategories;
-import com.example.wawe.restaurantClasses.RestaurantSearch;
+import com.example.wawe.YelpClasses.RestaurantCategories;
+import com.example.wawe.YelpClasses.RestaurantSearch;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -65,7 +64,8 @@ public class RouletteFragment extends Fragment implements LocationListener {
     RestaurantClient restaurantClient = retrofit.create(RestaurantClient.class);
 
     LocationManager locationManager;
-    double longitude, latitude;
+    public static double longitude;
+    public static double latitude;
     ArrayList<YelpRestaurant> restaurants = new ArrayList<>();
     Set<YelpRestaurant> set = new HashSet<>();
     private Spinner spPrice;
@@ -179,6 +179,7 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 if (!etCuisine.getText().toString().equals("")){
                     validateCorrectCategories();
                 }
+                //  checkIfVisited();
                 obtainRandomRestaurant();
             }
             @Override
@@ -213,8 +214,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
             YelpRestaurant randomRestaurant = restaurants.get(random.nextInt(restaurants.size()));
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("restaurant", Parcels.wrap(randomRestaurant));
-            intent.putExtra("userLatitude", Parcels.wrap(latitude));
-            intent.putExtra("userLongitude", Parcels.wrap(longitude));
             restaurants.clear();
             getContext().startActivity(intent);
             defaultVisibilities();
@@ -230,5 +229,71 @@ public class RouletteFragment extends Fragment implements LocationListener {
         latitude = location.getLatitude();
         locationManager.removeUpdates(this);
     }
+
+
+    //    public void checkIfVisited () {
+//        User currentUser = new User(ParseUser.getCurrentUser());
+//        JSONArray visitedIds = new JSONArray();
+//        for (int i = 0; i < currentUser.getVisited().length(); i++){
+//            String str = null;
+//            try {
+//                str = currentUser.getVisited().getString(i);
+//                String id = str.substring(str.indexOf("*") + 1, str.indexOf("*"));
+//                visitedIds.put(id);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        set.addAll(restaurants);
+//        for (int i = 0; i < visitedIds.length(); i++){
+//            try {
+//                if (set.contains(visitedIds.get(i))){
+//                    set.remove(visitedIds.get(i));
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        //restaurants.clear();
+//        new Task().execute();
+//    }
+
+    private class Task extends AsyncTask<URL, Integer, Long>{
+        @Override
+        protected Long doInBackground(URL... urls) {
+            for (YelpRestaurant id: set) {
+//                Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
+//                try {
+//                    Response<Restaurant> response = call.execute();
+//                    Log.i(TAG, "" + response);
+//                    Restaurant body = response.body();
+//                    restaurants.add(body);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            obtainRandomRestaurant();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 }

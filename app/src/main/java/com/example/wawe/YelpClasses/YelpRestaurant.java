@@ -1,7 +1,5 @@
-package com.example.wawe.restaurantClasses;
+package com.example.wawe.YelpClasses;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 import java.util.List;
@@ -13,34 +11,31 @@ public class YelpRestaurant  {
     YelpRestaurant () {}
 
     @SerializedName("name")
-    private String name;
+    String name;
 
     @SerializedName("price")
-    private String price;
+    String price;
 
     @SerializedName("rating")
-    private double rating;
+    double rating;
 
     @SerializedName("distance")
-    private double distanceMeters;
+    double distanceMeters;
 
     @SerializedName("image_url")
-    private String restaurantImage;
+    String restaurantImage;
 
     @SerializedName("categories")
-    private List<RestaurantCategories> category;
+    List<RestaurantCategories> category;
 
     @SerializedName("location")
-    private RestaurantLocation location;
+    RestaurantLocation location;
 
     @SerializedName("id")
-    private String id;
+    String id;
 
     @SerializedName("coordinates")
-    private RestaurantCoordinates coordinates;
-
-//    @SerializedName("hours")
-//    List<RestaurantHours> hours;
+    RestaurantCoordinates coordinates;
 
     public YelpRestaurant (String name, String price, double rating, double distanceMeters, String restaurantImage, List<RestaurantCategories> category, RestaurantLocation location, String id, RestaurantCoordinates coordinates) {
         this.name = name;
@@ -85,15 +80,6 @@ public class YelpRestaurant  {
     public String getRestaurantImage() {
         return restaurantImage;
     }
-
-    public String displayDistance () {
-        double milesPerMeter = 0.000621371;
-        Log.i("dist", String.valueOf(distanceMeters));
-        @SuppressLint("DefaultLocale") String distanceInMiles = String.format("%.01f", getDistanceMeters() * milesPerMeter);
-        return distanceInMiles + "mi";
-    }
-
-
 
     public RestaurantCoordinates getCoordinates() {
         return coordinates;

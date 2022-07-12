@@ -2,9 +2,10 @@ package com.example.wawe.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +20,6 @@ import com.parse.SignUpCallback;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    public static final String TAG = "SignUpActivity";
     private EditText etUsername;
     private EditText etPassword;
     private EditText etRetypePassword;

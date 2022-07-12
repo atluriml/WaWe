@@ -1,13 +1,12 @@
 package com.example.wawe.Activities;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,22 +14,25 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.wawe.DatabaseHelper;
+import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.R;
-import com.example.wawe.Restaurant;
-import com.example.wawe.UserFavorites;
-import com.example.wawe.UserVisited;
+import com.example.wawe.ParseModels.Restaurant;
+import com.example.wawe.ParseModels.UserFavorites;
+import com.example.wawe.ParseModels.UserVisited;
+import com.example.wawe.YelpClasses.YelpRestaurant;
 import com.example.wawe.fragments.RouletteFragment;
-import com.example.wawe.restaurantClasses.YelpRestaurant;
+import com.example.wawe.roomClasses.RestaurantListsDao;
+import com.example.wawe.roomClasses.RestaurantRoom;
+import com.example.wawe.roomClasses.UserFavoritesRoom;
+import com.example.wawe.roomClasses.UserRoom;
+import com.example.wawe.roomClasses.UserVisitedRoom;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONException;
 import org.parceler.Parcels;
 
 public class RestaurantActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,8 +50,10 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     String objectId;
     Restaurant parseRestaurant;
     CheckBox btnClickIfVisited;
+    RestaurantListsDao restaurantListsDao;
+    private View likesAnimation;
+
     boolean liked;
-  //  DatabaseHelper databaseHelper = new DatabaseHelper (this);
     int numClicks = 0;
 
     @Override
@@ -57,6 +61,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
+        restaurantListsDao = ( (ParseAndDatabaseApplication) getApplicationContext()).getDatabase().restaurantListsDao();
         tvName = findViewById(R.id.tvRestName);
         tvMilesAway = findViewById(R.id.tvMilesAway);
         tvAddress = findViewById(R.id.tvAddress);
@@ -67,19 +72,8 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         btnGetDirections = findViewById(R.id.btnGetDirections);
         btnLiked = findViewById(R.id.btnLike);
         btnClickIfVisited = (CheckBox) findViewById(R.id.btnClickIfVisited);
+        likesAnimation = findViewById(R.id.likes_animation);
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
-        if (getIntent().hasExtra("restaurantListActivity")){
-            tvMilesAway.setVisibility(View.INVISIBLE);
-        }
-        else {
-            restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
-            double userLatitude = Parcels.unwrap(getIntent().getParcelableExtra("userLatitude"));
-            double userLongitude = Parcels.unwrap(getIntent().getParcelableExtra("userLongitude"));
-            double restaurantLatitude = restaurant.getCoordinates().getLatitude();
-            double restaurantLongitude = restaurant.getCoordinates().getLongitude();
-            String distance = getDistance(userLatitude, userLongitude, restaurantLatitude, restaurantLongitude);
-            tvMilesAway.setText(distance);
-        }
 
         ParseQuery<Restaurant> queryRestaurant = ParseQuery.getQuery(Restaurant.class);
         queryRestaurant.whereEqualTo(Restaurant.KEY_ID, restaurant.getId());
@@ -125,7 +119,6 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                             }
                         }
                     });
-
                 }
                 else
                 {
@@ -139,7 +132,6 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         });
 
         tvName.setText(restaurant.getName());
-        tvMilesAway.setText(restaurant.displayDistance());
         tvAddress.setText(restaurant.getLocation().getAddress());
         String categories = restaurant.getCategory().get(0).getTitle();
         for (int i = 1; i < restaurant.getCategory().size(); i++){
@@ -147,6 +139,12 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         }
         tvCategory.setText(categories);
         tvPrice.setText(restaurant.getPrice());
+        double userLatitude = RouletteFragment.latitude;
+        double userLongitude = RouletteFragment.longitude;
+        double restaurantLatitude = restaurant.getCoordinates().getLatitude();
+        double restaurantLongitude = restaurant.getCoordinates().getLongitude();
+        String distance = getDistance(userLatitude, userLongitude, restaurantLatitude, restaurantLongitude);
+        tvMilesAway.setText(distance);
         ratingBar.setRating((float) restaurant.getRating());
         Glide.with(this)
                 .load(restaurant.getRestaurantImage()).into(ivRestaurantImage);
@@ -164,8 +162,8 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 Intent mapIntent = new Intent(RestaurantActivity.this, MapActivity.class);
+                mapIntent.putExtra("restaurant", Parcels.wrap(restaurant));
                 startActivity(mapIntent);
-
             }
         });
 
@@ -184,10 +182,30 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                 if (btnClickIfVisited.isChecked()){
                    Restaurant.markRestaurantVisited(parseRestaurant);
                    btnClickIfVisited.setChecked(true);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
+                            UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
+                            restaurantListsDao.insertModel(restaurantRoom);
+                            restaurantListsDao.insertModel(userRoom);
+                            UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
+                            userVisitedRoom.userId = userRoom.getUserId();
+                            userVisitedRoom.restaurantId = restaurantRoom.yelpId;
+                            restaurantListsDao.insertModel(userVisitedRoom);
+                        }
+                    });
                 }
                 else{
                     Restaurant.markAsNotVisited(parseRestaurant);
                     btnClickIfVisited.setChecked(false);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            UserVisitedRoom userVisitedRoom = restaurantListsDao.userVisitedToDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId());
+                            restaurantListsDao.deleteModel(userVisitedRoom);
+                        }
+                    });
                 }
             }
         });
@@ -213,18 +231,39 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     public void favoriteOrUnfavorite(){
         // user is unliking restaurant
         if (liked) {
+            likesAnimation.setVisibility(View.GONE);
             btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
             btnLiked.setColorFilter(Color.parseColor("#000000"));
             Restaurant.unFavoriteRestaurant(parseRestaurant);
             liked = false;
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    UserFavoritesRoom userFavoritesRoom = restaurantListsDao.userFavoriteToDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId());
+                    restaurantListsDao.deleteModel(userFavoritesRoom);
+                }
+            });
         }
         // user is liking restaurant
         else {
+            likesAnimation.setVisibility(View.VISIBLE);
             btnLiked.setImageResource(R.drawable.ic_vector_heart);
             btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
             Restaurant.likeRestaurant(parseRestaurant);
-          //  databaseHelper.addFavorite(parseRestaurant);
             liked = true;
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
+                    UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
+                    restaurantListsDao.insertModel(restaurantRoom);
+                    restaurantListsDao.insertModel(userRoom);
+                    UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
+                    userFavoritesRoom.userId = userRoom.getUserId();
+                    userFavoritesRoom.restaurantId = restaurantRoom.yelpId;
+                    restaurantListsDao.insertModel(userFavoritesRoom);
+                }
+            });
         }
     }
 

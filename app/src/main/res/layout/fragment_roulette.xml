@@ -77,6 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/roulette_animation" />
 
 </RelativeLayout>

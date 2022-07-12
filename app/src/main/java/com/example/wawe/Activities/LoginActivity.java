@@ -1,14 +1,12 @@
 package com.example.wawe.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.wawe.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -16,7 +14,6 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String TAG = "LoginActivity";
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
@@ -70,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // when the user successfully logs the program then goes to the MainActivity
+    // when the user successfully logs in the program then goes to the MainActivity
     private void goMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);

@@ -116,7 +116,7 @@
         android:layout_below="@id/tvVisited"
         android:layout_marginStart="4dp"
         android:layout_marginTop="3dp"
-        android:checked="true"
+        android:checked="false"
         android:outlineProvider="none" />
 
     <ImageButton
@@ -154,5 +154,17 @@
         android:layout_toRightOf="@id/tvVisited"
         android:text="Did you love it?"
         android:textSize="10sp" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/likes_animation"
+        android:layout_width="33dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/tvFavorite"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/btnClickIfVisited"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/likes_animation" />
 
 </RelativeLayout>

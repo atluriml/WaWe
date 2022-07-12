@@ -3,8 +3,8 @@ package com.example.wawe;
 
 import static com.example.wawe.fragments.RouletteFragment.REST_APPLICATION_ID;
 
-import com.example.wawe.restaurantClasses.YelpRestaurant;
-import com.example.wawe.restaurantClasses.RestaurantSearch;
+import com.example.wawe.YelpClasses.YelpRestaurant;
+import com.example.wawe.YelpClasses.RestaurantSearch;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
