@@ -83,7 +83,6 @@ public class RestaurantListsActivity extends AppCompatActivity {
                 if (getIntent().hasExtra("visited")) {
                     if (isNetworkAvailable()){
                         callVisitedRestaurants();
-                        callAsyncVisited();
                     }
                     else {
                         callAsyncVisited();
@@ -240,19 +239,5 @@ public class RestaurantListsActivity extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    private void clearTables() {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                restaurantListsDao.deleteTableVisited();
-                restaurantListsDao.deleteTableFavorites();
-                restaurantListsDao.deleteTableUser();
-                restaurantListsDao.deleteTableRestaurant();
-
-            }
-        });
-    }
-
 
 }
