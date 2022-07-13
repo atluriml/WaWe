@@ -149,5 +149,5 @@ USER Object - Parse Database
 
 ### Technical Problems
 * Filtering: After making the API call to Yelp I will take the 50 restaurants that the API gives me. I create an algorithm that uses the user’s favorite restaurants to give the user the best possible restaurant recommendation based on their filters. 
-* User and Data Persistence: I will be caching information so that if there is a network issue, the user can still see their favorite restaurants and the restaurants they have visited. This is a complex problem because I will be using SQLite and Shared Preferences both of which I have not used before.
+* User and Data Persistence: I will be caching information so that if there is a network issue, the user can still see their favorite restaurants and the restaurants they have visited. This is a complex problem because I will be using SQLite and Room both of which I have not used before.
 
