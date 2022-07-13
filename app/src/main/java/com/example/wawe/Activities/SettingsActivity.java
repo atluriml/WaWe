@@ -76,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!etPassword.getText().toString().equals(etRetypePassword.getText().toString())){
+                    setPreferencesToNull();
                     Toast.makeText(SettingsActivity.this, "Please make sure your passwords match", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -89,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if (!checkStringEmpty(etLocation.getText().toString())){
                         user.put("location", etLocation.getText().toString());
                     }
-                    if (!checkStringEmpty(spDietaryRestriction.getSelectedItem().toString())) {
+                    if (checkStringEmpty(spDietaryRestriction.getSelectedItem().toString())) {
                         user.put("dietaryRestriction", " ");
                     }
                     else if (!checkStringEmpty(spDietaryRestriction.getSelectedItem().toString())) {
@@ -102,15 +103,27 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseException e) {
                             if (e != null){
+                                Log.e(TAG, e + " rip");
                                 Toast.makeText(SettingsActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
                             }
-
+                            else {
+                                setPreferencesToNull();
+                                Toast.makeText(SettingsActivity.this, "Profile Successfully Updated!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
             }
         });
 
+    }
+
+    private void setPreferencesToNull () {
+        etLocation.setText(null);
+        etPassword.setText(null);
+        etRetypePassword.setText(null);
+        etUsername.setText(null);
+        spDietaryRestriction.setSelection(0);
     }
 
     private void launchCamera() {

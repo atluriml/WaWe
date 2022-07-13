@@ -1,85 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Activities.SettingsActivity">
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="670dp"
+        android:layout_height="151dp"
+        android:background="@drawable/ic_wave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings: Update Aspects of Your Profile"
-        android:textSize="20sp" />
+        android:gravity="center"
+        android:text="Settings: Edit Your Profile"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
 
     <Button
         android:id="@+id/btnProfileImage"
-        android:layout_width="match_parent"
+        android:layout_width="359dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
         android:layout_marginTop="-1dp"
-        android:text="Take New Profile Picture" />
+        android:background="@drawable/round_border"
+        android:text="Take New Profile Picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
     <EditText
         android:id="@+id/etUsernameSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_width="359dp"
+        android:layout_height="32dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/round_border"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="16dp"
+        android:ems="10"
         android:hint="@string/username"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnProfileImage" />
 
     <EditText
         android:id="@+id/etPasswordSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="359dp"
+        android:layout_height="32dp"
+        android:background="@drawable/round_border"
+        android:drawableStart="@drawable/ic_password"
+        android:drawablePadding="16dp"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etUsernameSettings" />
 
     <EditText
         android:id="@+id/etRetypePasswordSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="359dp"
+        android:layout_height="32dp"
+        android:background="@drawable/round_border"
+        android:drawableStart="@drawable/ic_password"
+        android:drawablePadding="16dp"
         android:ems="10"
         android:hint="@string/RetypePassword"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordSettings" />
 
     <EditText
         android:id="@+id/etLocationSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="359dp"
+        android:layout_height="32dp"
+        android:background="@drawable/round_border"
+        android:drawableStart="@android:drawable/ic_menu_myplaces"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/wawe_blue"
         android:ems="10"
         android:hint="@string/location"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etRetypePasswordSettings" />
 
     <TextView
         android:id="@+id/tvVegSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="362dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
         android:ems="10"
-        android:text="Select or change your dietary restriction"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:gravity="center_horizontal"
+        android:hint="@string/location"
+        android:padding="16dp"
+        android:text="Select or Change Your Dietary Preference"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLocationSettings" />
 
     <Spinner
         android:id="@+id/spDietaryRestrictionSettings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@id/tvVeg"
-        android:layout_marginTop="10dp"
+        android:layout_width="359dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="4dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvVegSettings" />
 
     <Button
         android:id="@+id/btnUpdateProfile"
-        android:layout_width="match_parent"
+        android:layout_width="359dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Update Profile" />
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:background="@drawable/round_border"
+        android:drawablePadding="16dp"
+        android:text="Update Profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spDietaryRestrictionSettings" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

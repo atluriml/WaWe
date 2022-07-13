@@ -7,20 +7,21 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1215" />
         <entry key="app/src/main/res/drawable/ic_email.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1215" />
+        <entry key="app/src/main/res/drawable/ic_password.xml" value="0.1895" />
         <entry key="app/src/main/res/drawable/ic_vector_heart.xml" value="0.2035" />
         <entry key="app/src/main/res/drawable/ic_vector_heart_stroke.xml" value="0.1415" />
         <entry key="app/src/main/res/drawable/ic_wave.xml" value="0.239" />
         <entry key="app/src/main/res/drawable/round_border.xml" value="0.2335" />
         <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.3992874145507812" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.6825396825396826" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.41368584758942456" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.2767210144927536" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_restaurant.xml" value="0.2727272727272727" />
         <entry key="app/src/main/res/layout/activity_restaurant_lists.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/layout/activity_roulette_splash.xml" value="0.3292572463768116" />
-        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.28759884284310894" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.5860711593354475" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.12055335968379446" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.10149383544921878" />
         <entry key="app/src/main/res/layout/activity_visited_restaurants.xml" value="0.24094202898550723" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.15443840579710144" />
