@@ -1,11 +1,9 @@
 package com.example.wawe.roomClasses;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 
@@ -31,17 +29,5 @@ public interface RestaurantListsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertModel(UserVisitedRoom userVisitedRooms);
-
-    @Query("DELETE FROM UserRoom")
-    void deleteTableUser();
-
-    @Query("DELETE FROM UserVisitedRoom")
-    void deleteTableVisited();
-
-    @Query("DELETE FROM UserFavoritesRoom")
-    void deleteTableFavorites();
-
-    @Query("DELETE FROM RestaurantRoom")
-    void deleteTableRestaurant();
 
 }

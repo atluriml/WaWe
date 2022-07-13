@@ -41,7 +41,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
     private RestaurantListAdapter adapter;
     private List<Restaurant> usersSavedRestaurants;
     private TextView tvListTitle;
-    RestaurantListsDao restaurantListsDao;
+    static RestaurantListsDao restaurantListsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,10 @@ public class RestaurantListsActivity extends AppCompatActivity {
         adapter = new RestaurantListAdapter(this, usersSavedRestaurants);
         rvFavorites.setAdapter(adapter);
         rvFavorites.setLayoutManager(new LinearLayoutManager(this));
+
+        if (!usersSavedRestaurants.isEmpty()){
+            adapter.clear();
+        }
 
         if (getIntent().hasExtra("visited")) {
             if (isNetworkAvailable()){
@@ -171,6 +175,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                                             RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
                                             restaurantListsDao.insertModel(restaurantRoom);
                                             UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
+                                            userVisitedRoom.id = object.getObjectId();
                                             userVisitedRoom.userId = userRoom.getUserId();
                                             userVisitedRoom.restaurant = restaurantRoom;
                                             userVisitedRoom.restaurantId = restaurantRoom.yelpId;
@@ -212,6 +217,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                                             RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
                                             restaurantListsDao.insertModel(restaurantRoom);
                                             UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
+                                            userFavoritesRoom.id = object.getObjectId();
                                             userFavoritesRoom.userId = userRoom.getUserId();
                                             userFavoritesRoom.restaurant = restaurantRoom;
                                             userFavoritesRoom.restaurantId = restaurantRoom.yelpId;

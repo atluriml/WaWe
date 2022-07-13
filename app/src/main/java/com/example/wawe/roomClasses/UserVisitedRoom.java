@@ -13,8 +13,8 @@ public class UserVisitedRoom {
 
     @NonNull
     @ColumnInfo
-    @PrimaryKey(autoGenerate = true)
-    public long id;
+    @PrimaryKey
+    public String id;
 
     @Ignore
     public UserRoom user;

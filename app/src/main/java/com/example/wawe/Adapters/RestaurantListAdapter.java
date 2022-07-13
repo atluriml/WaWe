@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.wawe.Activities.RestaurantActivity;
+import com.example.wawe.Activities.RestaurantListsActivity;
 import com.example.wawe.BuildConfig;
 import com.example.wawe.R;
 import com.example.wawe.ParseModels.Restaurant;
