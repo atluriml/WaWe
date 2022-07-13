@@ -17,7 +17,7 @@ public class UserVisitedRoom {
     public long id;
 
     @Ignore
-    UserRoom user;
+    public UserRoom user;
 
     @Ignore
     public RestaurantRoom restaurant;

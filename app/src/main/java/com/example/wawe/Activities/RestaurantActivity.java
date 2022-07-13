@@ -50,7 +50,6 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     String objectId;
     Restaurant parseRestaurant;
     CheckBox btnClickIfVisited;
-    RestaurantListsDao restaurantListsDao;
     private View likesAnimation;
 
     boolean liked;
@@ -61,7 +60,6 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        restaurantListsDao = ( (ParseAndDatabaseApplication) getApplicationContext()).getDatabase().restaurantListsDao();
         tvName = findViewById(R.id.tvRestName);
         tvMilesAway = findViewById(R.id.tvMilesAway);
         tvAddress = findViewById(R.id.tvAddress);
@@ -182,30 +180,10 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                 if (btnClickIfVisited.isChecked()){
                    Restaurant.markRestaurantVisited(parseRestaurant);
                    btnClickIfVisited.setChecked(true);
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
-                            UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
-                            restaurantListsDao.insertModel(restaurantRoom);
-                            restaurantListsDao.insertModel(userRoom);
-                            UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
-                            userVisitedRoom.userId = userRoom.getUserId();
-                            userVisitedRoom.restaurantId = restaurantRoom.yelpId;
-                            restaurantListsDao.insertModel(userVisitedRoom);
-                        }
-                    });
                 }
                 else{
                     Restaurant.markAsNotVisited(parseRestaurant);
                     btnClickIfVisited.setChecked(false);
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            UserVisitedRoom userVisitedRoom = restaurantListsDao.userVisitedToDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId());
-                            restaurantListsDao.deleteModel(userVisitedRoom);
-                        }
-                    });
                 }
             }
         });
@@ -236,13 +214,6 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             btnLiked.setColorFilter(Color.parseColor("#000000"));
             Restaurant.unFavoriteRestaurant(parseRestaurant);
             liked = false;
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    UserFavoritesRoom userFavoritesRoom = restaurantListsDao.userFavoriteToDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId());
-                    restaurantListsDao.deleteModel(userFavoritesRoom);
-                }
-            });
         }
         // user is liking restaurant
         else {
@@ -251,19 +222,6 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
             Restaurant.likeRestaurant(parseRestaurant);
             liked = true;
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
-                    UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
-                    restaurantListsDao.insertModel(restaurantRoom);
-                    restaurantListsDao.insertModel(userRoom);
-                    UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
-                    userFavoritesRoom.userId = userRoom.getUserId();
-                    userFavoritesRoom.restaurantId = restaurantRoom.yelpId;
-                    restaurantListsDao.insertModel(userFavoritesRoom);
-                }
-            });
         }
     }
 

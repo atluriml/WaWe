@@ -115,7 +115,6 @@ public class Restaurant extends ParseObject {
             @Override
             public void done(ParseException e) {
                 if (e != null){
-                    Log.e("hellp", (e) + ParseUser.getCurrentUser().getUsername());
                     return;
                 }
             }
@@ -146,7 +145,6 @@ public class Restaurant extends ParseObject {
             @Override
             public void done(ParseException e) {
                 if (e != null){
-                    Log.e("hellp", (e) + ParseUser.getCurrentUser().getUsername());
                     return;
                 }
             }

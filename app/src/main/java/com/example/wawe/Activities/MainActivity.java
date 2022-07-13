@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.wawe.R;
 import com.example.wawe.fragments.ProfileFragment;
@@ -18,8 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String TAG = "MainActivity";
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
@@ -37,12 +34,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_restaurant_details:c:
                     fragment = new RouletteFragment();
-                        Toast.makeText(MainActivity.this, "clicked on home", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_map:
                     default:
                         fragment = new ProfileFragment();
-                        Toast.makeText(MainActivity.this, "clicked on profile", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

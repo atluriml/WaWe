@@ -83,6 +83,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                 if (getIntent().hasExtra("visited")) {
                     if (isNetworkAvailable()){
                         callVisitedRestaurants();
+                        callAsyncVisited();
                     }
                     else {
                         callAsyncVisited();
@@ -106,12 +107,12 @@ public class RestaurantListsActivity extends AppCompatActivity {
     }
 
     public void callAsyncFavorites() {
+        adapter.clear();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                List<UserRestaurantsList> userFavoritesRestaurants = restaurantListsDao.userFavoriteItems(ParseUser.getCurrentUser().getObjectId());
+                List<UserRestaurantsList> userFavoritesRestaurants = restaurantListsDao.userFavoriteItems();
                 List<UserFavoritesRoom> favoriteRestaurantsFromDB = UserRestaurantsList.getRestaurantFavoritesList(userFavoritesRestaurants);
-                adapter.clear();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -128,12 +129,12 @@ public class RestaurantListsActivity extends AppCompatActivity {
     }
 
     public void callAsyncVisited() {
+        adapter.clear();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                List<UserRestaurantsList> userVisitedRestaurants = restaurantListsDao.userVisitedItems(ParseUser.getCurrentUser().getObjectId());
+                List<UserRestaurantsList> userVisitedRestaurants = restaurantListsDao.userVisitedItems();
                 List<UserVisitedRoom> visitedRestaurantsFromDB = UserRestaurantsList.getRestaurantVisitedList(userVisitedRestaurants);
-                adapter.clear();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -142,7 +143,6 @@ public class RestaurantListsActivity extends AppCompatActivity {
                             usersSavedRestaurants.add(roomToParse);
                             adapter.notifyDataSetChanged();
                         }
-
                     }
                 });
             }
@@ -164,7 +164,22 @@ public class RestaurantListsActivity extends AppCompatActivity {
                             @Override
                             public void done(UserVisited object, ParseException e) {
                                 if(e == null) {
-                                    usersSavedRestaurants.add(parseRestaurant);
+                                    AsyncTask.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
+                                            restaurantListsDao.insertModel(userRoom);
+                                            RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
+                                            restaurantListsDao.insertModel(restaurantRoom);
+                                            UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
+                                            userVisitedRoom.userId = userRoom.getUserId();
+                                            userVisitedRoom.restaurant = restaurantRoom;
+                                            userVisitedRoom.restaurantId = restaurantRoom.yelpId;
+                                            userVisitedRoom.user = userRoom;
+                                            restaurantListsDao.insertModel(userVisitedRoom);
+                                            usersSavedRestaurants.add(parseRestaurant);
+                                        }
+                                    });
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -190,7 +205,24 @@ public class RestaurantListsActivity extends AppCompatActivity {
                             @Override
                             public void done(UserFavorites object, ParseException e) {
                                 if(e == null) {
-                                    usersSavedRestaurants.add(parseRestaurant);
+                                    AsyncTask.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
+                                            restaurantListsDao.insertModel(userRoom);
+                                            RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
+                                            restaurantListsDao.insertModel(restaurantRoom);
+                                            UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
+                                            userFavoritesRoom.userId = userRoom.getUserId();
+                                            userFavoritesRoom.restaurant = restaurantRoom;
+                                            userFavoritesRoom.restaurantId = restaurantRoom.yelpId;
+                                            userFavoritesRoom.user = userRoom;
+                                            restaurantListsDao.insertModel(userFavoritesRoom);
+                                            usersSavedRestaurants.add(parseRestaurant);
+                                        }
+
+                                    });
+
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -209,6 +241,18 @@ public class RestaurantListsActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private void clearTables() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                restaurantListsDao.deleteTableVisited();
+                restaurantListsDao.deleteTableFavorites();
+                restaurantListsDao.deleteTableUser();
+                restaurantListsDao.deleteTableRestaurant();
+
+            }
+        });
+    }
 
 
 }

@@ -39,10 +39,6 @@ public class Query {
                                 if(e == null) {
                                     usersSavedRestaurants.add(parseRestaurant);
                                 }
-                                else {
-                                    Log.e("TAG", e + "rip");
-
-                                }
                             }
                         });
                     }

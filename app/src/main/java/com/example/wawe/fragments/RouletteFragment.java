@@ -174,7 +174,6 @@ public class RouletteFragment extends Fragment implements LocationListener {
                 if (body == null){
                     return;
                 }
-                Log.i(TAG, "" + response);
                 restaurants.addAll(body.getRestaurants());
                 if (!etCuisine.getText().toString().equals("")){
                     validateCorrectCategories();
@@ -229,71 +228,5 @@ public class RouletteFragment extends Fragment implements LocationListener {
         latitude = location.getLatitude();
         locationManager.removeUpdates(this);
     }
-
-
-    //    public void checkIfVisited () {
-//        User currentUser = new User(ParseUser.getCurrentUser());
-//        JSONArray visitedIds = new JSONArray();
-//        for (int i = 0; i < currentUser.getVisited().length(); i++){
-//            String str = null;
-//            try {
-//                str = currentUser.getVisited().getString(i);
-//                String id = str.substring(str.indexOf("*") + 1, str.indexOf("*"));
-//                visitedIds.put(id);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        set.addAll(restaurants);
-//        for (int i = 0; i < visitedIds.length(); i++){
-//            try {
-//                if (set.contains(visitedIds.get(i))){
-//                    set.remove(visitedIds.get(i));
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        //restaurants.clear();
-//        new Task().execute();
-//    }
-
-    private class Task extends AsyncTask<URL, Integer, Long>{
-        @Override
-        protected Long doInBackground(URL... urls) {
-            for (YelpRestaurant id: set) {
-//                Call<Restaurant> call = restaurantClient.searchRestaurants("Bearer " + REST_APPLICATION_ID, id);
-//                try {
-//                    Response<Restaurant> response = call.execute();
-//                    Log.i(TAG, "" + response);
-//                    Restaurant body = response.body();
-//                    restaurants.add(body);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Long aLong) {
-            obtainRandomRestaurant();
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-    }
-
-
-
-
-
-
-
-
-
-
 
 }

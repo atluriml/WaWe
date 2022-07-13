@@ -2,7 +2,7 @@ package com.example.wawe.roomClasses;
 
 import androidx.room.RoomDatabase;
 
-@androidx.room.Database(entities = {UserRoom.class, RestaurantRoom.class, UserFavoritesRoom.class, UserVisitedRoom.class}, version = 7)
+@androidx.room.Database(entities = {UserRoom.class, RestaurantRoom.class, UserFavoritesRoom.class, UserVisitedRoom.class}, version = 8)
 public abstract class Database extends RoomDatabase {
 
     public abstract RestaurantListsDao restaurantListsDao();
