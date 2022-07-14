@@ -88,6 +88,9 @@ public class Restaurant extends ParseObject {
     }
 
     public void setKeyPrice (String price) {
+        if (price == null) {
+            return;
+        }
         put(KEY_PRICE, price);
     }
 

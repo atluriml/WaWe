@@ -1,6 +1,9 @@
 package com.example.wawe.YelpClasses;
 
+import com.example.wawe.ParseModels.Restaurant;
 import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONException;
 import org.parceler.Parcel;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +52,14 @@ public class YelpRestaurant  {
         this.coordinates = coordinates;
     }
 
+    public YelpRestaurant (Restaurant restaurant) {
+        this.name = restaurant.getKeyName();
+        this.price = restaurant.getKeyPrice();
+        this.rating = restaurant.getKeyRating();
+        this.restaurantImage = restaurant.getKeyImage();
+        this.id = restaurant.getKeyId();
+    }
+
     public String getName() {
         return name;
     }
@@ -85,34 +96,8 @@ public class YelpRestaurant  {
         return coordinates;
     }
 
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "name='" + name + '\'' +
-                ", price='" + price + '\'' +
-                ", rating=" + rating +
-                ", distanceMeters=" + distanceMeters +
-                ", restaurantImage='" + restaurantImage + '\'' +
-                ", category=" + category +
-                ", location=" + location +
-                ", id='[" + id + "]" + '\'' +
-                ", coordinates=" + coordinates +
-                '}';
+    public int getDistanceInMiles () {
+        double milesPerMeter = 0.000621371;
+        return (int) (distanceMeters * milesPerMeter);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        YelpRestaurant that = (YelpRestaurant) o;
-        return Objects.equals(id, that.id) ;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-
-
 }

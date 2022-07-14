@@ -13,7 +13,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="What kind of cuisine are we feeling today"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/etCuisine"
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/spPrice"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="14dp"
         android:text="Max distance (miles) from your location"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -67,8 +68,8 @@
         android:id="@+id/btnGenerateRestaurant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spRadius"
-        android:layout_marginTop="22dp"
+        android:layout_below="@id/btnVisitedRestaurants"
+        android:layout_marginTop="13dp"
         android:text="Generate Restaurant"
         android:textAllCaps="false" />
 
@@ -79,5 +80,17 @@
         android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/roulette_animation" />
+
+    <CheckBox
+        android:id="@+id/btnVisitedRestaurants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spRadius"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="3dp"
+        android:checked="false"
+        android:outlineProvider="none"
+        android:text="Check Box If You Want to Visit a Completely New Place" />
 
 </RelativeLayout>
