@@ -1,170 +1,77 @@
 package com.example.wawe.Activities;
 
-import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
-
-import android.Manifest;
-import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.wawe.MapSubclasses.FetchURL;
+import com.example.wawe.MapSubclasses.TaskLoadedCallback;
 import com.example.wawe.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationRequest;
-
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.CameraUpdate;
+import com.example.wawe.YelpClasses.YelpRestaurant;
+import com.example.wawe.fragments.RouletteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
+import org.parceler.Parcels;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
-@RuntimePermissions
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
-    private SupportMapFragment mapFragment;
-    GoogleMap map;
-    LocationRequest mLocationRequest;
-    Location mCurrentLocation;
-    private long UPDATE_INTERVAL = 60000;  /* 60 secs */
-    private long FASTEST_INTERVAL = 5000; /* 5 secs */
-
-    private final static String KEY_LOCATION = "location";
-
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    public static final int TAG_CODE_PERMISSION_LOCATION = 500;
-
-
-
-    public MapActivity() {
-        // Required empty public constructor
-    }
+    public static final String BASE_URL = "https://maps.googleapis.com/maps/api/directions/";
+    private GoogleMap map;
+    private MarkerOptions origin, restaurantLocation;
+    private Polyline currentPolyline;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    loadMap(map);
-                }
-            });
-        } else {
-            Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    protected void loadMap(GoogleMap googleMap) {
-        map = googleMap;
-        if (map != null) {
-            // Map is ready
-            Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
-            MapActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
-            MapActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
-        } else {
-            Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
-        }
+        origin = new MarkerOptions().position(new LatLng(RouletteFragment.latitude, RouletteFragment.longitude)).title("Your Location");
+        YelpRestaurant restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
+        restaurantLocation = new MarkerOptions().position(new LatLng(restaurant.getCoordinates().getLatitude(), restaurant.getCoordinates().getLongitude())).title(restaurant.getName());
+        restaurantLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MapActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.addMarker(origin);
+        map.addMarker(restaurantLocation); //1
+        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(origin.getPosition()); // this is a LatLng value
+        builder.include(restaurantLocation.getPosition());
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
+        new FetchURL(MapActivity.this).execute(getUrl(origin.getPosition(), restaurantLocation.getPosition(), "driving"), "driving");
     }
 
-    @SuppressWarnings({"MissingPermission"})
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    void getMyLocation() {
-        map.setMyLocationEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-
-        FusedLocationProviderClient locationClient = getFusedLocationProviderClient(this);
-        locationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            onLocationChanged(location);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
-                        e.printStackTrace();
-                    }
-                });
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        String mode = "mode=" + directionMode;
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        String output = "json";
+        String url = BASE_URL + output + "?" + parameters + "&key=" + getString(R.string.google_maps_api_key);
+        return url;
     }
 
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    protected void startLocationUpdates() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-        settingsClient.checkLocationSettings(locationSettingsRequest);
-        //noinspection MissingPermission
-        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        onLocationChanged(locationResult.getLastLocation());
-                    }
-                },
-                Looper.myLooper());
-    }
-
-    public void onLocationChanged(Location location) {
-        // GPS may be turned off
-        if (location == null) {
-            return;
-        }
-
-        mCurrentLocation = location;
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        displayLocation();
-    }
-
-    private void displayLocation() {
-        if (mCurrentLocation != null) {
-            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
-        } else {
-            Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null)
+            currentPolyline.remove();
+        currentPolyline = map.addPolyline((PolylineOptions) values[0]);
     }
 }

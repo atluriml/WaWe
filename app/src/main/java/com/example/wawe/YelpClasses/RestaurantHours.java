@@ -1,4 +1,4 @@
-package com.example.wawe.restaurantClasses;
+package com.example.wawe.YelpClasses;
 
 import com.google.gson.annotations.SerializedName;
 
