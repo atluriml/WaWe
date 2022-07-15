@@ -1,6 +1,7 @@
 package com.example.wawe.roomClasses;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -18,6 +19,14 @@ public interface RestaurantListsDao {
     @Query("SELECT * FROM UserVisitedRoom INNER JOIN UserRoom ON UserVisitedRoom.userId = UserRoom.userId INNER JOIN RestaurantRoom ON UserVisitedRoom.restaurantId = RestaurantRoom.yelpId")
     List<UserRestaurantsList> userVisitedItems();
 
+    // query visited to delete
+    @Query("SELECT * FROM UserVisitedRoom INNER JOIN UserRoom ON UserVisitedRoom.userId = UserRoom.userId INNER JOIN RestaurantRoom ON UserVisitedRoom.restaurantId = RestaurantRoom.yelpId WHERE UserVisitedRoom.userId = :userId AND UserVisitedRoom.restaurantId = :restaurantId")
+    UserVisitedRoom userVisitedDelete(String userId, String restaurantId);
+
+    // query visited
+    @Query("SELECT * FROM UserFavoritesRoom INNER JOIN UserRoom ON UserFavoritesRoom.userId = UserRoom.userId INNER JOIN RestaurantRoom ON UserFavoritesRoom.restaurantId = RestaurantRoom.yelpId WHERE UserFavoritesRoom.userId = :userId AND UserFavoritesRoom.restaurantId = :restaurantId")
+    UserFavoritesRoom userFavoriteDelete(String userId, String restaurantId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertModel(UserFavoritesRoom userFavoritesRoom);
 
@@ -29,5 +38,11 @@ public interface RestaurantListsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertModel(UserVisitedRoom userVisitedRooms);
+
+    @Delete
+    void deleteModel(UserVisitedRoom userVisitedRooms);
+
+    @Delete
+    void deleteModel(UserFavoritesRoom userFavoritesRoom);
 
 }

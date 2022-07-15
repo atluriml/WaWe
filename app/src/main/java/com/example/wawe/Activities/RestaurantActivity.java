@@ -184,6 +184,12 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                 else{
                     Restaurant.markAsNotVisited(parseRestaurant);
                     btnClickIfVisited.setChecked(false);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            RestaurantListsActivity.restaurantListsDao.deleteModel(RestaurantListsActivity.restaurantListsDao.userVisitedDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()));
+                        }
+                    });
                 }
             }
         });
@@ -214,6 +220,13 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             btnLiked.setColorFilter(Color.parseColor("#000000"));
             Restaurant.unFavoriteRestaurant(parseRestaurant);
             liked = false;
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    RestaurantListsActivity.restaurantListsDao.deleteModel(RestaurantListsActivity.restaurantListsDao.userFavoriteDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()));
+                }
+
+            });
         }
         // user is liking restaurant
         else {
