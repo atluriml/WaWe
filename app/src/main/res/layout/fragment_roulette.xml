@@ -79,7 +79,8 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/roulette_animation" />
+        app:lottie_rawRes="@raw/roulette_animation"
+        app:lottie_loop="true"/>
 
     <CheckBox
         android:id="@+id/btnVisitedRestaurants"

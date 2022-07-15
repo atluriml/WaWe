@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="150dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/featured_restaurant"
+    android:elevation="20dp"
+    android:gravity="center_horizontal">
 
     <ImageView
         android:id="@+id/ivRestItemImage"
-        android:layout_width="150dp"
-        android:layout_height="116dp"
+        android:layout_width="147dp"
+        android:layout_height="match_parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvItemName"
-        android:layout_toRightOf="@+id/ivRestItemImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_toRightOf="@+id/ivRestItemImage"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Bob's kitchen" />
 
@@ -52,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPriceItem"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="153dp"
+        android:layout_marginStart="150dp"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="3dp"
         android:layout_toRightOf="@id/ivRestItemImage"
@@ -60,14 +68,5 @@
         android:textColor="#000000"
         android:textSize="20sp"
         tools:text="first street" />
-
-    <View
-        android:id="@+id/tweetSeparator"
-        android:layout_width="440dp"
-        android:layout_height="2dp"
-        android:layout_below="@id/ivRestItemImage"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:background="#AAB8C2" />
 
 </RelativeLayout>

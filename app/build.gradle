@@ -40,6 +40,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildFeatures {
+        viewBinding true
+        dataBinding = true
+    }
+
 
 }
 
@@ -84,6 +89,7 @@ dependencies {
     implementation "com.android.volley:volley:1.2.1"
 
     implementation 'com.airbnb.android:lottie:3.4.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation "com.squareup.okhttp3:logging-interceptor:3.4.1"
 
