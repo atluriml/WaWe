@@ -91,7 +91,7 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 ## Wireframes
 
-<img src='https://github.com/atluriml/WaWe/raw/master/CapstoneWireFrameDraft1.JPG' title='Wireframes' width='250' alt='Wireframes'/>
+<img src='https://github.com/atluriml/WaWe/raw/master/digital_wireframe_wawe.png' title='Digital Wireframes' width='250' alt='Wireframes'/>
 
 ### [BONUS] Digital Wireframes & Mockups
 
