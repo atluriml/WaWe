@@ -88,9 +88,9 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 * Your app uses at least one animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
     * a spinnable wheel for the roulette
   
-### 5. Planned Problems 
-* Implementing a filtering algorithm to allow users to apply price range, cuisine, dietary restriction, and location filters before the app selects a restaurant for the users to try
-* Combining the YELP API and Google Maps SDK with the ParseUser Database
+### Technical Problems
+* Filtering: After making the API call to Yelp I will take the 50 restaurants that the API gives me. I create an algorithm that uses the user’s favorite restaurants to give the user the best possible restaurant recommendation based on their filters. 
+* User and Data Persistence: I will be caching information so that if there is a network issue, the user can still see their favorite restaurants and the restaurants they have visited. This is a complex problem because I will be using SQLite and Room both of which I have not used before.
 
 ## Wireframes
 
@@ -147,8 +147,4 @@ USER Object - Parse Database
       - | Very|Endpoint  |Description |
         | --------|--------| -------- |
         | GET|businesses/search|search for businesses|
-
-### Technical Problems
-* Filtering: After making the API call to Yelp I will take the 50 restaurants that the API gives me. I create an algorithm that uses the user’s favorite restaurants to give the user the best possible restaurant recommendation based on their filters. 
-* User and Data Persistence: I will be caching information so that if there is a network issue, the user can still see their favorite restaurants and the restaurants they have visited. This is a complex problem because I will be using SQLite and Room both of which I have not used before.
 
