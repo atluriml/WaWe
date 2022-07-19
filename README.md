@@ -34,10 +34,11 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 * [x] users are able to mark a restaurant as visited and favorite them
 * [x] the restaurant recommended to the user is based on their applied filters and favorited restaurants
 * [x] users can view restaurants they've visited and favorited on offline mode
-**Optional Nice-to-have Stories**
 
+
+**Optional Nice-to-have Stories**
 * [] user can shake their phone/mobile device for the roulette to start
-* [] users can chat with one another 
+* [] users can create groups and post in them to create meetups and connections between each other
 
 ### 2. Screen Archetypes
 
