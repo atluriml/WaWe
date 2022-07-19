@@ -30,15 +30,17 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 * [x] users are able to login/sign-up/logout from the application
 * [x] users are able to apply price range, cuisine, dietary restriction, and location filters before the application chooses a restaurant for the user 
-* [x] users are able to get see the route to the chosen restaurant from their location
+* [x] users are able to see their location and the restaurant's location on the Map Screen 
 * [x] users are able to mark a restaurant as visited and favorite them
 * [x] the restaurant recommended to the user is based on their applied filters and favorited restaurants
 * [x] users can view restaurants they've visited and favorited on offline mode
 
 
 **Optional Nice-to-have Stories**
+* [x] users are able to see the route from their location to the restaurant's location on the Map Screen 
 * [] user can shake their phone/mobile device for the roulette to start
-* [] users can create groups and post in them to create meetups and connections between each other
+* [] users can create groups and post in them to create meetups, allowing connections between each other
+* [] incorporate data persistence into the groups feature 
 
 ### 2. Screen Archetypes
 
@@ -53,7 +55,8 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
        * filters include: price range, cuisine, dietary restriction, location,
 * Detail Screen 
     * Screen with the chosen restaurant 
-    * will include a map to showcase the directions and distance to the chosen restaurant
+* Map Screen 
+    * will include a map to showcase the route from the user's location to the chosen restaurant
 * Profile Screen
     * user's profile 
 * Favorites Screen
