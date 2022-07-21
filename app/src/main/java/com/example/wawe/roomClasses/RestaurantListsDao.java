@@ -27,6 +27,14 @@ public interface RestaurantListsDao {
     @Query("SELECT * FROM UserFavoritesRoom INNER JOIN UserRoom ON UserFavoritesRoom.userId = UserRoom.userId INNER JOIN RestaurantRoom ON UserFavoritesRoom.restaurantId = RestaurantRoom.yelpId WHERE UserFavoritesRoom.userId = :userId AND UserFavoritesRoom.restaurantId = :restaurantId")
     UserFavoritesRoom userFavoriteDelete(String userId, String restaurantId);
 
+    // query groups
+    @Query("SELECT * FROM GroupsRoom")
+    List<GroupsRoom> groupsOffline();
+
+    // query posts in the group
+    @Query("SELECT * FROM PostRoom WHERE PostRoom.groupId = :groupId")
+    List<PostRoom> groupPosts(String groupId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertModel(UserFavoritesRoom userFavoritesRoom);
 
@@ -38,6 +46,12 @@ public interface RestaurantListsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertModel(UserVisitedRoom userVisitedRooms);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertModel(PostRoom postRoom);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertModel(GroupsRoom groupsRoom);
 
     @Delete
     void deleteModel(UserVisitedRoom userVisitedRooms);

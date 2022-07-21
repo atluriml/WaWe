@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="150dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/featured_restaurant"
+    android:elevation="20dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tvGroupName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Bob's kitchen" />
+
+    <TextView
+        android:id="@+id/tvGroupLocation"
+        android:layout_width="337dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvGroupName"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        tools:text="$$" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="345dp"
+        android:layout_height="96dp"
+        android:layout_below="@id/tvGroupLocation"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_weight="1"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        tools:text="first street" />
+
+</RelativeLayout>

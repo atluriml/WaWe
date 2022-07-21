@@ -14,7 +14,7 @@ public class UserVisited extends ParseObject {
 
     public UserVisited (ParseUser user, Restaurant restaurant) {}
 
-    public ParseUser getUseVisited(){
+    public ParseUser getUserVisited(){
         return getParseUser(KEY_USER_VISITED);
     }
 

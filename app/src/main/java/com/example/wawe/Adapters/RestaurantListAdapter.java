@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.wawe.Activities.MainActivity;
 import com.example.wawe.Activities.RestaurantActivity;
 import com.example.wawe.Activities.RestaurantListsActivity;
 import com.example.wawe.BuildConfig;
@@ -36,7 +37,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
     RestaurantClient restaurantClient = retrofit.create(RestaurantClient.class);
-    public static final String TAG = "RestaurantListAdapter";
 
     Context context;
     List<Restaurant> restaurantList;
@@ -88,8 +88,16 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Restaurant restaurant = restaurantList.get(position);
-                id = restaurant.getKeyId();
-                new Task().execute();
+                if (MainActivity.isOnline(context)){
+                    id = restaurant.getKeyId();
+                    new Task().execute();
+                }
+                else {
+                    Intent intent = new Intent(context, RestaurantActivity.class);
+                    YelpRestaurant newYelpRest = new YelpRestaurant(restaurant);
+                    intent.putExtra("restaurant", Parcels.wrap(newYelpRest));
+                    context.startActivity(intent);
+                }
             }
         }
 

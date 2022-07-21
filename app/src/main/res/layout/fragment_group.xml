@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.RestaurantListsActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvListTitle"
+        android:layout_width="345dp"
+        android:layout_height="58dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Groups" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/svSearchGroups">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGroups"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:padding="8dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/svSearchGroups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="search groups"
+        android:layout_below="@id/tvListTitle"
+        android:layout_marginTop="-2dp" />
+
+</RelativeLayout>

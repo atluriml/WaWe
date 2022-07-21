@@ -57,6 +57,8 @@ public class YelpRestaurant  {
         this.price = restaurant.getKeyPrice();
         this.rating = restaurant.getKeyRating();
         this.restaurantImage = restaurant.getKeyImage();
+        this.location = new RestaurantLocation();
+        this.location.setAddress(restaurant.getKeyAddress());
         this.id = restaurant.getKeyId();
     }
 

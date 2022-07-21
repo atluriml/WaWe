@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "363707856354",
+    "project_id": "wawe-354118",
+    "storage_bucket": "wawe-354118.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363707856354:android:c2a9e1163166fb8a8d35bb",
+        "android_client_info": {
+          "package_name": "com.example.wawe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363707856354-8qcarq2u576qhh0miaman399g3uip6go.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wawe",
+            "certificate_hash": "0f4ad67a8c4d77432a9edd8e5183342eaf94fc76"
+          }
+        },
+        {
+          "client_id": "363707856354-q3ets8qr4o11g2tg0s1umee0tovl36l5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvzb7esfDLIvFo3ElBFcZVHsj8zZjXsf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363707856354-q3ets8qr4o11g2tg0s1umee0tovl36l5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

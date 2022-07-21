@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.bumptech.glide.Glide;
+import com.example.wawe.R;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 @Entity

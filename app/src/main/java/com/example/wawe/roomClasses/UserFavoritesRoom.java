@@ -7,6 +7,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.wawe.ParseModels.UserFavorites;
+
 @Entity(foreignKeys = {@ForeignKey(entity = UserRoom.class, parentColumns = "userId", childColumns = "userId"),
         @ForeignKey(entity = RestaurantRoom.class, parentColumns = "yelpId", childColumns = "restaurantId")})
 public class UserFavoritesRoom {

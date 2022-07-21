@@ -37,6 +37,7 @@ import org.parceler.Parcels;
 
 public class RestaurantActivity extends AppCompatActivity implements View.OnClickListener {
 
+    RestaurantListsDao restaurantListsDao;
     YelpRestaurant restaurant;
     TextView tvName;
     TextView tvPrice;
@@ -44,6 +45,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     RatingBar ratingBar;
     TextView tvAddress;
     TextView tvCategory;
+    TextView tvFavorite, tvVisited;
     ImageView ivRestaurantImage;
     Button btnGetDirections;
     ImageButton btnLiked;
@@ -60,6 +62,8 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
+        restaurantListsDao = ( (ParseAndDatabaseApplication) getApplicationContext()).getDatabase().restaurantListsDao();
+
         tvName = findViewById(R.id.tvRestName);
         tvMilesAway = findViewById(R.id.tvMilesAway);
         tvAddress = findViewById(R.id.tvAddress);
@@ -72,127 +76,150 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         btnClickIfVisited = (CheckBox) findViewById(R.id.btnClickIfVisited);
         likesAnimation = findViewById(R.id.likes_animation);
         restaurant = Parcels.unwrap(getIntent().getParcelableExtra("restaurant"));
-
-        ParseQuery<Restaurant> queryRestaurant = ParseQuery.getQuery(Restaurant.class);
-        queryRestaurant.whereEqualTo(Restaurant.KEY_ID, restaurant.getId());
-        queryRestaurant.getFirstInBackground(new GetCallback<Restaurant>()
-        {
-            @Override
-            public void done(Restaurant object, ParseException e) {
-                if(e == null) // restaurant exists in parseDatabase
-                {
-                    objectId = object.getObjectId();
-                    parseRestaurant = object;
-                    // checks to see if the user has liked the restaurant
-                    ParseQuery<UserFavorites> queryUserFavorites = ParseQuery.getQuery(UserFavorites.class);
-                    queryUserFavorites.whereEqualTo(UserFavorites.KEY_FAVORITED_RESTAURANT, parseRestaurant).whereEqualTo(UserFavorites.KEY_USER, ParseUser.getCurrentUser());
-                    queryUserFavorites.getFirstInBackground(new GetCallback<UserFavorites>()
-                    {
-                        @Override
-                        public void done(UserFavorites object, ParseException e) {
-                            if(e == null) {
-                                btnLiked.setImageResource(R.drawable.ic_vector_heart);
-                                btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
-                                liked = true;
-
-                            }
-                            else {
-                                btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
-                                btnLiked.setColorFilter(Color.parseColor("#000000"));
-                                liked = false;
-                            }
-                        }
-                    });
-                    //check to see if the user has visited the restaurant
-                    ParseQuery<UserVisited> queryUserVisited = ParseQuery.getQuery(UserVisited.class);
-                    queryUserVisited.whereEqualTo(UserVisited.KEY_VISITED_RESTAURANT, parseRestaurant).whereEqualTo(UserVisited.KEY_USER_VISITED, ParseUser.getCurrentUser());
-                    queryUserVisited.getFirstInBackground(new GetCallback<UserVisited>() {
-                        @Override
-                        public void done(UserVisited object, ParseException e) {
-                            if(e == null) {
-                                btnClickIfVisited.setChecked(true);
-                            }
-                            else {
-                                btnClickIfVisited.setChecked(false);
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    parseRestaurant = new Restaurant(restaurant);
-                    btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
-                    btnLiked.setColorFilter(Color.parseColor("#000000"));
-                    liked = false;
-                    btnClickIfVisited.setChecked(false);
-                }
-            }
-        });
+        tvFavorite = findViewById(R.id.tvFavorite);
+        tvVisited = findViewById(R.id.tvVisited);
 
         tvName.setText(restaurant.getName());
         tvAddress.setText(restaurant.getLocation().getAddress());
-        String categories = restaurant.getCategory().get(0).getTitle();
-        for (int i = 1; i < restaurant.getCategory().size(); i++){
-            categories = categories + ", " +   restaurant.getCategory().get(i).getTitle();
-        }
-        tvCategory.setText(categories);
         tvPrice.setText(restaurant.getPrice());
-        double userLatitude = RouletteFragment.latitude;
-        double userLongitude = RouletteFragment.longitude;
-        double restaurantLatitude = restaurant.getCoordinates().getLatitude();
-        double restaurantLongitude = restaurant.getCoordinates().getLongitude();
-        String distance = getDistance(userLatitude, userLongitude, restaurantLatitude, restaurantLongitude);
-        tvMilesAway.setText(distance);
         ratingBar.setRating((float) restaurant.getRating());
         Glide.with(this)
                 .load(restaurant.getRestaurantImage()).into(ivRestaurantImage);
+        if (!MainActivity.isOnline(this)){
+            btnLiked.setVisibility(View.GONE);
+            btnClickIfVisited.setVisibility(View.GONE);
+            btnGetDirections.setVisibility(View.GONE);
+            tvVisited.setVisibility(View.GONE);
+            tvFavorite.setVisibility(View.GONE);
+        }
+        else {
+            ParseQuery<Restaurant> queryRestaurant = ParseQuery.getQuery(Restaurant.class);
+            queryRestaurant.whereEqualTo(Restaurant.KEY_ID, restaurant.getId());
+            queryRestaurant.getFirstInBackground(new GetCallback<Restaurant>() {
+                @Override
+                public void done(Restaurant object, ParseException e) {
+                    if (e == null) // restaurant exists in parseDatabase
+                    {
+                        objectId = object.getObjectId();
+                        parseRestaurant = object;
+                        // checks to see if the user has liked the restaurant
+                        ParseQuery<UserFavorites> queryUserFavorites = ParseQuery.getQuery(UserFavorites.class);
+                        queryUserFavorites.whereEqualTo(UserFavorites.KEY_FAVORITED_RESTAURANT, parseRestaurant).whereEqualTo(UserFavorites.KEY_USER, ParseUser.getCurrentUser());
+                        queryUserFavorites.getFirstInBackground(new GetCallback<UserFavorites>() {
+                            @Override
+                            public void done(UserFavorites object, ParseException e) {
+                                if (e == null) {
+                                    btnLiked.setImageResource(R.drawable.ic_vector_heart);
+                                    btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
+                                    liked = true;
 
-        // checks to see if the user is double clicking to like
-        ivRestaurantImage.setOnClickListener(this);
-        tvAddress.setOnClickListener(this);
-        tvPrice.setOnClickListener(this);
-        tvCategory.setOnClickListener(this);
-        ratingBar.setOnClickListener(this);
-        tvName.setOnClickListener(this);
-        tvMilesAway.setOnClickListener(this);
-
-        btnGetDirections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent mapIntent = new Intent(RestaurantActivity.this, MapActivity.class);
-                mapIntent.putExtra("restaurant", Parcels.wrap(restaurant));
-                startActivity(mapIntent);
-            }
-        });
-
-        //adding or removing from favorites
-        btnLiked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                favoriteOrUnfavorite();
-            }
-        });
-
-        btnClickIfVisited.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // user is marking restaurant as visited
-                if (btnClickIfVisited.isChecked()){
-                   Restaurant.markRestaurantVisited(parseRestaurant);
-                   btnClickIfVisited.setChecked(true);
+                                } else {
+                                    btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
+                                    btnLiked.setColorFilter(Color.parseColor("#000000"));
+                                    liked = false;
+                                }
+                            }
+                        });
+                        //check to see if the user has visited the restaurant
+                        ParseQuery<UserVisited> queryUserVisited = ParseQuery.getQuery(UserVisited.class);
+                        queryUserVisited.whereEqualTo(UserVisited.KEY_VISITED_RESTAURANT, parseRestaurant).whereEqualTo(UserVisited.KEY_USER_VISITED, ParseUser.getCurrentUser());
+                        queryUserVisited.getFirstInBackground(new GetCallback<UserVisited>() {
+                            @Override
+                            public void done(UserVisited object, ParseException e) {
+                                if (e == null) {
+                                    btnClickIfVisited.setChecked(true);
+                                } else {
+                                    btnClickIfVisited.setChecked(false);
+                                }
+                            }
+                        });
+                    } else {
+                        parseRestaurant = new Restaurant(restaurant);
+                        btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
+                        btnLiked.setColorFilter(Color.parseColor("#000000"));
+                        liked = false;
+                        btnClickIfVisited.setChecked(false);
+                    }
                 }
-                else{
-                    Restaurant.markAsNotVisited(parseRestaurant);
-                    btnClickIfVisited.setChecked(false);
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            RestaurantListsActivity.restaurantListsDao.deleteModel(RestaurantListsActivity.restaurantListsDao.userVisitedDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()));
-                        }
-                    });
-                }
+            });
+
+            String categories = restaurant.getCategory().get(0).getTitle();
+            for (int i = 1; i < restaurant.getCategory().size(); i++) {
+                categories = categories + ", " + restaurant.getCategory().get(i).getTitle();
             }
-        });
+            tvCategory.setText(categories);
+            double userLatitude = RouletteFragment.latitude;
+            double userLongitude = RouletteFragment.longitude;
+            double restaurantLatitude = restaurant.getCoordinates().getLatitude();
+            double restaurantLongitude = restaurant.getCoordinates().getLongitude();
+            String distance = getDistance(userLatitude, userLongitude, restaurantLatitude, restaurantLongitude);
+            tvMilesAway.setText(distance);
+
+
+            // checks to see if the user is double clicking to like
+            ivRestaurantImage.setOnClickListener(this);
+            tvAddress.setOnClickListener(this);
+            tvPrice.setOnClickListener(this);
+            tvCategory.setOnClickListener(this);
+            ratingBar.setOnClickListener(this);
+            tvName.setOnClickListener(this);
+            tvMilesAway.setOnClickListener(this);
+
+            btnGetDirections.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent mapIntent = new Intent(RestaurantActivity.this, MapActivity.class);
+                    mapIntent.putExtra("restaurant", Parcels.wrap(restaurant));
+                    startActivity(mapIntent);
+                }
+            });
+
+            //adding or removing from favorites
+            btnLiked.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    favoriteOrUnfavorite();
+                }
+            });
+
+            btnClickIfVisited.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // user is marking restaurant as visited
+                    if (btnClickIfVisited.isChecked()) {
+                        String userVisitedRoomObjectId = Restaurant.markRestaurantVisited(parseRestaurant);
+                        btnClickIfVisited.setChecked(true);
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
+                                UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
+                                restaurantListsDao.insertModel(restaurantRoom);
+                                restaurantListsDao.insertModel(userRoom);
+                                UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
+                                userVisitedRoom.id = userVisitedRoomObjectId;
+                                userVisitedRoom.userId = userRoom.getUserId();
+                                userVisitedRoom.restaurantId = restaurantRoom.yelpId;
+                                userVisitedRoom.restaurant = restaurantRoom;
+                                userVisitedRoom.user = userRoom;
+                                restaurantListsDao.insertModel(userVisitedRoom);
+                            }
+                        });
+                    } else {
+                        Restaurant.markAsNotVisited(parseRestaurant);
+                        btnClickIfVisited.setChecked(false);
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (restaurantListsDao.userVisitedDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()) != null) {
+                                    restaurantListsDao.deleteModel(restaurantListsDao.userVisitedDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()));
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
 
     }
 
@@ -223,7 +250,9 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
-                    RestaurantListsActivity.restaurantListsDao.deleteModel(RestaurantListsActivity.restaurantListsDao.userFavoriteDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()));
+                    if(restaurantListsDao.userFavoriteDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()) != null) {
+                        restaurantListsDao.deleteModel(restaurantListsDao.userFavoriteDelete(ParseUser.getCurrentUser().getObjectId(), restaurant.getId()));
+                    }
                 }
 
             });
@@ -233,8 +262,25 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             likesAnimation.setVisibility(View.VISIBLE);
             btnLiked.setImageResource(R.drawable.ic_vector_heart);
             btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
-            Restaurant.likeRestaurant(parseRestaurant);
+            String userFavoritesObjectId = Restaurant.likeRestaurant(parseRestaurant);
             liked = true;
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
+                    UserRoom userRoom = new UserRoom(ParseUser.getCurrentUser());
+                    restaurantListsDao.insertModel(restaurantRoom);
+                    restaurantListsDao.insertModel(userRoom);
+                    UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
+                    userFavoritesRoom.id = userFavoritesObjectId;
+                    userFavoritesRoom.userId = userRoom.getUserId();
+                    userFavoritesRoom.restaurantId = restaurantRoom.yelpId;
+                    userFavoritesRoom.restaurant = restaurantRoom;
+                    userFavoritesRoom.user = userRoom;
+                    restaurantListsDao.insertModel(userFavoritesRoom);
+                }
+
+            });
         }
     }
 

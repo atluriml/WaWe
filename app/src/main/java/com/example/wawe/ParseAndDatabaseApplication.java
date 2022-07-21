@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import com.example.wawe.ParseModels.Groups;
+import com.example.wawe.ParseModels.Post;
 import com.example.wawe.ParseModels.Restaurant;
 import com.example.wawe.ParseModels.UserFavorites;
 import com.example.wawe.ParseModels.UserVisited;
@@ -31,6 +33,8 @@ public class ParseAndDatabaseApplication extends Application {
         ParseObject.registerSubclass(Restaurant.class);
         ParseObject.registerSubclass(UserFavorites.class);
         ParseObject.registerSubclass(UserVisited.class);
+        ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(Groups.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(BuildConfig.PARSE_APPLICATION_ID)

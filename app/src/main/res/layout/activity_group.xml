@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.GroupActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvGroupTitle"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="34sp"
+        tools:text="Bay Eats" />
+
+    <ImageButton
+        android:id="@+id/btnAddPost"
+        android:layout_width="67dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="false"
+        android:backgroundTint="#FFFFFF"
+        android:src="@android:drawable/ic_input_add"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:tint="@color/wawe_dark_blue" />
+
+    <TextView
+        android:id="@+id/tvGroupLocation"
+        android:layout_width="342dp"
+        android:layout_height="43dp"
+        android:layout_below="@+id/tvGroupTitle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Bay Area, CA" />
+
+    <TextView
+        android:id="@+id/tvGroupDescription"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_below="@+id/tvGroupLocation"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="16sp"
+        tools:text="trying out all the food in the bay area" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvGroupDescription"
+        android:layout_marginTop="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGroupPosts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:padding="8dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

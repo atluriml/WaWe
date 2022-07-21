@@ -6,10 +6,16 @@
     <item
         android:id="@+id/action_restaurant_details"
         android:icon="@drawable/instagram_home_outline_24"
-        android:title="Home"
+        android:title="Roulette"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_map"
+        android:id="@+id/action_chat"
+        android:icon="@drawable/vector_compose_message"
+        app:iconTint="@android:color/black"
+        android:title="Groups"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_profile"
         android:icon="@drawable/instagram_user_outline_24"
         android:title="Profile"
         app:showAsAction="always" />

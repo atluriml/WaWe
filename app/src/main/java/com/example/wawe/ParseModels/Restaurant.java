@@ -1,7 +1,5 @@
 package com.example.wawe.ParseModels;
 
-import android.util.Log;
-
 import com.example.wawe.YelpClasses.YelpRestaurant;
 import com.example.wawe.roomClasses.RestaurantRoom;
 import com.parse.FindCallback;
@@ -88,14 +86,17 @@ public class Restaurant extends ParseObject {
     }
 
     public void setKeyPrice (String price) {
-        if (price == null) {
-            return;
-        }
-        put(KEY_PRICE, price);
+        if (price == null) { put(KEY_PRICE, " "); }
+        else { put(KEY_PRICE, price); }
     }
 
     public void setKeyImage (String restaurantImage) {
-        put(KEY_IMAGE, restaurantImage);
+        if (restaurantImage == null){
+            put(KEY_IMAGE, "");
+        }
+        else {
+            put(KEY_IMAGE, restaurantImage);
+        }
     }
 
     public void setKeyAddress (String address) {
@@ -110,18 +111,16 @@ public class Restaurant extends ParseObject {
         put(KEY_CATEGORIES, jsonArray);
     }
 
-    public static void likeRestaurant (Restaurant restaurant){
+    public static String likeRestaurant (Restaurant restaurant){
         UserFavorites userFavorites = new UserFavorites();
         userFavorites.setUser(ParseUser.getCurrentUser());
         userFavorites.setRestaurantFavorite(restaurant);
-        userFavorites.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null){
-                    return;
-                }
-            }
-        });
+        try {
+            userFavorites.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return userFavorites.getObjectId();
     }
 
     public static void unFavoriteRestaurant (Restaurant restaurant) {
@@ -140,18 +139,16 @@ public class Restaurant extends ParseObject {
         });
     }
 
-    public static void markRestaurantVisited (Restaurant restaurant){
+    public static String markRestaurantVisited (Restaurant restaurant){
         UserVisited userVisited = new UserVisited();
         userVisited.setUserVisited(ParseUser.getCurrentUser());
         userVisited.setRestaurantVisited(restaurant);
-        userVisited.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null){
-                    return;
-                }
-            }
-        });
+        try {
+            userVisited.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return userVisited.getObjectId();
     }
 
     public static void markAsNotVisited (Restaurant restaurant) {

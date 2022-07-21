@@ -61,7 +61,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
         }
 
         if (getIntent().hasExtra("visited")) {
-            if (isNetworkAvailable()){
+            if (MainActivity.isOnline(this)){
                 callVisitedRestaurants();
             }
             else {
@@ -70,7 +70,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
             tvListTitle.setText("Restaurants You Have Visited");
         }
         else {
-            if (!isNetworkAvailable()) {
+            if (!MainActivity.isOnline(this)) {
                 callAsyncFavorites();
             }
             else {
@@ -85,7 +85,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
             public void onRefresh() {
                 adapter.clear();
                 if (getIntent().hasExtra("visited")) {
-                    if (isNetworkAvailable()){
+                    if (MainActivity.isOnline(RestaurantListsActivity.this)){
                         callVisitedRestaurants();
                     }
                     else {
@@ -93,7 +93,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    if (!isNetworkAvailable()) {
+                    if (!MainActivity.isOnline(RestaurantListsActivity.this)) {
                         callAsyncFavorites();
                     }
                     else {
@@ -154,6 +154,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
 
     public void callVisitedRestaurants() {
         ParseQuery<Restaurant> queryRestaurants = ParseQuery.getQuery(Restaurant.class).include(Restaurant.KEY_OBJECT_ID);
+        queryRestaurants.addDescendingOrder("createdAt");
         queryRestaurants.findInBackground(new FindCallback<Restaurant>() {
             @Override
             public void done(List<Restaurant> objects, ParseException e) { // list of the restaurant objects
@@ -196,6 +197,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
 
     public void callFavorites () {
         ParseQuery<Restaurant> queryRestaurants = ParseQuery.getQuery(Restaurant.class).include(Restaurant.KEY_OBJECT_ID);
+        queryRestaurants.addDescendingOrder("createdAt");
         queryRestaurants.findInBackground(new FindCallback<Restaurant>() {
             @Override
             public void done(List<Restaurant> objects, ParseException e) { // list of the restaurant objects
@@ -225,9 +227,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                                             restaurantListsDao.insertModel(userFavoritesRoom);
                                             usersSavedRestaurants.add(parseRestaurant);
                                         }
-
                                     });
-
                                     adapter.notifyDataSetChanged();
                                 }
                             }
@@ -237,13 +237,6 @@ public class RestaurantListsActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

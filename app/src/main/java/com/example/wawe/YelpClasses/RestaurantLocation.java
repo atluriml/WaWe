@@ -16,10 +16,7 @@ public class RestaurantLocation {
         return address;
     }
 
-    @Override
-    public String toString() {
-        return "RestaurantLocation{" +
-                "address='" + address + '\'' +
-                '}';
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
