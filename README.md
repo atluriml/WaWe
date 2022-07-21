@@ -38,22 +38,22 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 **Optional Nice-to-have Stories**
 * [x] users are able to see the route from their location to the restaurant's location on the Map Screen 
-* [] user can shake their phone/mobile device for the roulette to start
-* [] users can create groups and post in them to create meetups, allowing connections between each other
-* [] incorporate data persistence into the groups feature 
+* [x] user can shake their phone/mobile device for the roulette to start
+* [x] users can create groups or search for an already existing group and post in them to create meetups, allowing connections between each other
+* [x] incorporate data persistence into the groups feature 
 
 ### 2. Screen Archetypes
 
 * Splash Screen 
-   * will be displayed for 2 seconds when the app is opened 
+   * will be displayed when the app is opened 
 * Login Screen 
-   * Users are able to login/sign-up/logout from the application
+   * Users are able to login/sign-up from the application
 * Sign Up Screen
-   * Users are able to login/sign-up/logout from the application
-* Main Screen 
+   * Users are able to sign-up from the application
+* Roulette Screen 
    * Users are able to add filters to the application
        * filters include: price range, cuisine, dietary restriction, location,
-* Detail Screen 
+* Restaurant Detail Screen 
     * Screen with the chosen restaurant 
 * Map Screen 
     * will include a map to showcase the route from the user's location to the chosen restaurant
@@ -63,6 +63,13 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
     * list of user's favorite restaurants
 * Visited Screen
     * list of restaurant's the user has visited 
+* Settings Screen
+    * user can update their profile 
+* Groups Screen
+    * user can view already existing groups or create a new group
+* Group Detail Screen
+    * user can see and like posts and/or create a post in the group
+
 
 ### 3. Navigation
 
@@ -70,39 +77,47 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 * Roulette Screen
 * Profile Screen
+* Groups Screen
 
 **Flow Navigation** (Screen to Screen)
 
 * Roulette Screen
    * Detail Screen
-       * Map Screen (may incorporate this in the detail screen)
+       * Map Screen 
 * Profile Screen
+   * Settings Screen
    * Favorites Screen
+       * Detail Screen
+              * Map Screen
    * Visited Screen
+       * Detail Screen
+              * Map Screen
+* Groups Screen
+   * Group Detail Screen
 
 ### 4. Required Components 
 * Your app uses at least one gesture (e.g. double tap to like, e.g. pinch to scale) 
     * double tap to add a restaurant to favorites 
 * Your app incorporates at least one external library to add visual polish
-    * will incorporate Glide to add images 
+    * Glide to add images 
+    * Lottie for animations 
 * Your app uses at least one animation (e.g. fade in/out, e.g. animating a view growing and shrinking)
-    * a spinnable wheel for the roulette
+    * Loading animation
+    * Animation when user likes a restaurant 
   
 ### Technical Problems
-* Filtering: After making the API call to Yelp I will take the 50 restaurants that the API gives me. I create an algorithm that uses the user’s favorite restaurants to give the user the best possible restaurant recommendation based on their filters. 
-* User and Data Persistence: I will be caching information so that if there is a network issue, the user can still see their favorite restaurants and the restaurants they have visited. This is a complex problem because I will be using SQLite and Room both of which I have not used before.
+* Filtering: After making the API call to Yelp I will take the 50 restaurants that the API gives me. I create an algorithm that uses the user’s favorite restaurants to give the user the best possible restaurant recommendation based on their filters. This is a complex problem because the algorithm tailors itself to each user.
+* User and Data Persistence: I will be caching information so that if there is a network issue, the user can still see their favorite restaurants, restaurants they have visited, already existing groups, and posts that have been posted in each group. This is a complex problem because I used SQLite and Room both of which I have not used before.
 
 ## Wireframes
 
 <img src='https://github.com/atluriml/WaWe/raw/master/digital_wireframe_wawe.png' title='Digital Wireframes' width='250' alt='Wireframes'/>
 
-### [BONUS] Interactive Prototype
-
 ## Schema 
 
 ### Models
 
-USER Object - Parse Database 
+####Parse Database 
 | Property|Type  |Description |
 | --------|--------| -------- |
 | username|String|the user's username credentials|
