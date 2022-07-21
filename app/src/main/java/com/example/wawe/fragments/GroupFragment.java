@@ -55,7 +55,7 @@ public class GroupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        restaurantListsDao = ( (ParseAndDatabaseApplication) getContext().getApplicationContext()).getDatabase().restaurantListsDao();
+        restaurantListsDao = ((ParseAndDatabaseApplication) getContext().getApplicationContext()).getDatabase().restaurantListsDao();
 
         rvGroups = view.findViewById(R.id.rvGroups);
         tvListTitle = view.findViewById(R.id.tvListTitle);
@@ -101,28 +101,28 @@ public class GroupFragment extends Fragment {
             }
         });
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        swipeContainer.setEnabled(true);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                adapter.clear();
-                if (!searchView.isIconified()){
-                    filterList(searchView.getQuery().toString());
-                }
-                else if (!MainActivity.isOnline(requireContext())) {
-                    callAsyncGroups();
-                }
-                else {
-                    populateGroups();
-                }
-                swipeContainer.setRefreshing(false);
-            }
-        });
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+//        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+//        swipeContainer.setEnabled(true);
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                adapter.clear();
+//                if (!searchView.isIconified()){
+//                    filterList(searchView.getQuery().toString());
+//                }
+//                else if (!MainActivity.isOnline(requireContext())) {
+//                    callAsyncGroups();
+//                }
+//                else {
+//                    populateGroups();
+//                }
+//                swipeContainer.setRefreshing(false);
+//            }
+//        });
+//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
     }
 
     private void filterList(String newText) {

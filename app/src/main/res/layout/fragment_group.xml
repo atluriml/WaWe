@@ -14,19 +14,20 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Groups" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/svSearchGroups">
+<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:id="@+id/swipeContainer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/svSearchGroups">-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGroups"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:padding="8dp" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:padding="8dp"
+            android:layout_below="@+id/svSearchGroups"/>
+<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svSearchGroups"
