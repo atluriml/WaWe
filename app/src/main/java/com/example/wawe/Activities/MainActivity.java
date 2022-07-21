@@ -78,16 +78,7 @@ public class MainActivity extends AppCompatActivity implements GroupDialogBox.Di
             finish();
             return true;
         }
-        if (item.getItemId() == R.id.groups){
-            openDialog();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void openDialog() {
-        GroupDialogBox groupDialog = new GroupDialogBox();
-        groupDialog.show(getSupportFragmentManager(), "group dialog");
     }
 
     @Override
@@ -104,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements GroupDialogBox.Di
                 }
             }
         });
+        fragmentManager.beginTransaction().replace(R.id.flContainer, new GroupFragment()).commit();
     }
 
     public static boolean isOnline(Context c) {

@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,11 +26,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 import java.io.File;
 
 public class PostDialogBox extends AppCompatDialogFragment {
@@ -66,15 +62,11 @@ public class PostDialogBox extends AppCompatDialogFragment {
                 .setPositiveButton("create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String title = etPostTitle.getText().toString();
-                        String description = etPostDescription.getText().toString();
-                        listener.applyTexts(title, description, photoFile);
                     }
                 });
 
         btnCaptureImage = view.findViewById(R.id.btnCaptureImage);
         ivPostImage = view.findViewById(R.id.ivPostImage);
-
         etPostTitle = view.findViewById(R.id.etPostTitle);
         etPostDescription = view.findViewById(R.id.etPostDescription);
         tvUsername = view.findViewById(R.id.tvPostDialogUsername);
@@ -94,9 +86,39 @@ public class PostDialogBox extends AppCompatDialogFragment {
                 launchCamera();
             }
         });
-
-
         return builder.create();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        AlertDialog alertDialog = (AlertDialog) getDialog();
+        Button okButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                String title = etPostTitle.getText().toString();
+                String description = etPostDescription.getText().toString();
+                if(!boxContainsEmptyField(title, description)) {
+                    listener.applyTexts(title, description, photoFile);
+                    alertDialog.dismiss();
+                }
+            }
+        });
+    }
+
+    private boolean boxContainsEmptyField(String title, String description) {
+        if (title.trim().isEmpty()){
+            Toast.makeText(getContext(), "Please enter post name", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (description.trim().isEmpty()) {
+            Toast.makeText(getContext(), "Please enter post description", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -121,10 +143,7 @@ public class PostDialogBox extends AppCompatDialogFragment {
         Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.example.wawe", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
 
@@ -135,12 +154,9 @@ public class PostDialogBox extends AppCompatDialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, see section below
-                // Load the taken image into a preview
                 ivPostImage.setImageBitmap(takenImage);
-            } else { // Result was a failure
+            } else {
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }

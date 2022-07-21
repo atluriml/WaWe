@@ -14,33 +14,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.widget.SearchView;
+
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wawe.Activities.MainActivity;
 import com.example.wawe.Adapters.GroupAdapter;
+import com.example.wawe.GroupDialogBox;
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Groups;
+import com.example.wawe.PostDialogBox;
 import com.example.wawe.R;
 import com.example.wawe.roomClasses.GroupsRoom;
 import com.example.wawe.roomClasses.RestaurantListsDao;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GroupFragment extends Fragment {
+public class GroupFragment extends Fragment implements GroupDialogBox.DialogListener {
 
-    private SwipeRefreshLayout swipeContainer;
     private RecyclerView rvGroups;
     private GroupAdapter adapter;
     private List<Groups> groupsList;
     private TextView tvListTitle;
     RestaurantListsDao restaurantListsDao;
     SearchView searchView;
+    ImageButton btnAddGroup;
 
     public GroupFragment() {
     }
@@ -57,6 +63,7 @@ public class GroupFragment extends Fragment {
 
         restaurantListsDao = ((ParseAndDatabaseApplication) getContext().getApplicationContext()).getDatabase().restaurantListsDao();
 
+        btnAddGroup = view.findViewById(R.id.btnAddGroup);
         rvGroups = view.findViewById(R.id.rvGroups);
         tvListTitle = view.findViewById(R.id.tvListTitle);
         tvListTitle.setText("WaWe Groups");
@@ -73,6 +80,13 @@ public class GroupFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 filterList(newText);
                 return false;
+            }
+        });
+
+        btnAddGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
             }
         });
 
@@ -101,28 +115,6 @@ public class GroupFragment extends Fragment {
             }
         });
 
-//        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-//        swipeContainer.setEnabled(true);
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                adapter.clear();
-//                if (!searchView.isIconified()){
-//                    filterList(searchView.getQuery().toString());
-//                }
-//                else if (!MainActivity.isOnline(requireContext())) {
-//                    callAsyncGroups();
-//                }
-//                else {
-//                    populateGroups();
-//                }
-//                swipeContainer.setRefreshing(false);
-//            }
-//        });
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
     }
 
     private void filterList(String newText) {
@@ -187,4 +179,24 @@ public class GroupFragment extends Fragment {
 
     }
 
+    public void openDialog() {
+        GroupDialogBox groupDialogBox = new GroupDialogBox();
+        groupDialogBox.show(getActivity().getSupportFragmentManager(), "group dialog");
+    }
+
+    @Override
+    public void applyTexts(String name, String description, String location) {
+        Groups group = new Groups();
+        group.setKeyDescription(description);
+        group.setKeyName(name);
+        group.setKeyLocation(location);
+        group.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    return;
+                }
+            }
+        });
+    }
 }

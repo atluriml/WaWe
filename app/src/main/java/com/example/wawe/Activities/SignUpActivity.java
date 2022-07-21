@@ -88,6 +88,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if (e != null) {
                         Toast.makeText(SignUpActivity.this, "Error Signing in. Make sure your credentials are correct", Toast.LENGTH_SHORT).show();
                         setSignUpCredentialsToNull();
+                        loadingBar.dismiss();
                         return;
                     }
                     goLoginActivity();
