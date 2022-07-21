@@ -36,7 +36,7 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 * [x] users can view restaurants they've visited and favorited on offline mode
 
 
-**Optional Nice-to-have Stories**
+**Stretch Features**
 * [x] users are able to see the route from their location to the restaurant's location on the Map Screen 
 * [x] user can shake their phone/mobile device for the roulette to start
 * [x] users can create groups or search for an already existing group and post in them to create meetups, allowing connections between each other
@@ -117,29 +117,69 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 ### Models
 
-####Parse Database 
+#### Parse Database Objects
+
+##### 1. User:
 | Property|Type  |Description |
 | --------|--------| -------- |
-| username|String|the user's username credentials|
-| password|String|the user's password credentials|
-| profileImage| File|the user's profile image |
-| favorited| Boolean|whether or not the user added a restaurant to their favorites|
-| visited| Boolean|whether or not the user has visited a restaurant|
-| lastVisited| DateTime|the last time the user visited a restaurant|
-| userLocation| String|user's current location|
+| username|String|user's username|
+| password|String|user's password|
+| location|String|users's image|
+| profileImage|File|user's profile image|
+| dietaryRestriction|String|user's dietary restriction|
 
-
+##### 2. Restaurant:
 | Property|Type  |Description |
 | --------|--------| -------- |
-| cuisine| String|type of cuisine|
-| restaurantName| String|name of the restaurant|
-| restaurantImage| File|image of the restaurant|
-| address| String|restaurant's address|
-| price-range| String|how expensive the restaurant is|
-| location| String|how far away the restaurant is from the user|
+| name|String|restaurant's name|
+| price|String|restaurant price|
+| image|String|restaurant's image|
+| restID|String|restaurant's unique yelpId|
+| address|String|restaurant's street address|
+| rating|Double|rating of the restaurant|
+| categories|Array|contains all of the categories the restaurant falls under|
 
+##### 3. UserFavorites:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| user|ParseUser|user that favorited a restaurant|
+| favoritedRestaurant|Restaurant|restaurant that the user favorited|
 
-### Networking
+##### 4. UserVisited:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| user|ParseUser|user that marked a restaurant as visited|
+| visitedRestaurant|Restaurant|restaurant that the user marked as visited|
+
+##### 5. Groups:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| name|String|group's name|
+| description|String|group's description|
+| location|String|group's location|
+
+##### 6. Post:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| title|String|post's title|
+| description|String|post's description|
+
+#### Yelp Database Objects
+
+##### 1. YelpRestaurant:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| name| String||
+| price| String||
+| rating| double||
+| distanceMeters| double||
+| restaurantImage| String||
+| category| List<RestaurantCategories>||
+| location| RestaurantLocation||
+| id| String||
+| coordinates| RestaurantCoordinates||  
+  
+**### Networking**
 * Splash Screen
   * no network calls 
 * Login Screen
@@ -159,7 +199,8 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 - Existing API Endpoints 
     - Yelp [BASE_URL: https://api.yelp.com/v3]
-      - | Very|Endpoint  |Description |
+      - | Network Request|Endpoint  |Description |
         | --------|--------| -------- |
         | GET|businesses/search|search for businesses|
+        | GET|businesses/{id}|search for business based on the unique id|
 
