@@ -179,7 +179,7 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 | id| String||
 | coordinates| RestaurantCoordinates||  
   
-**### Networking**
+** Networking**
 * Splash Screen
   * no network calls 
 * Login Screen
