@@ -169,17 +169,39 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 ##### 1. YelpRestaurant:
 | Property|Type  |Description |
 | --------|--------| -------- |
-| name| String||
-| price| String||
-| rating| double||
-| distanceMeters| double||
-| restaurantImage| String||
-| category| List<RestaurantCategories>||
-| location| RestaurantLocation||
-| id| String||
-| coordinates| RestaurantCoordinates||  
+| name| String| restaurant's name|
+| price| String| restaurant's price|
+| rating| double| restaurant's rating|
+| distanceMeters| double|restaurant's distance from user in meters|
+| restaurantImage| String|restaurant's image|
+| category| RestaurantCategories List|contains list of restaurant's categories|
+| location| RestaurantLocation|restaurant's location|
+| id| String| restaurant's unique yelpId|
+| coordinates| RestaurantCoordinates|restaurants latitude and longitude coordinates|  
+
+##### 2. RestaurantCategories:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| title|String|category title|
+
+##### 3. RestaurantCoordinates:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| longitude|double|restaurant's longitude|
+| latidude|double|restaurant's latidude|
+
+##### 4. RestaurantLocation:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| address|String|restaurant's street address|
+
+##### 5. RestaurantSearch:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| restaurants|YelpRestaurant List|contains list of restaurants from business search|  
+
+### Networking
   
-** Networking**
 * Splash Screen
   * no network calls 
 * Login Screen
