@@ -81,6 +81,11 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 **Flow Navigation** (Screen to Screen)
 
+* Login Screen
+   * Roulette Screen
+* Signup Screen
+   * Login Screen
+       * Roulette Screen 
 * Roulette Screen
    * Detail Screen
        * Map Screen 
@@ -163,6 +168,10 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 | --------|--------| -------- |
 | title|String|post's title|
 | description|String|post's description|
+| image|File|post's image|
+| groupId|String|group's Parse ObjectId that the post was created in|
+| user|ParseUser|ParseUser that created the post|
+| likedUsers|Array|indicates which users have liked the post|
 
 #### Yelp Database Objects
 
@@ -200,6 +209,60 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 | --------|--------| -------- |
 | restaurants|YelpRestaurant List|contains list of restaurants from business search|  
 
+#### Room Database Objects
+
+##### 1. UserRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| userId|String|primary key that holds the user's unique Parse ObjectId|
+
+##### 2. RestaurantRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| yelpId|String|primary key that holds restaurant's unique yelpId|
+| name|String|restaurant's name|
+| price|String|restaurant price|
+| image|String|restaurant's image|
+| address|String|restaurant's street address|
+| rating|Double|rating of the restaurant|
+
+##### 3. UserFavoritesRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| id|String|primary key that holds the userFavorites's unique Parse ObjectId|
+| user|UserRoon|user that favorited a restaurant|
+| restaurant|RestaurantRoom|restaurant that the user favorited|
+| userId|String|foreign key that holds the user's unique Parse ObjectId|
+| restaurantId|String|foreign key that holds restaurant's unique yelpId|
+
+##### 4. UserVisitedRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| id|String|primary key that holds the userVisited's unique Parse ObjectId|
+| user|UserRoon|user that marked a restaurant as visited|
+| restaurant|RestaurantRoom|restaurant that the user marked as visited|
+| userId|String|foreign key that holds the user's unique Parse ObjectId|
+| restaurantId|String|foreign key that holds restaurant's unique yelpId|
+
+##### 5. Groups:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| groupId|String|primary key that holds the group's unique Parse ObjectId|
+| groupName|String|group's name|
+| groupDescription|String|group's description|
+| groupLocation|String|group's location|
+
+##### 6. Post:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| postId|String|primary key that holds the post's unique Parse ObjectId|
+| postTitle|String|post's title|
+| postDescription|String|post's description|
+| userProfileImage|String|user's profile image|
+| postImage|String|post's image|
+| groupId|String|group's Parse ObjectId that the post was created in|
+| userName|String|username of the User that created the post|
+
 ### Networking
   
 * Splash Screen
@@ -208,16 +271,29 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
   * (Read/GET) Get user information based on login information
 * Sign Up Screen
   * (Create/POST) Create a new user object
-* Main Screen
+* Roulette Screen
   * (Read/GET) restaurant based on the filters the user chose 
+  * (Read/GET) Query list of logged in user's favorite restaurants for matching algorithm 
+  * (Read/GET) Query list of logged in user's visited restaurants for matching algorithm 
 * Detail Screen
-  * (Read/GET) location and direction of the restaurant using Google Maps 
+  * (Read/GET) Restaurant's specific details using businesses/{id}
+* Map Screen 
+  * (Read/GET) route from user's location to the restaurant using Google Maps 
 * Profile Screen
   * (Read/GET) Query logged in user object
+* Settings Screen
+  * (Create/POST) User's updated profile settings
 * Favorites Screen
   * (Read/GET) Query list of logged in user's favorite restaurants
 * Visited Screen
   * (Read/GET) Query list of logged in user's visited restaurants
+* Groups Screen
+  * (Read/GET) Query list of existing groups
+  * (Create/POST) User can create new groups
+* Group Detail Screen
+  * (Read/GET) Specifc group that user clicked on
+  * (Read/GET) Query list of existing posts for the group
+  * (Create/POST) User can create new posts
 
 - Existing API Endpoints 
     - Yelp [BASE_URL: https://api.yelp.com/v3]
