@@ -14,7 +14,6 @@ Original App Design Project - README
 As a foodie who often experiences decision fatigue when it comes to figuring out where I want to eat, I created this app so that the decision would be made for me. Users are then pushed to try new restaurants in their area. In WaWe, users can filter what type of restaurant they want to eat at by indicating the cuisine type, price range, distance, and whether or not they want to try a new place. Based on the filters, WaWe pulls up a restaurant in the area for the user to go to. Users can mark restaurants as visited and/or favorite them and view them off and online. This allows the WaWe algorithm to give users the best recommendation possible based on their favorited restaurants. Users can also create groups and post in them to facilitate meetups. 
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
 - **Category:** Food
 - **Mobile:** This app is suitable for mobile use because users can easily get their restaurant recommendation and the directions to the location.
 - **Story:** Do you hate being asked "Where do you wanna go to eat?" Or do you feel like you've been going to the same restaurants over and over again and want to try something new? Well, you're in the right place because with Restaurant Roulette this decision is made for you!
