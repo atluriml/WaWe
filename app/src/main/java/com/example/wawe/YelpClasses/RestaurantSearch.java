@@ -18,10 +18,7 @@ public class RestaurantSearch {
         return restaurants;
     }
 
-    @Override
-    public String toString() {
-        return "RestaurantSearch{" +
-                "restaurants=" + restaurants +
-                '}';
+    public void setRestaurants(List<YelpRestaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 }

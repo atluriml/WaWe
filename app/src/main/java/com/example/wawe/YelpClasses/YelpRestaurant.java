@@ -2,11 +2,8 @@ package com.example.wawe.YelpClasses;
 
 import com.example.wawe.ParseModels.Restaurant;
 import com.google.gson.annotations.SerializedName;
-
-import org.json.JSONException;
 import org.parceler.Parcel;
 import java.util.List;
-import java.util.Objects;
 
 @Parcel
 public class YelpRestaurant  {
@@ -66,32 +63,32 @@ public class YelpRestaurant  {
         return name;
     }
 
-    public List<RestaurantCategories> getCategory() {
-        return category;
-    }
-
     public String getPrice() {
         return price;
-    }
-
-    public double getDistanceMeters() {
-        return distanceMeters;
     }
 
     public double getRating() {
         return rating;
     }
 
-    public String getId() {
-        return id;
+    public double getDistanceMeters() {
+        return distanceMeters;
+    }
+
+    public String getRestaurantImage() {
+        return restaurantImage;
+    }
+
+    public List<RestaurantCategories> getCategory() {
+        return category;
     }
 
     public RestaurantLocation getLocation() {
         return location;
     }
 
-    public String getRestaurantImage() {
-        return restaurantImage;
+    public String getId() {
+        return id;
     }
 
     public RestaurantCoordinates getCoordinates() {
