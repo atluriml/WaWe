@@ -11,7 +11,7 @@ Original App Design Project - README
 
 ## Overview
 ### Description
-WaWe is an app that pulls up a restaurant in the area for the user to try. Users can filter by indicating the cuisine type, price range, and distance. The app will keep track of whether or not the user has visited a restaurant to help ensure that it does not reccomend the user the same restaurant over and over again. When the user is given a recomendation, the location of the resaurant will be given, and the app will give the user directions on how to get there.
+As a foodie who often experiences decision fatigue when it comes to figuring out where I want to eat, I created this app so that the decision would be made for me. Users are then pushed to try new restaurants in their area. In WaWe, users can filter what type of restaurant they want to eat at by indicating the cuisine type, price range, distance, and whether or not they want to try a new place. Based on the filters, WaWe pulls up a restaurant in the area for the user to go to. Users can mark restaurants as visited and/or favorite them and view them off and online. This allows the WaWe algorithm to give users the best recommendation possible based on their favorited restaurants. Users can also create groups and post in them to facilitate meetups. 
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
