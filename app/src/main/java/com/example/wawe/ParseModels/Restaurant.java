@@ -1,14 +1,14 @@
 package com.example.wawe.ParseModels;
 
 import com.example.wawe.YelpClasses.YelpRestaurant;
-import com.example.wawe.roomClasses.RestaurantRoom;
+import com.example.wawe.RoomClasses.RestaurantRoom;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
+
 import org.json.JSONArray;
 import java.util.List;
 
@@ -38,12 +38,12 @@ public class Restaurant extends ParseObject {
     }
 
     public Restaurant(RestaurantRoom restaurantRoom) {
-        setKeyName(restaurantRoom.name);
-        setKeyId(restaurantRoom.yelpId);
-        setKeyImage(restaurantRoom.image);
-        setKeyPrice(restaurantRoom.price);
-        setKeyAddress(restaurantRoom.address);
-        setKeyRating(restaurantRoom.rating);
+        setKeyName(restaurantRoom.getName());
+        setKeyId(restaurantRoom.getYelpId());
+        setKeyImage(restaurantRoom.getImage());
+        setKeyPrice(restaurantRoom.getPrice());
+        setKeyAddress(restaurantRoom.getAddress());
+        setKeyRating(restaurantRoom.getRating());
     }
 
     public String getKeyName() {

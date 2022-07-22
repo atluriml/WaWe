@@ -155,7 +155,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
             else {
                 tvUsername.setText(post.getOfflineUsername());
-                if (post.getOfflineProfileImage() != null|| !post.getOfflineProfileImage().isEmpty()){
+                if (post.getOfflineProfileImage() != null){
                     Glide.with(context).load(post.getOfflineProfileImage()).into(ivProfileImage);
                 }
                 else {

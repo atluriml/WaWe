@@ -23,11 +23,11 @@ import com.example.wawe.ParseModels.UserFavorites;
 import com.example.wawe.ParseModels.UserVisited;
 import com.example.wawe.YelpClasses.YelpRestaurant;
 import com.example.wawe.fragments.RouletteFragment;
-import com.example.wawe.roomClasses.RestaurantListsDao;
-import com.example.wawe.roomClasses.RestaurantRoom;
-import com.example.wawe.roomClasses.UserFavoritesRoom;
-import com.example.wawe.roomClasses.UserRoom;
-import com.example.wawe.roomClasses.UserVisitedRoom;
+import com.example.wawe.RoomClasses.RestaurantListsDao;
+import com.example.wawe.RoomClasses.RestaurantRoom;
+import com.example.wawe.RoomClasses.UserFavoritesRoom;
+import com.example.wawe.RoomClasses.UserRoom;
+import com.example.wawe.RoomClasses.UserVisitedRoom;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -197,11 +197,11 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                                 restaurantListsDao.insertModel(restaurantRoom);
                                 restaurantListsDao.insertModel(userRoom);
                                 UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
-                                userVisitedRoom.id = userVisitedRoomObjectId;
-                                userVisitedRoom.userId = userRoom.getUserId();
-                                userVisitedRoom.restaurantId = restaurantRoom.yelpId;
-                                userVisitedRoom.restaurant = restaurantRoom;
-                                userVisitedRoom.user = userRoom;
+                                userVisitedRoom.setId(userVisitedRoomObjectId);
+                                userVisitedRoom.setUserId(userRoom.getUserId());
+                                userVisitedRoom.setRestaurantId(restaurantRoom.getYelpId());
+                                userVisitedRoom.setRestaurant(restaurantRoom);
+                                userVisitedRoom.setUser(userRoom);
                                 restaurantListsDao.insertModel(userVisitedRoom);
                             }
                         });
@@ -272,11 +272,11 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                     restaurantListsDao.insertModel(restaurantRoom);
                     restaurantListsDao.insertModel(userRoom);
                     UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
-                    userFavoritesRoom.id = userFavoritesObjectId;
-                    userFavoritesRoom.userId = userRoom.getUserId();
-                    userFavoritesRoom.restaurantId = restaurantRoom.yelpId;
-                    userFavoritesRoom.restaurant = restaurantRoom;
-                    userFavoritesRoom.user = userRoom;
+                    userFavoritesRoom.setId(userFavoritesObjectId);
+                    userFavoritesRoom.setUserId(userRoom.getUserId());
+                    userFavoritesRoom.setRestaurantId(restaurantRoom.getYelpId());
+                    userFavoritesRoom.setRestaurant(restaurantRoom);
+                    userFavoritesRoom.setUser(userRoom);
                     restaurantListsDao.insertModel(userFavoritesRoom);
                 }
 

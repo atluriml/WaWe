@@ -1,6 +1,6 @@
 package com.example.wawe.ParseModels;
 import android.util.Log;
-import com.example.wawe.roomClasses.PostRoom;
+import com.example.wawe.RoomClasses.PostRoom;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -26,14 +26,14 @@ public class Post extends ParseObject {
     public Post() {}
 
     public Post(PostRoom postRoom) {
-        setKeyTitle(postRoom.postTitle);
-        setKeyDescription(postRoom.postDescription);
-        if (!postRoom.postImage.equals("")){
-            setOfflinePostImageUrl(postRoom.postImage);
+        setKeyTitle(postRoom.getPostTitle());
+        setKeyDescription(postRoom.getPostDescription());
+        if (!postRoom.getPostImage().equals("")){
+            setOfflinePostImageUrl(postRoom.getPostImage());
         }
-        setOfflineUsername(postRoom.userName);
-        if (!postRoom.userProfileImage.equals("")){
-            setOfflineProfileImage(postRoom.userProfileImage);
+        setOfflineUsername(postRoom.getUserName());
+        if (!postRoom.getUserProfileImage().equals("")){
+            setOfflineProfileImage(postRoom.getUserProfileImage());
         }
     }
 

@@ -1,10 +1,6 @@
-package com.example.wawe.roomClasses;
+package com.example.wawe.RoomClasses;
 
 import androidx.room.Embedded;
-
-import com.example.wawe.roomClasses.RestaurantRoom;
-import com.example.wawe.roomClasses.UserRoom;
-import com.example.wawe.roomClasses.UserFavoritesRoom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +8,17 @@ import java.util.List;
 public class UserRestaurantsList {
 
     @Embedded
-    UserRoom userRoom;
+    private UserRoom userRoom;
 
     @Embedded
-    RestaurantRoom restaurantRoom;
+    private RestaurantRoom restaurantRoom;
 
     public static List<UserFavoritesRoom> getRestaurantFavoritesList(List<UserRestaurantsList> userFavoritesRestaurants) {
         List<UserFavoritesRoom> userFavoritesRooms = new ArrayList<>();
         for (int i = 0; i < userFavoritesRestaurants.size(); i++){
             UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
-            userFavoritesRoom.user = userFavoritesRestaurants.get(i).userRoom;
-            userFavoritesRoom.restaurant = userFavoritesRestaurants.get(i).restaurantRoom;
+            userFavoritesRoom.setUser(userFavoritesRestaurants.get(i).userRoom);
+            userFavoritesRoom.setRestaurant(userFavoritesRestaurants.get(i).restaurantRoom);
             userFavoritesRooms.add(userFavoritesRoom);
         }
         return userFavoritesRooms;
@@ -32,10 +28,26 @@ public class UserRestaurantsList {
         List<UserVisitedRoom> userVisitedRooms = new ArrayList<>();
         for (int i = 0; i < userFavoritesRestaurants.size(); i++){
             UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
-            userVisitedRoom.user = userFavoritesRestaurants.get(i).userRoom;
-            userVisitedRoom.restaurant = userFavoritesRestaurants.get(i).restaurantRoom;
+            userVisitedRoom.setUser(userFavoritesRestaurants.get(i).userRoom);
+            userVisitedRoom.setRestaurant(userFavoritesRestaurants.get(i).restaurantRoom);
             userVisitedRooms.add(userVisitedRoom);
         }
         return userVisitedRooms;
+    }
+
+    public UserRoom getUserRoom() {
+        return userRoom;
+    }
+
+    public RestaurantRoom getRestaurantRoom() {
+        return restaurantRoom;
+    }
+
+    public void setUserRoom(UserRoom userRoom) {
+        this.userRoom = userRoom;
+    }
+
+    public void setRestaurantRoom(RestaurantRoom restaurantRoom) {
+        this.restaurantRoom = restaurantRoom;
     }
 }

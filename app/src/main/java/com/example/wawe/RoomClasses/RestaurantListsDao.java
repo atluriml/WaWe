@@ -1,4 +1,4 @@
-package com.example.wawe.roomClasses;
+package com.example.wawe.RoomClasses;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

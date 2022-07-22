@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.widget.SearchView;
 
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wawe.Activities.MainActivity;
@@ -25,10 +22,9 @@ import com.example.wawe.Adapters.GroupAdapter;
 import com.example.wawe.GroupDialogBox;
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Groups;
-import com.example.wawe.PostDialogBox;
 import com.example.wawe.R;
-import com.example.wawe.roomClasses.GroupsRoom;
-import com.example.wawe.roomClasses.RestaurantListsDao;
+import com.example.wawe.RoomClasses.GroupsRoom;
+import com.example.wawe.RoomClasses.RestaurantListsDao;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -43,7 +39,6 @@ public class GroupFragment extends Fragment implements GroupDialogBox.DialogList
     private RecyclerView rvGroups;
     private GroupAdapter adapter;
     private List<Groups> groupsList;
-    private TextView tvListTitle;
     RestaurantListsDao restaurantListsDao;
     SearchView searchView;
     ImageButton btnAddGroup;
@@ -65,8 +60,6 @@ public class GroupFragment extends Fragment implements GroupDialogBox.DialogList
 
         btnAddGroup = view.findViewById(R.id.btnAddGroup);
         rvGroups = view.findViewById(R.id.rvGroups);
-        tvListTitle = view.findViewById(R.id.tvListTitle);
-        tvListTitle.setText("WaWe Groups");
         searchView = view.findViewById(R.id.svSearchGroups);
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -75,7 +68,6 @@ public class GroupFragment extends Fragment implements GroupDialogBox.DialogList
                 filterList(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 filterList(newText);

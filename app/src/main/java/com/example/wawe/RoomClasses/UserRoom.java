@@ -1,13 +1,10 @@
-package com.example.wawe.roomClasses;
+package com.example.wawe.RoomClasses;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.bumptech.glide.Glide;
-import com.example.wawe.R;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 @Entity
@@ -16,7 +13,7 @@ public class UserRoom {
     @NonNull
     @ColumnInfo
     @PrimaryKey
-    String userId;
+    private String userId;
 
     public UserRoom () {}
 

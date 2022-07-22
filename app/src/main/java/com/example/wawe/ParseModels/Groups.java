@@ -1,12 +1,11 @@
 package com.example.wawe.ParseModels;
 
-import com.example.wawe.roomClasses.GroupsRoom;
+import com.example.wawe.RoomClasses.GroupsRoom;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 @ParseClassName("Groups")
 public class Groups extends ParseObject {
-
 
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";
@@ -15,10 +14,10 @@ public class Groups extends ParseObject {
     public Groups () {}
 
     public Groups(GroupsRoom groupsRoom) {
-        setObjectId(groupsRoom.groupId);
-        setKeyName(groupsRoom.groupName);
-        setKeyLocation(groupsRoom.groupLocation);
-        setKeyDescription(groupsRoom.groupDescription);
+        setObjectId(groupsRoom.getGroupId());
+        setKeyName(groupsRoom.getGroupName());
+        setKeyLocation(groupsRoom.getGroupLocation());
+        setKeyDescription(groupsRoom.getGroupDescription());
     }
 
     public String getKeyName () {
@@ -26,7 +25,12 @@ public class Groups extends ParseObject {
     }
 
     public void setKeyName (String name) {
-        put(KEY_NAME, name);
+        if (name == null){
+            put(KEY_NAME, " ");
+        }
+        else {
+            put(KEY_NAME, name);
+        }
     }
 
     public String getKeyDescription () {
@@ -34,7 +38,12 @@ public class Groups extends ParseObject {
     }
 
     public void setKeyDescription (String description) {
-        put(KEY_DESCRIPTION, description);
+        if (description == null){
+            put(KEY_DESCRIPTION, " ");
+        }
+        else {
+            put(KEY_DESCRIPTION, description);
+        }
     }
 
     public String getKeyLocation () {
@@ -42,7 +51,12 @@ public class Groups extends ParseObject {
     }
 
     public void setKeyLocation (String location) {
+        if (location == null){
+            put(KEY_LOCATION, " ");
+        }
+        else {
         put(KEY_LOCATION, location);
+        }
     }
 
 }

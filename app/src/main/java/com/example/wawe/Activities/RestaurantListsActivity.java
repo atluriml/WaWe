@@ -5,26 +5,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Restaurant;
 import com.example.wawe.Adapters.RestaurantListAdapter;
 import com.example.wawe.R;
-import com.example.wawe.roomClasses.RestaurantListsDao;
+import com.example.wawe.RoomClasses.RestaurantListsDao;
 import com.example.wawe.ParseModels.UserFavorites;
-import com.example.wawe.roomClasses.RestaurantRoom;
-import com.example.wawe.roomClasses.UserFavoritesRoom;
-import com.example.wawe.roomClasses.UserRestaurantsList;
+import com.example.wawe.RoomClasses.RestaurantRoom;
+import com.example.wawe.RoomClasses.UserFavoritesRoom;
+import com.example.wawe.RoomClasses.UserRestaurantsList;
 import com.example.wawe.ParseModels.UserVisited;
-import com.example.wawe.roomClasses.UserRoom;
-import com.example.wawe.roomClasses.UserVisitedRoom;
+import com.example.wawe.RoomClasses.UserRoom;
+import com.example.wawe.RoomClasses.UserVisitedRoom;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -41,7 +37,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
     private RestaurantListAdapter adapter;
     private List<Restaurant> usersSavedRestaurants;
     private TextView tvListTitle;
-    static RestaurantListsDao restaurantListsDao;
+    private RestaurantListsDao restaurantListsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +116,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         for (int i = 0; i < favoriteRestaurantsFromDB.size(); i++){
-                            Restaurant roomToParse = new Restaurant(favoriteRestaurantsFromDB.get(i).restaurant);
+                            Restaurant roomToParse = new Restaurant(favoriteRestaurantsFromDB.get(i).getRestaurant());
                             usersSavedRestaurants.add(roomToParse);
                             adapter.notifyDataSetChanged();
                         }
@@ -142,7 +138,7 @@ public class RestaurantListsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         for (int i = 0; i < visitedRestaurantsFromDB.size(); i++){
-                            Restaurant roomToParse = new Restaurant(visitedRestaurantsFromDB.get(i).restaurant);
+                            Restaurant roomToParse = new Restaurant(visitedRestaurantsFromDB.get(i).getRestaurant());
                             usersSavedRestaurants.add(roomToParse);
                             adapter.notifyDataSetChanged();
                         }
@@ -176,11 +172,11 @@ public class RestaurantListsActivity extends AppCompatActivity {
                                             RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
                                             restaurantListsDao.insertModel(restaurantRoom);
                                             UserVisitedRoom userVisitedRoom = new UserVisitedRoom();
-                                            userVisitedRoom.id = object.getObjectId();
-                                            userVisitedRoom.userId = userRoom.getUserId();
-                                            userVisitedRoom.restaurant = restaurantRoom;
-                                            userVisitedRoom.restaurantId = restaurantRoom.yelpId;
-                                            userVisitedRoom.user = userRoom;
+                                            userVisitedRoom.setId(object.getObjectId());
+                                            userVisitedRoom.setUserId(userRoom.getUserId());
+                                            userVisitedRoom.setRestaurant(restaurantRoom);
+                                            userVisitedRoom.setRestaurantId(restaurantRoom.getYelpId());
+                                            userVisitedRoom.setUser(userRoom);
                                             restaurantListsDao.insertModel(userVisitedRoom);
                                             usersSavedRestaurants.add(parseRestaurant);
                                         }
@@ -219,11 +215,11 @@ public class RestaurantListsActivity extends AppCompatActivity {
                                             RestaurantRoom restaurantRoom = new RestaurantRoom(parseRestaurant);
                                             restaurantListsDao.insertModel(restaurantRoom);
                                             UserFavoritesRoom userFavoritesRoom = new UserFavoritesRoom();
-                                            userFavoritesRoom.id = object.getObjectId();
-                                            userFavoritesRoom.userId = userRoom.getUserId();
-                                            userFavoritesRoom.restaurant = restaurantRoom;
-                                            userFavoritesRoom.restaurantId = restaurantRoom.yelpId;
-                                            userFavoritesRoom.user = userRoom;
+                                            userFavoritesRoom.setId(object.getObjectId());
+                                            userFavoritesRoom.setUserId(userRoom.getUserId());
+                                            userFavoritesRoom.setRestaurant(restaurantRoom);
+                                            userFavoritesRoom.setRestaurantId(restaurantRoom.getYelpId());
+                                            userFavoritesRoom.setUser(userRoom);
                                             restaurantListsDao.insertModel(userFavoritesRoom);
                                             usersSavedRestaurants.add(parseRestaurant);
                                         }

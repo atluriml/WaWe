@@ -9,7 +9,7 @@ import com.example.wawe.ParseModels.Post;
 import com.example.wawe.ParseModels.Restaurant;
 import com.example.wawe.ParseModels.UserFavorites;
 import com.example.wawe.ParseModels.UserVisited;
-import com.example.wawe.roomClasses.Database;
+import com.example.wawe.RoomClasses.Database;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
