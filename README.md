@@ -11,10 +11,9 @@ Original App Design Project - README
 
 ## Overview
 ### Description
-WaWe is an app that pulls up a restaurant in the area for the user to try. Users can filter by indicating the cuisine type, price range, and distance. The app will keep track of whether or not the user has visited a restaurant to help ensure that it does not reccomend the user the same restaurant over and over again. When the user is given a recomendation, the location of the resaurant will be given, and the app will give the user directions on how to get there.
+As a foodie who often experiences decision fatigue when it comes to figuring out where I want to eat, I created this app so that the decision would be made for me. Users are then pushed to try new restaurants in their area. In WaWe, users can filter what type of restaurant they want to eat at by indicating the cuisine type, price range, distance, and whether or not they want to try a new place. Based on the filters, WaWe pulls up a restaurant in the area for the user to go to. Users can mark restaurants as visited and/or favorite them and view them off and online. This allows the WaWe algorithm to give users the best recommendation possible based on their favorited restaurants. Users can also create groups and post in them to facilitate meetups. 
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
 - **Category:** Food
 - **Mobile:** This app is suitable for mobile use because users can easily get their restaurant recommendation and the directions to the location.
 - **Story:** Do you hate being asked "Where do you wanna go to eat?" Or do you feel like you've been going to the same restaurants over and over again and want to try something new? Well, you're in the right place because with Restaurant Roulette this decision is made for you!
@@ -81,6 +80,11 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 
 **Flow Navigation** (Screen to Screen)
 
+* Login Screen
+   * Roulette Screen
+* Signup Screen
+   * Login Screen
+       * Roulette Screen 
 * Roulette Screen
    * Detail Screen
        * Map Screen 
@@ -163,39 +167,132 @@ WaWe is an app that pulls up a restaurant in the area for the user to try. Users
 | --------|--------| -------- |
 | title|String|post's title|
 | description|String|post's description|
+| image|File|post's image|
+| groupId|String|group's Parse ObjectId that the post was created in|
+| user|ParseUser|ParseUser that created the post|
+| likedUsers|Array|indicates which users have liked the post|
 
 #### Yelp Database Objects
 
 ##### 1. YelpRestaurant:
 | Property|Type  |Description |
 | --------|--------| -------- |
-| name| String||
-| price| String||
-| rating| double||
-| distanceMeters| double||
-| restaurantImage| String||
-| category| List<RestaurantCategories>||
-| location| RestaurantLocation||
-| id| String||
-| coordinates| RestaurantCoordinates||  
+| name| String| restaurant's name|
+| price| String| restaurant's price|
+| rating| double| restaurant's rating|
+| distanceMeters| double|restaurant's distance from user in meters|
+| restaurantImage| String|restaurant's image|
+| category| RestaurantCategories List|contains list of restaurant's categories|
+| location| RestaurantLocation|restaurant's location|
+| id| String| restaurant's unique yelpId|
+| coordinates| RestaurantCoordinates|restaurants latitude and longitude coordinates|  
+
+##### 2. RestaurantCategories:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| title|String|category title|
+
+##### 3. RestaurantCoordinates:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| longitude|double|restaurant's longitude|
+| latidude|double|restaurant's latidude|
+
+##### 4. RestaurantLocation:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| address|String|restaurant's street address|
+
+##### 5. RestaurantSearch:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| restaurants|YelpRestaurant List|contains list of restaurants from business search|  
+
+#### Room Database Objects
+
+##### 1. UserRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| userId|String|primary key that holds the user's unique Parse ObjectId|
+
+##### 2. RestaurantRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| yelpId|String|primary key that holds restaurant's unique yelpId|
+| name|String|restaurant's name|
+| price|String|restaurant price|
+| image|String|restaurant's image|
+| address|String|restaurant's street address|
+| rating|Double|rating of the restaurant|
+
+##### 3. UserFavoritesRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| id|String|primary key that holds the userFavorites's unique Parse ObjectId|
+| user|UserRoon|user that favorited a restaurant|
+| restaurant|RestaurantRoom|restaurant that the user favorited|
+| userId|String|foreign key that holds the user's unique Parse ObjectId|
+| restaurantId|String|foreign key that holds restaurant's unique yelpId|
+
+##### 4. UserVisitedRoom:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| id|String|primary key that holds the userVisited's unique Parse ObjectId|
+| user|UserRoon|user that marked a restaurant as visited|
+| restaurant|RestaurantRoom|restaurant that the user marked as visited|
+| userId|String|foreign key that holds the user's unique Parse ObjectId|
+| restaurantId|String|foreign key that holds restaurant's unique yelpId|
+
+##### 5. Groups:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| groupId|String|primary key that holds the group's unique Parse ObjectId|
+| groupName|String|group's name|
+| groupDescription|String|group's description|
+| groupLocation|String|group's location|
+
+##### 6. Post:
+| Property|Type  |Description |
+| --------|--------| -------- |
+| postId|String|primary key that holds the post's unique Parse ObjectId|
+| postTitle|String|post's title|
+| postDescription|String|post's description|
+| userProfileImage|String|user's profile image|
+| postImage|String|post's image|
+| groupId|String|group's Parse ObjectId that the post was created in|
+| userName|String|username of the User that created the post|
+
+### Networking
   
-**### Networking**
 * Splash Screen
   * no network calls 
 * Login Screen
   * (Read/GET) Get user information based on login information
 * Sign Up Screen
   * (Create/POST) Create a new user object
-* Main Screen
+* Roulette Screen
   * (Read/GET) restaurant based on the filters the user chose 
+  * (Read/GET) Query list of logged in user's favorite restaurants for matching algorithm 
+  * (Read/GET) Query list of logged in user's visited restaurants for matching algorithm 
 * Detail Screen
-  * (Read/GET) location and direction of the restaurant using Google Maps 
+  * (Read/GET) Restaurant's specific details using businesses/{id}
+* Map Screen 
+  * (Read/GET) route from user's location to the restaurant using Google Maps 
 * Profile Screen
   * (Read/GET) Query logged in user object
+* Settings Screen
+  * (Create/POST) User's updated profile settings
 * Favorites Screen
   * (Read/GET) Query list of logged in user's favorite restaurants
 * Visited Screen
   * (Read/GET) Query list of logged in user's visited restaurants
+* Groups Screen
+  * (Read/GET) Query list of existing groups
+  * (Create/POST) User can create new groups
+* Group Detail Screen
+  * (Read/GET) Specifc group that user clicked on
+  * (Read/GET) Query list of existing posts for the group
+  * (Create/POST) User can create new posts
 
 - Existing API Endpoints 
     - Yelp [BASE_URL: https://api.yelp.com/v3]
