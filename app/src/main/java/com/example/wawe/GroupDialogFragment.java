@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class GroupDialogBox extends AppCompatDialogFragment {
+public class GroupDialogFragment extends AppCompatDialogFragment {
     private EditText etGroupName;
     private EditText etGroupDescription;
     private EditText etGroupLocation;

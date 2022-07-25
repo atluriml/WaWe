@@ -30,7 +30,7 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import java.io.File;
 
-public class PostDialogBox extends AppCompatDialogFragment {
+public class PostDialogFragment extends AppCompatDialogFragment {
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     private EditText etPostTitle;
