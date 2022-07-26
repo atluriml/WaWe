@@ -1,6 +1,5 @@
 package com.example.wawe.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -10,8 +9,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -65,10 +62,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
 public class RouletteFragment extends Fragment implements LocationListener {
 
     public static final String TAG = "RouletteFragment";
@@ -135,15 +128,12 @@ public class RouletteFragment extends Fragment implements LocationListener {
                     float floatSum = Math.abs(x_accl) + Math.abs(y_accl) + Math.abs(z_accl);
 
                     if (floatSum > 60){
-                        aRouletteSplash.setVisibility(View.VISIBLE);
-                        spRadius.setVisibility(View.GONE);
-                        spPrice.setVisibility(View.GONE);
-                        etCuisine.setVisibility(View.GONE);
-                        btnGenerateRestaurant.setVisibility(View.GONE);
-                        tvCuisineSelection.setVisibility(View.GONE);
-                        tvPriceSelection.setVisibility(View.GONE);
-                        tvRadiusSelection.setVisibility(View.GONE);
-                        btnVisitedRestaurants.setVisibility(View.GONE);
+                        if (!MainActivity.isOnline(getContext())){
+                            Toast.makeText(getContext(), "Must be connected to the internet to generate restaurant", Toast.LENGTH_SHORT).show();
+                            setPreferencesToNull();
+                            return;
+                        }
+                        loadingVisibilities();
                         generateRestaurant();
                         sensorManager.unregisterListener(this);
                     }
@@ -195,18 +185,22 @@ public class RouletteFragment extends Fragment implements LocationListener {
         btnGenerateRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                aRouletteSplash.setVisibility(View.VISIBLE);
-                spRadius.setVisibility(View.GONE);
-                spPrice.setVisibility(View.GONE);
-                etCuisine.setVisibility(View.GONE);
-                btnGenerateRestaurant.setVisibility(View.GONE);
-                tvCuisineSelection.setVisibility(View.GONE);
-                tvPriceSelection.setVisibility(View.GONE);
-                tvRadiusSelection.setVisibility(View.GONE);
-                btnVisitedRestaurants.setVisibility(View.GONE);
+                if (!MainActivity.isOnline(getContext())){
+                    Toast.makeText(getContext(), "Must be connected to the internet to generate restaurant", Toast.LENGTH_SHORT).show();
+                    setPreferencesToNull();
+                    return;
+                }
+                loadingVisibilities();
                 generateRestaurant();
             }
         });
+    }
+
+    private void setPreferencesToNull () {
+        etCuisine.setText(null);
+        btnVisitedRestaurants.setChecked(false);
+        spRadius.setSelection(0);
+        spPrice.setSelection(0);
     }
 
     private void defaultVisibilities() {
@@ -219,6 +213,18 @@ public class RouletteFragment extends Fragment implements LocationListener {
         tvPriceSelection.setVisibility(View.VISIBLE);
         tvRadiusSelection.setVisibility(View.VISIBLE);
         btnVisitedRestaurants.setVisibility(View.VISIBLE);
+    }
+
+    private void loadingVisibilities() {
+        aRouletteSplash.setVisibility(View.VISIBLE);
+        spRadius.setVisibility(View.GONE);
+        spPrice.setVisibility(View.GONE);
+        etCuisine.setVisibility(View.GONE);
+        btnGenerateRestaurant.setVisibility(View.GONE);
+        tvCuisineSelection.setVisibility(View.GONE);
+        tvPriceSelection.setVisibility(View.GONE);
+        tvRadiusSelection.setVisibility(View.GONE);
+        btnVisitedRestaurants.setVisibility(View.GONE);
     }
 
     private void generateRestaurant () {
