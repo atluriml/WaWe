@@ -9,7 +9,7 @@
     <View
         android:id="@+id/topView"
         android:layout_width="663dp"
-        android:layout_height="150dp"
+        android:layout_height="52dp"
         android:background="@color/wawe_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -21,25 +21,17 @@
         android:layout_width="670dp"
         android:layout_height="151dp"
         android:layout_below="@+id/topView"
+        android:layout_marginTop="-1dp"
         android:background="@drawable/ic_wave" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="136dp"
-        android:layout_height="128dp"
+        android:layout_width="81dp"
+        android:layout_height="78dp"
         android:layout_marginTop="10dp"
         app:civ_border_color="@color/wawe_dark_blue"
         app:civ_border_width="3dp"
         tools:srcCompat="@drawable/instagram_user_outline_24" />
-
-    <View
-        android:layout_width="50dp"
-        android:layout_height="5dp"
-        android:layout_below="@+id/ivProfileImage"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/white_rounded_line"
-        android:backgroundTint="@color/white" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -61,37 +53,75 @@
         android:layout_toRightOf="@id/ivProfileImage"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="18sp"
         tools:text="Menlo Park, CA" />
 
-    <Button
-        android:id="@+id/btnVisitedRestaurants"
-        android:layout_width="369dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivProfileImage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="229dp"
-        android:background="@drawable/round_border"
-        android:backgroundTint="@color/wawe_dark_blue"
-        android:drawablePadding="3dp"
-        android:outlineProvider="paddedBounds"
-        android:text="Visited Restaurants"
-        android:textAllCaps="false" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view5"
+        android:layout_marginTop="-30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnFavorites"
-        android:layout_width="369dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnVisitedRestaurants"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/round_border"
-        android:text="Favorites"
-        android:textAllCaps="false" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/favoritesId"
+                android:layout_width="229dp"
+                android:layout_height="23dp"
+                android:text="Your Favorite Restaurants"
+                android:textColor="@color/wawe_dark_blue"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/favoritesRecyclerview"
+                app:layout_constraintStart_toStartOf="@id/favoritesRecyclerview" />
+
+            <TextView
+                android:id="@+id/visitedId"
+                android:layout_width="250dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="10dp"
+                android:text="Restaurants You Have Visited"
+                android:textColor="@color/wawe_dark_blue"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/visitedRecyclerView"
+                app:layout_constraintTop_toBottomOf="@+id/favoritesRecyclerview" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/visitedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/visitedId" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favoritesRecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/favoritesId" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <ImageButton
         android:id="@+id/btnSettings"
-        android:layout_width="75dp"
-        android:layout_height="62dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="false"
         android:layout_alignParentTop="false"
         android:layout_alignParentRight="true"
@@ -99,14 +129,14 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="-1dp"
+        android:layout_marginRight="35dp"
         android:layout_toRightOf="@id/tvUsername"
         android:background="@drawable/round_border"
         android:elevation="0dp"
         android:src="@android:drawable/ic_menu_preferences"
         android:visibility="visible"
         app:backgroundTint="#FFFFFF"
-        app:tint="#000000"
+        app:tint="@color/black"
         tools:ignore="SpeakableTextPresentCheck"
         tools:src="@android:drawable/ic_menu_preferences" />
 

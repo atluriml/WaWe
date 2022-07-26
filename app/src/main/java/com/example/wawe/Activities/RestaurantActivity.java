@@ -22,6 +22,7 @@ import com.example.wawe.ParseModels.Restaurant;
 import com.example.wawe.ParseModels.UserFavorites;
 import com.example.wawe.ParseModels.UserVisited;
 import com.example.wawe.YelpClasses.YelpRestaurant;
+import com.example.wawe.fragments.ProfileFragment;
 import com.example.wawe.fragments.RouletteFragment;
 import com.example.wawe.RoomClasses.RestaurantListsDao;
 import com.example.wawe.RoomClasses.RestaurantRoom;
@@ -84,7 +85,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         tvPrice.setText(restaurant.getPrice());
         ratingBar.setRating((float) restaurant.getRating());
         Glide.with(this)
-                .load(restaurant.getRestaurantImage()).into(ivRestaurantImage);
+                .load(restaurant.getRestaurantImage()).centerCrop().into(ivRestaurantImage);
         if (!MainActivity.isOnline(this)){
             btnLiked.setVisibility(View.GONE);
             btnClickIfVisited.setVisibility(View.GONE);

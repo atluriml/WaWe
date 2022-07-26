@@ -9,28 +9,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.wawe.Activities.MainActivity;
 import com.example.wawe.Activities.RestaurantActivity;
-import com.example.wawe.Activities.RestaurantListsActivity;
 import com.example.wawe.BuildConfig;
-import com.example.wawe.R;
 import com.example.wawe.ParseModels.Restaurant;
+import com.example.wawe.R;
 import com.example.wawe.RestaurantClient;
-import com.example.wawe.fragments.RouletteFragment;
 import com.example.wawe.YelpClasses.YelpRestaurant;
+
 import org.parceler.Parcels;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ViewHolder> {
+public class VisitedAdapter extends RecyclerView.Adapter<VisitedAdapter.ViewHolder> {
 
     private static final String REST_APPLICATION_ID = BuildConfig.YELP_APPLICATION_ID;
     public static final String BASE_URL = "https://api.yelp.com/v3/";
@@ -38,48 +42,48 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
     RestaurantClient restaurantClient = retrofit.create(RestaurantClient.class);
 
+    private List<Restaurant> visitedRestaurants;
     Context context;
-    List<Restaurant> restaurantList;
     YelpRestaurant yelpRestaurant;
     String id;
 
-    public RestaurantListAdapter(Context context, List<Restaurant> restaurantList){
+    public VisitedAdapter(Context context, List<Restaurant> visitedRestaurants){
         this.context = context;
-        this.restaurantList = restaurantList;
+        this.visitedRestaurants = visitedRestaurants;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_favorite_or_visited, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.visited_favorites_layout, parent , false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Restaurant restaurant = restaurantList.get(position);
+        Restaurant restaurant = visitedRestaurants.get(position);
         holder.bind(restaurant);
     }
 
     @Override
     public int getItemCount() {
-        return restaurantList.size();
+        return visitedRestaurants.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         TextView tvItemName;
-        TextView tvAddressItem;
-        TextView tvPriceItem;
+        TextView tvItemPrice;
         RatingBar rbVoteAverageItem;
         ImageView ivRestItemImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             tvItemName = itemView.findViewById(R.id.tvItemName);
-            tvAddressItem = itemView.findViewById(R.id.tvAddressItem);
-            tvPriceItem = itemView.findViewById(R.id.tvPriceItem);
-            rbVoteAverageItem = itemView.findViewById(R.id.rbVoteAverageItem);
             ivRestItemImage = itemView.findViewById(R.id.ivRestItemImage);
+            tvItemPrice = itemView.findViewById(R.id.tvPrice);
+            rbVoteAverageItem = itemView.findViewById(R.id.rbVoteAverageItem);
             itemView.setOnClickListener(this);
         }
 
@@ -87,10 +91,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Restaurant restaurant = restaurantList.get(position);
+                Restaurant restaurant = visitedRestaurants.get(position);
                 if (MainActivity.isOnline(context)){
                     id = restaurant.getKeyId();
-                    new Task().execute();
+                    new VisitedAdapter.Task().execute();
                 }
                 else {
                     Intent intent = new Intent(context, RestaurantActivity.class);
@@ -103,17 +107,18 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
         public void bind(Restaurant restaurant) {
             tvItemName.setText(restaurant.getKeyName());
-            tvPriceItem.setText(restaurant.getKeyPrice());
-            tvAddressItem.setText(restaurant.getKeyAddress());
-            rbVoteAverageItem.setRating((float) restaurant.getKeyRating());
             Glide.with(context)
-                    .load(restaurant.getKeyImage()).into(ivRestItemImage);
+                    .load(restaurant.getKeyImage()).centerCrop().transform(new RoundedCorners(20)).into(ivRestItemImage);
+            tvItemPrice.setText(restaurant.getKeyPrice());
+            rbVoteAverageItem.setRating((float) restaurant.getKeyRating());
+            //           itemView.setBackground(ivRestItemImage.getDrawable());
+            //        ivRestItemImage.setVisibility(View.INVISIBLE);
 
         }
     }
 
     public void clear() {
-        restaurantList.clear();
+        visitedRestaurants.clear();
         notifyDataSetChanged();
     }
 
@@ -137,5 +142,4 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             context.startActivity(intent);
         }
     }
-
 }
