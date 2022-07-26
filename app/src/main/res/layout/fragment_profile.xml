@@ -40,6 +40,7 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/ivProfileImage"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
         android:textSize="34sp"
         tools:text="megana" />
 
@@ -49,10 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUsername"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="-3dp"
         android:layout_toRightOf="@id/ivProfileImage"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/wawe_dark_blue"
         android:textSize="18sp"
         tools:text="Menlo Park, CA" />
 
