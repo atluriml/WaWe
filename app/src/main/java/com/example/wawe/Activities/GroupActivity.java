@@ -10,12 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wawe.Adapters.PostsAdapter;
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Groups;
 import com.example.wawe.ParseModels.Post;
-import com.example.wawe.PostDialogBox;
+import com.example.wawe.PostDialogFragment;
 import com.example.wawe.R;
 import com.example.wawe.RoomClasses.PostRoom;
 import com.example.wawe.RoomClasses.RestaurantListsDao;
@@ -32,7 +33,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupActivity extends AppCompatActivity implements PostDialogBox.DialogListener{
+public class GroupActivity extends AppCompatActivity implements PostDialogFragment.DialogListener{
 
     TextView tvGroupName;
     TextView tvGroupLocation;
@@ -80,6 +81,10 @@ public class GroupActivity extends AppCompatActivity implements PostDialogBox.Di
         btnAddPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!MainActivity.isOnline(GroupActivity.this)){
+                    Toast.makeText(GroupActivity.this, "Must be connected to the internet to create post", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 openDialog();
             }
         });
@@ -125,8 +130,8 @@ public class GroupActivity extends AppCompatActivity implements PostDialogBox.Di
     }
 
     public void openDialog() {
-        PostDialogBox postDialogBox = new PostDialogBox();
-        postDialogBox.show(getSupportFragmentManager(), "post dialog");
+        PostDialogFragment postDialogFragment = new PostDialogFragment();
+        postDialogFragment.show(getSupportFragmentManager(), "post dialog");
     }
 
     @Override
