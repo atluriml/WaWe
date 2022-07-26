@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.wawe.Activities.MainActivity;
 import com.example.wawe.Adapters.GroupAdapter;
-import com.example.wawe.GroupDialogBox;
+import com.example.wawe.GroupDialogFragment;
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Groups;
 import com.example.wawe.R;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GroupFragment extends Fragment implements GroupDialogBox.DialogListener {
+public class GroupFragment extends Fragment implements GroupDialogFragment.DialogListener {
 
     private RecyclerView rvGroups;
     private GroupAdapter adapter;
@@ -78,6 +78,10 @@ public class GroupFragment extends Fragment implements GroupDialogBox.DialogList
         btnAddGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!MainActivity.isOnline(getContext())){
+                    Toast.makeText(getContext(), "Must be connected to the internet to create group", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 openDialog();
             }
         });
@@ -172,8 +176,8 @@ public class GroupFragment extends Fragment implements GroupDialogBox.DialogList
     }
 
     public void openDialog() {
-        GroupDialogBox groupDialogBox = new GroupDialogBox();
-        groupDialogBox.show(getActivity().getSupportFragmentManager(), "group dialog");
+        GroupDialogFragment groupDialogFragment = new GroupDialogFragment();
+        groupDialogFragment.show(getActivity().getSupportFragmentManager(), "group dialog");
     }
 
     @Override

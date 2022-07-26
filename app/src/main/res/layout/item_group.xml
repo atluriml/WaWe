@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_centerHorizontal="true"
     android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
@@ -11,40 +12,62 @@
     android:elevation="20dp"
     android:gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/tvGroupName"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:text="Bob's kitchen" />
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/wawe_dark_blue"
+        app:cardElevation="3dp">
 
-    <TextView
-        android:id="@+id/tvGroupLocation"
-        android:layout_width="337dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvGroupName"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="0dp"
-        android:layout_weight="1"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        tools:text="$$" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_width="345dp"
-        android:layout_height="96dp"
-        android:layout_below="@id/tvGroupLocation"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="3dp"
-        android:layout_weight="1"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        tools:text="first street" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvGroupName"
+                    android:layout_width="311dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="-10dp"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textSize="24sp"
+                    tools:text="Bob's kitchen" />
+
+                <TextView
+                    android:id="@+id/tvGroupLocation"
+                    android:layout_width="306dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/wawe_dark_blue"
+                    tools:text="Bob's kitchen" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="312dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:text="Bob's kitchen" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>
+

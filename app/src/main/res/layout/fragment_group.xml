@@ -4,15 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activities.RestaurantListsActivity"
     android:orientation="vertical">
+
+    <View
+        android:id="@+id/topView"
+        android:layout_width="663dp"
+        android:layout_height="25dp"
+        android:background="@color/wawe_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="670dp"
+        android:layout_height="151dp"
+        android:layout_below="@+id/topView"
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/ic_wave" />
 
     <TextView
         android:id="@+id/tvListTitle"
-        android:layout_width="345dp"
+        android:layout_width="match_parent"
         android:layout_height="58dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="Groups"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:text="Groups" />
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/btnAddGroup"
@@ -20,7 +41,7 @@
         android:layout_height="57dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="false"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/wawe_blue"
         android:src="@android:drawable/ic_input_add"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:tint="@color/wawe_dark_blue" />
@@ -29,16 +50,20 @@
         android:id="@+id/rvGroups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/svSearchGroups"
         android:layout_centerInParent="true"
-        android:padding="8dp"
-        android:layout_below="@+id/svSearchGroups"/>
+        android:padding="8dp" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svSearchGroups"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:queryHint="search groups"
         android:layout_below="@id/tvListTitle"
-        android:layout_marginTop="-2dp" />
+        android:layout_marginTop="-2dp"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:closeIcon="@drawable/ic_baseline_close_24"
+        app:queryHint="search groups"
+        app:searchHintIcon="@drawable/ic_baseline_search_24"
+        app:searchIcon="@drawable/ic_baseline_search_24" />
 
 </RelativeLayout>
