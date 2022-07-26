@@ -115,7 +115,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
 
                                 } else {
                                     btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
-                                    btnLiked.setColorFilter(Color.parseColor("#000000"));
+                                    btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
                                     liked = false;
                                 }
                             }
@@ -244,7 +244,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         if (liked) {
             likesAnimation.setVisibility(View.GONE);
             btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
-            btnLiked.setColorFilter(Color.parseColor("#000000"));
+            btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
             Restaurant.unFavoriteRestaurant(parseRestaurant);
             liked = false;
             AsyncTask.execute(new Runnable() {

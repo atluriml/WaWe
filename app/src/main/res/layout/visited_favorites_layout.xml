@@ -47,6 +47,7 @@
                 <RatingBar
                     android:id="@+id/rbVoteAverageItem"
                     style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:progressTint="@color/wawe_dark_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
