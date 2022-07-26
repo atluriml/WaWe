@@ -9,7 +9,7 @@
         android:title="Roulette"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_chat"
+        android:id="@+id/action_group"
         android:icon="@drawable/vector_compose_message"
         app:iconTint="@android:color/black"
         android:title="Groups"

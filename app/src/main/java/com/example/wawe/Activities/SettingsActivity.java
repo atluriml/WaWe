@@ -25,7 +25,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,6 +66,11 @@ public class SettingsActivity extends AppCompatActivity {
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!MainActivity.isOnline(SettingsActivity.this)){
+                    Toast.makeText(SettingsActivity.this, "Must be connected to the internet to change your profile", Toast.LENGTH_SHORT).show();
+                    setPreferencesToNull();
+                    return;
+                }
                 photoFile = getPhotoFileUri(photoFileName);
                 launchCamera();
             }
@@ -75,6 +79,11 @@ public class SettingsActivity extends AppCompatActivity {
         btnUpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!MainActivity.isOnline(SettingsActivity.this)){
+                    Toast.makeText(SettingsActivity.this, "Must be connected to the internet to change your profile", Toast.LENGTH_SHORT).show();
+                    setPreferencesToNull();
+                    return;
+                }
                 if (!etPassword.getText().toString().equals(etRetypePassword.getText().toString())){
                     setPreferencesToNull();
                     Toast.makeText(SettingsActivity.this, "Please make sure your passwords match", Toast.LENGTH_SHORT).show();

@@ -13,9 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.wawe.GroupDialogBox;
+import com.example.wawe.GroupDialogFragment;
 import com.example.wawe.ParseModels.Groups;
-import com.example.wawe.ParseModels.Post;
 import com.example.wawe.R;
 import com.example.wawe.fragments.GroupFragment;
 import com.example.wawe.fragments.ProfileFragment;
@@ -25,7 +24,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class MainActivity extends AppCompatActivity implements GroupDialogBox.DialogListener{
+public class MainActivity extends AppCompatActivity implements GroupDialogFragment.DialogListener{
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements GroupDialogBox.Di
                     case R.id.action_restaurant_details:c:
                     fragment = new RouletteFragment();
                         break;
-                    case R.id.action_chat:c:
+                    case R.id.action_group:c:
                     fragment = new GroupFragment();
                         break;
                     case R.id.action_profile:
