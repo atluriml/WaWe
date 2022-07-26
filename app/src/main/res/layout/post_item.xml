@@ -91,5 +91,15 @@
         android:src="@drawable/ic_vector_heart_stroke"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/likes_animation"
+        android:layout_width="33dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/ivPostImage"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/likes_animation" />
+
 
 </RelativeLayout>

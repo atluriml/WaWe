@@ -63,6 +63,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public TextView tvCreationTime;
         public ImageButton imBtnIsLiked;
         public TextView tvPostLikesCount;
+        private View likesAnimation;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +76,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvPostDescription = itemView.findViewById(R.id.tvPostDescription);
             imBtnIsLiked = itemView.findViewById(R.id.isLiked);
             tvPostLikesCount = itemView.findViewById(R.id.tvPostLikesCount);
+            likesAnimation = itemView.findViewById(R.id.likes_animation);
 
             itemView.setOnClickListener(this);
 
@@ -84,16 +86,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Post post = posts.get(position);
-                        // user is liking tweet
+                        // user is liking post
                         try {
+                            likesAnimation.setVisibility(View.VISIBLE);
                             if (!post.getIsLiked(post.getLikedUsers(), ParseUser.getCurrentUser().getObjectId())) {
                                 imBtnIsLiked.setImageResource(R.drawable.ic_vector_heart);
-                                imBtnIsLiked.setColorFilter(Color.parseColor("#ffe0245e"));
+                                imBtnIsLiked.setColorFilter(Color.parseColor("#92c7d6"));
                                 post.likePost(ParseUser.getCurrentUser());
                                 post.saveInBackground();
                             }
-                            // user is unliking tweet
+                            // user is unliking post
                             else {
+                                likesAnimation.setVisibility(View.GONE);
                                 imBtnIsLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
                                 imBtnIsLiked.setColorFilter(Color.parseColor("#000000"));
                                 try {
@@ -143,7 +147,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 try {
                     if (post.getIsLiked(post.getLikedUsers(), ParseUser.getCurrentUser().getObjectId())) {
                         imBtnIsLiked.setImageResource(R.drawable.ic_vector_heart);
-                        imBtnIsLiked.setColorFilter(Color.parseColor("#ffe0245e"));
+                        imBtnIsLiked.setColorFilter(Color.parseColor("#92c7d6"));
                     } else {
                         imBtnIsLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
                         imBtnIsLiked.setColorFilter(Color.parseColor("#000000"));
