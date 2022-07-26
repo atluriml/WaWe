@@ -1,4 +1,4 @@
-package com.example.wawe.fragments;
+package com.example.wawe.Fragments;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,9 +43,6 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ProfileFragment extends Fragment {
 
     private TextView tvProfileUsername;
@@ -133,7 +129,6 @@ public class ProfileFragment extends Fragment {
                         for (int i = 0; i < favoriteRestaurantsFromDB.size(); i++){
                             Restaurant roomToParse = new Restaurant(favoriteRestaurantsFromDB.get(i).getRestaurant());
                             favoritesList.add(roomToParse);
-                            //favoritesAdapter.notifyDataSetChanged();
                         }
                         FavoritesAdapter favoritesAdapter = new FavoritesAdapter(getContext(), favoritesList);
                         favoritesRecyclerView.setAdapter(favoritesAdapter);
@@ -157,7 +152,6 @@ public class ProfileFragment extends Fragment {
                         for (int i = 0; i < visitedRestaurantsFromDB.size(); i++){
                             Restaurant roomToParse = new Restaurant(visitedRestaurantsFromDB.get(i).getRestaurant());
                             visitedList.add(roomToParse);
-                           // visitedAdapter.notifyDataSetChanged();
                         }
                         VisitedAdapter visitedAdapter = new VisitedAdapter(getContext(), visitedList);
                         visitedRecyclerView.setAdapter(visitedAdapter);

@@ -1,9 +1,6 @@
 package com.example.wawe.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +9,7 @@ import com.example.wawe.MapSubclasses.FetchURL;
 import com.example.wawe.MapSubclasses.TaskLoadedCallback;
 import com.example.wawe.R;
 import com.example.wawe.YelpClasses.YelpRestaurant;
-import com.example.wawe.fragments.RouletteFragment;
+import com.example.wawe.Fragments.RouletteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;

@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.wawe.R;
-import com.example.wawe.fragments.ProfileFragment;
+import com.example.wawe.Fragments.ProfileFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;

@@ -1,7 +1,7 @@
 package com.example.wawe;
 
 
-import static com.example.wawe.fragments.RouletteFragment.REST_APPLICATION_ID;
+import static com.example.wawe.Fragments.RouletteFragment.REST_APPLICATION_ID;
 
 import com.example.wawe.YelpClasses.YelpRestaurant;
 import com.example.wawe.YelpClasses.RestaurantSearch;

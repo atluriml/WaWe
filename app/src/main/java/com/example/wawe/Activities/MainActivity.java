@@ -13,12 +13,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.wawe.GroupDialogFragment;
+import com.example.wawe.Fragments.GroupDialogFragment;
 import com.example.wawe.ParseModels.Groups;
 import com.example.wawe.R;
-import com.example.wawe.fragments.GroupFragment;
-import com.example.wawe.fragments.ProfileFragment;
-import com.example.wawe.fragments.RouletteFragment;
+import com.example.wawe.Fragments.GroupFragment;
+import com.example.wawe.Fragments.ProfileFragment;
+import com.example.wawe.Fragments.RouletteFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseUser;

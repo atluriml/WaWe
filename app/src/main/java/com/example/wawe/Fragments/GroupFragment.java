@@ -1,4 +1,4 @@
-package com.example.wawe.fragments;
+package com.example.wawe.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.wawe.Activities.MainActivity;
 import com.example.wawe.Adapters.GroupAdapter;
-import com.example.wawe.GroupDialogFragment;
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Groups;
 import com.example.wawe.R;

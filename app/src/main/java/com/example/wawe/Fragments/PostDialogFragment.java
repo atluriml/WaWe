@@ -1,4 +1,4 @@
-package com.example.wawe;
+package com.example.wawe.Fragments;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.wawe.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import java.io.File;

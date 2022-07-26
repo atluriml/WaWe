@@ -16,7 +16,7 @@ import com.example.wawe.Adapters.PostsAdapter;
 import com.example.wawe.ParseAndDatabaseApplication;
 import com.example.wawe.ParseModels.Groups;
 import com.example.wawe.ParseModels.Post;
-import com.example.wawe.PostDialogFragment;
+import com.example.wawe.Fragments.PostDialogFragment;
 import com.example.wawe.R;
 import com.example.wawe.RoomClasses.PostRoom;
 import com.example.wawe.RoomClasses.RestaurantListsDao;

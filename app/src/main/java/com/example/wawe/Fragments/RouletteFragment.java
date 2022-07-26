@@ -1,4 +1,4 @@
-package com.example.wawe.fragments;
+package com.example.wawe.Fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

@@ -1,4 +1,4 @@
-package com.example.wawe;
+package com.example.wawe.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.example.wawe.R;
 
 public class GroupDialogFragment extends AppCompatDialogFragment {
     private EditText etGroupName;
