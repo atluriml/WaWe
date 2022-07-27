@@ -7,10 +7,31 @@
     tools:context=".Activities.GroupActivity"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/topView"
+        android:layout_width="663dp"
+        android:layout_height="100dp"
+        android:background="@color/wawe_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="670dp"
+        android:layout_height="151dp"
+        android:layout_below="@+id/topView"
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/ic_wave" />
+
     <TextView
         android:id="@+id/tvGroupTitle"
         android:layout_width="match_parent"
         android:layout_height="46dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="34sp"
@@ -21,8 +42,9 @@
         android:layout_width="67dp"
         android:layout_height="57dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="false"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/wawe_blue"
         android:src="@android:drawable/ic_input_add"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:tint="@color/wawe_dark_blue" />
@@ -32,6 +54,8 @@
         android:layout_width="342dp"
         android:layout_height="43dp"
         android:layout_below="@+id/tvGroupTitle"
+        android:textColor="@color/white"
+        android:layout_marginStart="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Bay Area, CA" />
 
@@ -40,6 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_below="@+id/tvGroupLocation"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="16sp"
         tools:text="trying out all the food in the bay area" />

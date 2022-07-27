@@ -136,7 +136,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                     } else {
                         parseRestaurant = new Restaurant(restaurant);
                         btnLiked.setImageResource(R.drawable.ic_vector_heart_stroke);
-                        btnLiked.setColorFilter(Color.parseColor("#000000"));
+                        btnLiked.setColorFilter(Color.parseColor("#92c7d6"));
                         liked = false;
                         btnClickIfVisited.setChecked(false);
                     }
