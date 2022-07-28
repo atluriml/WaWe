@@ -58,9 +58,7 @@ As a foodie who often experiences decision fatigue when it comes to figuring out
     * will include a map to showcase the route from the user's location to the chosen restaurant
 * Profile Screen
     * user's profile 
-* Favorites Screen
     * list of user's favorite restaurants
-* Visited Screen
     * list of restaurant's the user has visited 
 * Settings Screen
     * user can update their profile 
@@ -90,12 +88,8 @@ As a foodie who often experiences decision fatigue when it comes to figuring out
        * Map Screen 
 * Profile Screen
    * Settings Screen
-   * Favorites Screen
-       * Detail Screen
-              * Map Screen
-   * Visited Screen
-       * Detail Screen
-              * Map Screen
+   * Detail Screen
+       * Map Screen
 * Groups Screen
    * Group Detail Screen
 
@@ -115,7 +109,7 @@ As a foodie who often experiences decision fatigue when it comes to figuring out
 
 ## Wireframes
 
-<img src='https://github.com/atluriml/WaWe/raw/master/digital_wireframe_wawe.png' title='Digital Wireframes' width='250' alt='Wireframes'/>
+<img src='https://github.com/atluriml/WaWe/raw/master/digital_wireframe_wawe_final.png' title='Digital Wireframes' width='250' alt='Wireframes'/>
 
 ## Schema 
 
@@ -280,12 +274,10 @@ As a foodie who often experiences decision fatigue when it comes to figuring out
   * (Read/GET) route from user's location to the restaurant using Google Maps 
 * Profile Screen
   * (Read/GET) Query logged in user object
+  * (Read/GET) Query list of logged in user's favorite restaurants
+  * (Read/GET) Query list of logged in user's visited restaurants
 * Settings Screen
   * (Create/POST) User's updated profile settings
-* Favorites Screen
-  * (Read/GET) Query list of logged in user's favorite restaurants
-* Visited Screen
-  * (Read/GET) Query list of logged in user's visited restaurants
 * Groups Screen
   * (Read/GET) Query list of existing groups
   * (Create/POST) User can create new groups
